@@ -248,13 +248,6 @@ class RedshiftGenerator(Generator, DatabaseSchemaMixin):
     source = "redshift"
 
 
-"""
-TODO:
-1) Kafka
-2) Tableau optional schema?
-3) Валидацию по Data_source
-4) Oracle
-5) СДелать деплой и ридми
-    # TODO: Create inputs? kuberflow
+# TODO	Add Kafka support
+#	Add inputs to kuberflow
 
-"""
