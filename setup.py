@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="oddrn",
-    version="0.0.1",
+    version="0.0.8",
     description="ODDRN generator package",
     long_description=long_description,
     long_description_content_type="text/markdown",

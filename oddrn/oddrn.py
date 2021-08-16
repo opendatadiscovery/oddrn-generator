@@ -1,4 +1,5 @@
 import enum
+import copy
 
 from collections import OrderedDict
 from typing import List
@@ -48,10 +49,16 @@ class Generator:
     @staticmethod
     def _validate_cloud(cloud=None):
         if cloud:
-            cloud_type = cloud.pop("type")
+            # TODO - make it better!
+            cloud_copy = {
+                "cloud": cloud["type"],
+                "region": cloud["region"],
+                "account": cloud["account"],
+            }
             try:
+                cloud_type = cloud_copy.pop("cloud")
                 cloud_dataclass = cloud_map[cloud_type]
-                return cloud_dataclass(**cloud)
+                return cloud_dataclass(**cloud_copy)
             except Exception as e:
                 raise ValueError(f"Cloud validation error {str(e)}")
         else:
@@ -247,6 +254,40 @@ class OracleGenerator(Generator, DatabaseSchemaMixin):
 class RedshiftGenerator(Generator, DatabaseSchemaMixin):
     source = "redshift"
 
+
+class ClickHouseGenerator(Generator, DatabaseMixin):
+    source = "clickhouse"
+
+
+class DVCGenerator(Generator):
+    source = "dvc"
+
+    def get_stage(self, name: str) -> str:
+        data = OrderedDict({"stages": name})
+        return self.get_oddrn(data)
+
+    def get_dataset(self, file_path: str) -> str:
+        folders = [f"folder/{path}" for path in file_path.split("/")]
+        oddrn = "/".join(folders)
+        return f"{self._base_oddrn}/{oddrn}"
+
+
+class GreatExpectationsGenerator(Generator):
+    source = "great_expectations"
+
+    def get_qt(self, suit_name: str, expectation_type: str) -> str:
+        data = OrderedDict({
+            "suits": suit_name,
+            "types": expectation_type
+        })
+        return self.get_oddrn(data)
+
+    def get_qt_run(self, run_name: str, expectation_type: str) -> str:
+        data = OrderedDict({
+            "runs": run_name,
+            "types": expectation_type
+        })
+        return self.get_oddrn(data)
 
 # TODO	Add Kafka support
 #	Add inputs to kuberflow
