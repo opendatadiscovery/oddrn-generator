@@ -1,111 +1,141 @@
 # OpenDataDiscovery ODDRN
 ## Requirements
-Python >= 3.7
+Python >= 3.9
 ## Installation
 ```
-    pip install oddrn
+poetry install
 ```
 ## Usage and configuration
-```python
-from oddrn import Generator
-oddrn_gen = Generator(data_source="postgresql", cloud={"type":"aws", "region":"reg_id", "account": "acc_id"})
-oddrn_gen.get_column("db_name","schema_name","table_name", "column_name")
-```
+### Available generators
+* postgresql - PostgresqlGenerator
+* mysql - MysqlGenerator
+* glue - GlueGenerator
+* kafka - KafkaGenerator
+* kafkaconnect - KafkaConnectGenerator
+* snowflake - SnowflakeGenerator
+* airflow - AirflowGenerator
+* hive - HiveGenerator
+* dynamodb - DynamodbGenerator
+* odbc - OdbcGenerator
+* mssql - MssqlGenerator
+* oracle - OracleGenerator
+* redshift - RedshiftGenerator
+* clickhouse - ClickHouseGenerator
+### Work in progress generators
+* tableau - TableauGenerator
+* kubeflow - KubeflowGenerator
+* dvc - DVCGenerator
+* great_expectations - GreatExpectationsGenerator
+
+### Generator properties
+* base_oddrn - Get base oddrn (without path)
+* available_paths - Get all available path of generator 
+
+### Generator methods
+* get_oddrn_by_path(path_name, new_value=None) - Get oddrn string by path. You also can set value for this path using 'new_value' param
+* set_oddrn_paths(**kwargs) - Set or update values of oddrn path
+* get_data_source_oddrn() - Get datasouce oddrn 
+
 ### Generator parameters:
-* "data_source" - required. Can be one of:
+* host_settings: str - optional. Hostname configuration
+* cloud_settings: dict - optional.  Cloud configuration
+* **kwargs - path's name and values
+
+### Example usage
 ```python
-["postgresql", "mysql", "kafka", "glue", "snowflake", "airflow", "tableau", "hive", "dynamodb", "kuberflow", "odbc", "mssql", "oracle", "redshift"]
+# postgresql
+from oddrn import PostgresqlGenerator
+oddrn_gen = PostgresqlGenerator(
+  host_settings='my.host.com:5432', 
+  schemas='schema_name', databases='database_name', tables='table_name'
+)
+
+oddrn_gen.base_oddrn
+# //postgresql/host/my.host.com:5432/
+oddrn_gen.available_paths
+# ('schemas', 'databases', 'tables', 'columns')
+
+oddrn_gen.get_data_source_oddrn()
+# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name
+
+oddrn_gen.get_oddrn_by_path("schemas")
+# //postgresql/host/my.host.com:5432/schemas/schema_name
+
+oddrn_gen.get_oddrn_by_path("databases")
+# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name
+
+oddrn_gen.get_oddrn_by_path("tables")
+# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name/tables/table_name
+
+# you can set or change path:
+oddrn_gen.set_oddrn_paths(tables='another_table_name', columns='new_column_name')
+oddrn_gen.get_oddrn_by_path("columns")
+# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name/tables/another_table_name/columns/new_column_name
+
+# you can get path wih new values:
+oddrn_gen.get_oddrn_by_path("columns", new_value="another_new_column_name")
+# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name/tables/another_table_name/columns/another_new_column_name
+
+
+# glue
+from oddrn import GlueGenerator
+oddrn_gen = GlueGenerator(
+  cloud_settings={'account': 'acc_id', 'region':'reg_id'}, 
+  databases='database_name', tables='table_name', columns='column_name', 
+  jobs='job_name', runs='run_name', owners='owner_name'
+)
+
+oddrn_gen.available_paths
+# ('databases', 'tables', 'columns', 'owners', 'jobs', 'runs')
+
+oddrn_gen.get_oddrn_by_path("databases")
+# //glue/cloud/aws/account/acc_id/region/reg_id/databases/database_name
+
+oddrn_gen.get_oddrn_by_path("tables")
+# //glue/cloud/aws/account/acc_id/region/reg_id/databases/database_name/tables/table_name'
+
+oddrn_gen.get_oddrn_by_path("columns")
+# //glue/cloud/aws/account/acc_id/region/reg_id/databases/database_name/tables/table_name/columns/column_name
+
+oddrn_gen.get_oddrn_by_path("jobs")
+# //glue/cloud/aws/account/acc_id/region/reg_id/jobs/job_name
+
+oddrn_gen.get_oddrn_by_path("runs")
+# //glue/cloud/aws/account/acc_id/region/reg_id/jobs/job_name/runs/run_name
+
+oddrn_gen.get_oddrn_by_path("owners")
+# //glue/cloud/aws/account/acc_id/region/reg_id/owners/owner_name
+
 ```
-* cloud: dict - optional. At now support only AWS. Mutually exclusive with "prefix" or "prefixes" params)
-* host: str or hosts: list[str] - optional. 
-* prefix: str or prefixes: list[str] - optional. Mutually exclusive with "cloud" param
 
-### Methods list:
-* postgresql:
-    * get_database(database_name)
-    * get_schema(database_name, schema_name)
-    * get_table(database_name, schema_name, table_name)
-    * get_column(database_name, schema_name, table_name, column_name)
-* mysql
-    * get_database(database_name)
-    * get_table(database_name, table_name)
-    * get_column(database_name, table_name, column_name)
-* kafka
-    * Work in progress
-* glue
-    * get_owner(owner_name)
-    * get_database(database_name)
-    * get_table(database_name, table_name)
-    * get_column(database_name, table_name, column_name)
-    * get_job(job_name)
-* snowflake
-    * get_owner(owner_name)
-    * get_warehouse(warehouse_name)
-    * get_database(warehouse_name, database_name)
-    * get_schema(warehouse_name, database_name, schema_name)
-    * get_table(warehouse_name, database_name, schema_name, table_name)
-    * get_view(warehouse_name, database_name, schema_name, view_name)
-    * get_column(warehouse_name, database_name, schema_name, table_name, column_name)
-* airflow
-    * Work in progress
-* tableau
-    * get_database(database_name)
-    * get_schema(database_name, schema_name)
-    * get_table(database_name, schema_name, table_name)
-    * get_column(database_name, schema_name, table_name, column_name)
-    * get_workbook(workbook_name)
-    * get_worksheet(workbook_name, worksheet_name)
-* hive
-    * get_owner(owner_name)
-    * get_database(database_name)
-    * get_table(database_name, table_name)
-    * get_column(database_name, table_name, column_name)
-* dynamodb
-    * get_database(database_name)
-    * get_schema(database_name, schema_name)
-    * get_table(database_name, schema_name, table_name)
-    * get_column(database_name, schema_name, table_name, column_name)
-* kuberflow
-    * get_pipeline(pipeline_id)
-    * get_experiment(experiment_id)
-    * get_experiment_run(experiment_id, run_id)
-* odbc
-    * get_database(database_name)
-    * get_schema(database_name, schema_name)
-    * get_table(database_name, schema_name, table_name)
-    * get_column(database_name, schema_name, table_name, column_name)
-* mssql
-    * get_database(database_name)
-    * get_schema(database_name, schema_name)
-    * get_table(database_name, schema_name, table_name)
-    * get_column(database_name, schema_name, table_name, column_name)
-* oracle
-    * get_database(database_name)
-    * get_schema(database_name, schema_name)
-    * get_table(database_name, schema_name, table_name)
-    * get_column(database_name, schema_name, table_name, column_name)
-* redshift
-    * get_database(database_name)
-    * get_schema(database_name, schema_name)
-    * get_table(database_name, schema_name, table_name)
-    * get_column(database_name, schema_name, table_name, column_name)
-
-If you need to generate full custom oddrn, use method create_full_oddrn(data: OrderedDict)
-Example:
+### Exceptions
+* WrongPathOrderException - raises when trying set path that depends on another path
 ```python
-from oddrn import Generator
-from collections import OrderedDict
-data = OrderedDict({
-    "sources": "CustomSource",
-    "hosts": "localhost:3333",
-    "databases": "test_db",
-    "tables": "test_table"
-})
-Generator.create_full_oddrn(data)
-'//sources/CustomSource/hosts/localhost:3333/databases/test_db/tables/test_table'
-``` 
-### Cloud support:
-To add new cloud, you need to add new dataclass with method get_oddrn to clouds.py and add it to cloud_map variable
+from oddrn import PostgresqlGenerator
+oddrn_gen = PostgresqlGenerator(
+    host_settings='my.host.com:5432', 
+    schemas='schema_name', databases='database_name',
+    columns='column_without_table'
+)
+# WrongPathOrderException: 'columns' can not be without 'tables' attribute
+```
+* EmptyPathValueException - raises when trying to get a path that is not set up
+```python
+from oddrn import PostgresqlGenerator
+oddrn_gen = PostgresqlGenerator(
+    host_settings='my.host.com:5432', schemas='schema_name', databases='database_name',
+)
+oddrn_gen.get_oddrn_by_path("tables")
 
-### Adapter support:
-To add new adapter, simply add new class to oddrn.py. Parameter "source" is required.
+# EmptyPathValueException: Path 'tables' doesn't set up
+```
+* PathDoestExistException - raises when trying get not existing oddrn path
+```python
+from oddrn import PostgresqlGenerator
+oddrn_gen = PostgresqlGenerator(
+    host_settings='my.host.com:5432', schemas='schema_name', databases='database_name',
+)
+oddrn_gen.get_oddrn_by_path("jobs")
+
+# PathDoestExistException: Path 'jobs' doesn't exist in generator
+```
