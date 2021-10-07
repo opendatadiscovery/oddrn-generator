@@ -29,7 +29,7 @@ class BasePathsModel(BaseModel):
 
     def check_if_path_is_set(self, path: str) -> None:
         if not getattr(self, path, None):
-            raise EmptyPathValueException(f"Path '{path}' doesn't set up")
+            raise EmptyPathValueException(f"Path '{path}' is not set up")
 
     def set_path_value(self, path: str, value: str) -> None:
         setattr(self, path, value)

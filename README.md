@@ -127,9 +127,9 @@ oddrn_gen = PostgresqlGenerator(
 )
 oddrn_gen.get_oddrn_by_path("tables")
 
-# EmptyPathValueException: Path 'tables' doesn't set up
+# EmptyPathValueException: Path 'tables' is not set up
 ```
-* PathDoestExistException - raises when trying get not existing oddrn path
+* PathDoestExistException - raises when trying to get not existing oddrn path
 ```python
 from oddrn import PostgresqlGenerator
 oddrn_gen = PostgresqlGenerator(

@@ -17,7 +17,7 @@ class Generator:
         elif host_settings:
             server_settings = {'host': host_settings}
         else:
-            raise ValueError("You must specify only one parameter: 'cloud_settings' or 'host_settings'")
+            raise ValueError("You must specify at least one parameter: 'cloud_settings' or 'host_settings'")
         self.server_obj: AbstractServerModel = self.__build_server(server_settings)
         self.paths_obj: BasePathsModel = self.__build_paths(**path_attributes)
 
