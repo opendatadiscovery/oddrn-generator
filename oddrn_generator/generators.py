@@ -1,9 +1,9 @@
-from oddrn.path_models import (
+from oddrn_generator.path_models import (
     BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel
 )
-from oddrn.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
+from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
 
 class Generator:

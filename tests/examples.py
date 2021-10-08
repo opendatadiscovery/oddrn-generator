@@ -1,4 +1,4 @@
-from oddrn.generators import PostgresqlGenerator, GlueGenerator
+from oddrn_generator.generators import PostgresqlGenerator, GlueGenerator
 
 
 def postgres_generator_example():

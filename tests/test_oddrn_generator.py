@@ -3,7 +3,7 @@ import datetime
 import pytest
 from pydantic import ValidationError
 
-from oddrn.exceptions import WrongPathOrderException, PathDoestExistException, EmptyPathValueException
+from oddrn_generator.exceptions import WrongPathOrderException, PathDoestExistException, EmptyPathValueException
 from tests.helpers import create_host_oddrn_string, create_cloud_oddrn_string
 from tests.models import example_generator_settings, ExampleGenerator
 from tests.params import parameters_host, parameters_cloud

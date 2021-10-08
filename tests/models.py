@@ -2,9 +2,9 @@ from typing import Optional
 
 from pydantic import Field
 
-from oddrn.generators import Generator
-from oddrn.path_models import BasePathsModel
-from oddrn.server_models import HostnameModel
+from oddrn_generator.generators import Generator
+from oddrn_generator.path_models import BasePathsModel
+from oddrn_generator.server_models import HostnameModel
 
 
 class ExamplePathModel(BasePathsModel):

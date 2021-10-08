@@ -1,6 +1,6 @@
-# OpenDataDiscovery ODDRN
+# Open Data Discovery Resource Name Generator
 ## Requirements
-Python >= 3.9
+Python >= 3.7
 ## Installation
 ```
 poetry install
@@ -44,7 +44,7 @@ poetry install
 ### Example usage
 ```python
 # postgresql
-from oddrn import PostgresqlGenerator
+from oddrn_generator import PostgresqlGenerator
 oddrn_gen = PostgresqlGenerator(
   host_settings='my.host.com:5432', 
   schemas='schema_name', databases='database_name', tables='table_name'
@@ -78,7 +78,7 @@ oddrn_gen.get_oddrn_by_path("columns", new_value="another_new_column_name")
 
 
 # glue
-from oddrn import GlueGenerator
+from oddrn_generator import GlueGenerator
 oddrn_gen = GlueGenerator(
   cloud_settings={'account': 'acc_id', 'region':'reg_id'}, 
   databases='database_name', tables='table_name', columns='column_name', 
@@ -111,7 +111,7 @@ oddrn_gen.get_oddrn_by_path("owners")
 ### Exceptions
 * WrongPathOrderException - raises when trying set path that depends on another path
 ```python
-from oddrn import PostgresqlGenerator
+from oddrn_generator import PostgresqlGenerator
 oddrn_gen = PostgresqlGenerator(
     host_settings='my.host.com:5432', 
     schemas='schema_name', databases='database_name',
@@ -121,7 +121,7 @@ oddrn_gen = PostgresqlGenerator(
 ```
 * EmptyPathValueException - raises when trying to get a path that is not set up
 ```python
-from oddrn import PostgresqlGenerator
+from oddrn_generator import PostgresqlGenerator
 oddrn_gen = PostgresqlGenerator(
     host_settings='my.host.com:5432', schemas='schema_name', databases='database_name',
 )
@@ -131,7 +131,7 @@ oddrn_gen.get_oddrn_by_path("tables")
 ```
 * PathDoestExistException - raises when trying to get not existing oddrn path
 ```python
-from oddrn import PostgresqlGenerator
+from oddrn_generator import PostgresqlGenerator
 oddrn_gen = PostgresqlGenerator(
     host_settings='my.host.com:5432', schemas='schema_name', databases='database_name',
 )

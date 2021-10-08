@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from oddrn.exceptions import WrongPathOrderException, PathDoestExistException, EmptyPathValueException
+from oddrn_generator.exceptions import WrongPathOrderException, PathDoestExistException, EmptyPathValueException
 
 
 class BasePathsModel(BaseModel):
