@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "oddrn-generator"
+version = "0.1.0"
+description = "Open Data Discovery Resource Name Generator"
+authors = ["Open Data Discovery <pypi@opendatadiscovery.org>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/opendatadiscovery/oddrn-generator"
+repository = "https://github.com/opendatadiscovery/oddrn-generator"
+keywords = ["oddrn", "opendatadiscovery"]
+include = ["LICENSE"]
+
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pydantic = "^1.8.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
