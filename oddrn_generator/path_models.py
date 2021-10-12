@@ -256,6 +256,34 @@ class ClickHousePathsModel(BasePathsModel):
         data_source_path = 'databases'
 
 
+class AthenaPathsModel(BasePathsModel):
+    catalogs: Optional[str]
+    databases: Optional[str]
+    tables: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'catalogs':  ('catalogs',),
+            'databases': ('catalogs', 'databases'),
+            'tables':    ('catalogs', 'databases', 'tables'),
+        }
+
+
+class QuicksightPathsModel(BasePathsModel):
+    datasets: Optional[str]
+    analyses: Optional[str]
+    dashboards: Optional[str]
+    data_sources: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'datasets':     ('datasets',),
+            'analyses':     ('analyses',),
+            'dashboards':   ('dashboards',),
+            'data_sources': ('data_sources',)
+        }
+
+
 # class TableauPathsModel(BasePathsModel):  # todo:
 #     schemas: Optional[str]
 #     databases: Optional[str]

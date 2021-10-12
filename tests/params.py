@@ -1,7 +1,7 @@
 from oddrn_generator.generators import (
     PostgresqlGenerator, MysqlGenerator, SnowflakeGenerator, AirflowGenerator, HiveGenerator, GlueGenerator,
     DynamodbGenerator, OdbcGenerator, MssqlGenerator, OracleGenerator, RedshiftGenerator, ClickHouseGenerator,
-    KafkaConnectGenerator, KafkaGenerator
+    KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator
 )
 
 parameters_host = [
@@ -189,6 +189,37 @@ parameters_cloud = [
                 'databases': 'some_database',
                 'tables': 'some_table',
                 'columns': 'some_column',
+            },
+            'aliases': {}
+        }
+    ),
+    (
+        AthenaGenerator,
+        {
+            'cloud_settings': {
+                'account': '21232132',
+                'region': 'us-west',
+            },
+            'paths': {
+                'catalogs': 'some_catalog',
+                'databases': 'some_database',
+                'tables': 'some_table',
+            },
+            'aliases': {}
+        }
+    ),
+    (
+        QuicksightGenerator,
+        {
+            'cloud_settings': {
+                'account': '21232132',
+                'region': 'us-west',
+            },
+            'paths': {
+                'datasets': 'some_dataset',
+                'analyses': 'some_analysis',
+                'dashboards': 'some_dashboard',
+                'data_sources': 'some_data_sources',
             },
             'aliases': {}
         }
