@@ -1,7 +1,8 @@
 from oddrn_generator.path_models import (
     BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
-    MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel
+    MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
+    AthenaPathsModel, QuicksightPathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -138,6 +139,18 @@ class ClickHouseGenerator(Generator):
     source = "clickhouse"
     paths_model = ClickHousePathsModel
     server_model = HostnameModel
+
+
+class AthenaGenerator(Generator):
+    source = "athena"
+    paths_model = AthenaPathsModel
+    server_model = AWSCloudModel
+
+
+class QuicksightGenerator(Generator):
+    source = "quicksight"
+    paths_model = QuicksightPathsModel
+    server_model = AWSCloudModel
 
 
 # class TableauGenerator(Generator):  # todo:
