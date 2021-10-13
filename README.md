@@ -21,6 +21,9 @@ poetry install
 * oracle - OracleGenerator
 * redshift - RedshiftGenerator
 * clickhouse - ClickHouseGenerator
+* athena - AthenaGenerator
+* quicksight - QuicksightGenerator
+* dbt - DbtGenerator
 ### Work in progress generators
 * tableau - TableauGenerator
 * kubeflow - KubeflowGenerator

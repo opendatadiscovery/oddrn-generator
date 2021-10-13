@@ -1,10 +1,10 @@
 from oddrn_generator.generators import (
     PostgresqlGenerator, MysqlGenerator, KafkaGenerator, KafkaConnectGenerator, GlueGenerator, SnowflakeGenerator,
     AirflowGenerator, HiveGenerator, DynamodbGenerator, OdbcGenerator, MssqlGenerator, OracleGenerator,
-    RedshiftGenerator, ClickHouseGenerator, AthenaGenerator, QuicksightGenerator
+    RedshiftGenerator, ClickHouseGenerator, AthenaGenerator, QuicksightGenerator, DbtGenerator
 )
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 __all__ = [
     "PostgresqlGenerator",
@@ -23,4 +23,5 @@ __all__ = [
     "ClickHouseGenerator",
     "AthenaGenerator",
     "QuicksightGenerator",
+    "DbtGenerator",
 ]

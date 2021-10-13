@@ -2,7 +2,7 @@ from oddrn_generator.path_models import (
     BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
-    AthenaPathsModel, QuicksightPathsModel
+    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -151,6 +151,12 @@ class QuicksightGenerator(Generator):
     source = "quicksight"
     paths_model = QuicksightPathsModel
     server_model = AWSCloudModel
+
+
+class DbtGenerator(Generator):
+    source = "dbt"
+    paths_model = DbtPathsModel
+    server_model = HostnameModel
 
 
 # class TableauGenerator(Generator):  # todo:
