@@ -284,6 +284,21 @@ class QuicksightPathsModel(BasePathsModel):
         }
 
 
+class DbtPathsModel(BasePathsModel):
+    databases: Optional[str]
+    schemas: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'databases': ('databases',),
+            'schemas':   ('databases', 'schemas'),
+            'tables':    ('databases', 'schemas', 'tables'),
+            'columns':   ('databases', 'schemas', 'tables', 'columns'),
+        }
+
+
 # class TableauPathsModel(BasePathsModel):  # todo:
 #     schemas: Optional[str]
 #     databases: Optional[str]
