@@ -227,17 +227,17 @@ class OraclePathsModel(BasePathsModel):
 
 
 class RedshiftPathsModel(BasePathsModel):
-    schemas: str
-    databases: Optional[str]
+    databases: str
+    schemas: Optional[str]
     tables: Optional[str]
     columns: Optional[str]
 
     class Config:
         dependencies_map = {
-            'schemas':   ('schemas',),
-            'databases': ('schemas', 'databases'),
-            'tables':    ('schemas', 'databases', 'tables'),
-            'columns':   ('schemas', 'databases', 'tables', 'columns'),
+            'databases': ('databases',),
+            'schemas':   ('databases', 'schemas'),
+            'tables':    ('databases', 'schemas', 'tables'),
+            'columns':   ('databases', 'schemas', 'tables', 'columns'),
         }
         data_source_path = 'databases'
 
