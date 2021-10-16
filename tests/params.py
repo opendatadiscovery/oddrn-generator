@@ -185,8 +185,6 @@ parameters_cloud = [
                 'region': 'us-west',
             },
             'paths': {
-                'schemas': 'some_schema',
-                'databases': 'some_database',
                 'tables': 'some_table',
                 'columns': 'some_column',
             },
