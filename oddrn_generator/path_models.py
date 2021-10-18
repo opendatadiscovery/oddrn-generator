@@ -300,6 +300,7 @@ class DbtPathsModel(BasePathsModel):
 
 
 class TableauPathsModel(BasePathsModel):
+    sites: str
     databases: Optional[str]
     schemas: Optional[str]
     tables: Optional[str]
@@ -309,12 +310,13 @@ class TableauPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'databases':  ('databases',),
-            'schemas':    ('databases', 'schemas'),
-            'tables':     ('databases', 'schemas', 'tables'),
-            'columns':    ('databases', 'schemas', 'tables', 'columns'),
-            'workbooks':  ('workbooks',),
-            'sheets':     ('workbooks', 'sheets'),
+            'sites':      ('sites',),
+            'databases':  ('sites', 'databases',),
+            'schemas':    ('sites', 'databases', 'schemas'),
+            'tables':     ('sites', 'databases', 'schemas', 'tables'),
+            'columns':    ('sites', 'databases', 'schemas', 'tables', 'columns'),
+            'workbooks':  ('sites', 'workbooks',),
+            'sheets':     ('sites', 'workbooks', 'sheets'),
         }
         allows_null = ['schemas']
 

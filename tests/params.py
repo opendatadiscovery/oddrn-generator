@@ -161,6 +161,7 @@ parameters_host = [
         {
             'host_settings': 'dub01.online.tableau.com',
             'paths': {
+                'sites': 'some_site',
                 'databases': 'some_database',
                 'schemas': 'some_schema',
                 'tables': 'some_table',

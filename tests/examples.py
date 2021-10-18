@@ -22,6 +22,7 @@ def postgres_generator_example():
     print(postgres2.get_oddrn_by_path("tables"))
     print(postgres2.get_oddrn_by_path("columns"))
     print(postgres2.get_oddrn_by_path("columns", 'asdsadsddddddddd'))
+    print()
 
 
 def glue_generator_example():
@@ -61,11 +62,13 @@ def glue_generator_example():
     print(glue2.get_oddrn_by_path("jobs"))
     print(glue2.get_oddrn_by_path("columns"))
     print(glue2.get_oddrn_by_path("columns", "another_column"))
+    print()
 
 
 def tableau_generator_example():
     tableau = TableauGenerator(
         host_settings='dub01.online.tableau.com',
+        sites='some_site',
         databases='some_database',
         schemas='some_schema',
         tables='some_table',
@@ -83,6 +86,7 @@ def tableau_generator_example():
     print()
 
     tableau_no_schema = TableauGenerator(
+        sites='some_site',
         host_settings='dub01.online.tableau.com',
         databases='some_database',
         tables='some_table',
@@ -91,6 +95,7 @@ def tableau_generator_example():
 
     print(tableau_no_schema.get_oddrn_by_path("tables"))
     print(tableau_no_schema.get_oddrn_by_path("columns"))
+    print()
 
 # def ge_generator_example():
 #     ge = GreatExpectationsGenerator(
