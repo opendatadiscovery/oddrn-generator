@@ -318,6 +318,7 @@ class TableauPathsModel(BasePathsModel):
             'workbooks':  ('sites', 'workbooks',),
             'sheets':     ('sites', 'workbooks', 'sheets'),
         }
+        data_source_path = 'sites'
         allows_null = ['schemas']
 
 
