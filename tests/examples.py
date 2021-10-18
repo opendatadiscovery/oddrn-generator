@@ -1,4 +1,4 @@
-from oddrn_generator.generators import PostgresqlGenerator, GlueGenerator
+from oddrn_generator.generators import PostgresqlGenerator, GlueGenerator, TableauGenerator
 
 
 def postgres_generator_example():
@@ -62,6 +62,36 @@ def glue_generator_example():
     print(glue2.get_oddrn_by_path("columns"))
     print(glue2.get_oddrn_by_path("columns", "another_column"))
 
+
+def tableau_generator_example():
+    tableau = TableauGenerator(
+        host_settings='dub01.online.tableau.com',
+        databases='some_database',
+        schemas='some_schema',
+        tables='some_table',
+        columns='some_column',
+        workbooks='some_workbook',
+        sheets='some_sheet'
+    )
+    print(tableau.get_oddrn_by_path("databases"))
+    print(tableau.get_oddrn_by_path("schemas"))
+    print(tableau.get_oddrn_by_path("tables"))
+    print(tableau.get_oddrn_by_path("columns"))
+    print(tableau.get_oddrn_by_path("workbooks"))
+    print(tableau.get_oddrn_by_path("sheets"))
+
+    print()
+
+    tableau_no_schema = TableauGenerator(
+        host_settings='dub01.online.tableau.com',
+        databases='some_database',
+        tables='some_table',
+        columns='some_column',
+    )
+
+    print(tableau_no_schema.get_oddrn_by_path("tables"))
+    print(tableau_no_schema.get_oddrn_by_path("columns"))
+
 # def ge_generator_example():
 #     ge = GreatExpectationsGenerator(
 #         cloud_settings={
@@ -87,5 +117,6 @@ def glue_generator_example():
 if __name__ == "__main__":
     postgres_generator_example()
     glue_generator_example()
+    tableau_generator_example()
     # ge_generator_example()
 
