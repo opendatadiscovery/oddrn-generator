@@ -32,7 +32,7 @@ class Generator:
 
     @property
     def base_oddrn(self) -> str:
-        return f"//{self.source}/{self.server_obj}/"
+        return f"//{self.source}/{self.server_obj}"
 
     @property
     def available_paths(self) -> tuple:
@@ -45,7 +45,7 @@ class Generator:
         else:
             self.paths_obj.check_if_path_is_set(path)
         paths_dict = self.paths_obj.dict(include=set(dependency), exclude_none=True, by_alias=True)
-        return self.base_oddrn + '/'.join([f'{k}/{v}' for k, v in paths_dict.items()])
+        return f"{self.base_oddrn}/{'/'.join([f'{k}/{v}' for k, v in paths_dict.items()])}"
 
     def set_oddrn_paths(self, **new_paths) -> None:
         old_paths = {

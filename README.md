@@ -54,7 +54,7 @@ oddrn_gen = PostgresqlGenerator(
 )
 
 oddrn_gen.base_oddrn
-# //postgresql/host/my.host.com:5432/
+# //postgresql/host/my.host.com:5432
 oddrn_gen.available_paths
 # ('schemas', 'databases', 'tables', 'columns')
 
