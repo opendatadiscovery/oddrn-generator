@@ -116,7 +116,7 @@ class GluePathsModel(BasePathsModel):
 
 
 class SnowflakePathsModel(BasePathsModel):
-    warehouses: Optional[str]
+    warehouses: str
     databases: Optional[str]
     schemas: Optional[str]
     tables: Optional[str]
@@ -132,8 +132,9 @@ class SnowflakePathsModel(BasePathsModel):
             'tables':     ('warehouses', 'databases', 'schemas', 'tables'),
             'views':      ('warehouses', 'databases', 'schemas', 'views'),
             'columns':    ('warehouses', 'databases', 'schemas', 'tables', 'columns'),
-            'owners':     ('owners',),
+            'owners':     ('warehouses', 'databases', 'owners'),
         }
+        data_source_path = 'warehouses'
 
 
 class AirflowPathsModel(BasePathsModel):
@@ -296,6 +297,7 @@ class DbtPathsModel(BasePathsModel):
             'tables':    ('databases', 'schemas', 'tables'),
             'columns':   ('databases', 'schemas', 'tables', 'columns'),
         }
+
 
 class PrefectPathsModel(BasePathsModel):
     flows: str
