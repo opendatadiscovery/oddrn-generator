@@ -137,7 +137,7 @@ class SnowflakePathsModel(BasePathsModel):
 
 
 class AirflowPathsModel(BasePathsModel):
-    dags: str
+    dags: Optional[str]
     tasks: Optional[str]
     runs: Optional[str]
 
@@ -147,7 +147,6 @@ class AirflowPathsModel(BasePathsModel):
             'tasks':       ('dags', 'tasks'),
             'runs':        ('dags', 'tasks', 'runs'),
         }
-        data_source_path = 'dags'
 
 
 class HivePathsModel(BasePathsModel):

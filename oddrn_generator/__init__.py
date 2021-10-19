@@ -4,7 +4,7 @@ from oddrn_generator.generators import (
     RedshiftGenerator, ClickHouseGenerator, AthenaGenerator, QuicksightGenerator, DbtGenerator, TableauGenerator
 )
 
-__version__ = '0.1.9'
+__version__ = '0.1.10'
 
 __all__ = [
     "PostgresqlGenerator",
