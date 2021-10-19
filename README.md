@@ -24,6 +24,7 @@ poetry install
 * athena - AthenaGenerator
 * quicksight - QuicksightGenerator
 * dbt - DbtGenerator
+* prefect - PrefectGenerator
 * tableau - TableauGenerator
 ### Work in progress generators
 * kubeflow - KubeflowGenerator

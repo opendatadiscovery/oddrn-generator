@@ -1,4 +1,4 @@
-from oddrn_generator.generators import PostgresqlGenerator, GlueGenerator, TableauGenerator, AirflowGenerator
+from oddrn_generator.generators import PostgresqlGenerator, GlueGenerator, TableauGenerator, AirflowGenerator, PrefectGenerator
 
 
 def postgres_generator_example():
@@ -115,6 +115,19 @@ def airflow_generator_example():
 
     print()
 
+def prefect_generator_example():
+    prefect = PrefectGenerator(
+        host_settings='hostname.prefect.com',
+        flows='some_flow',
+        runs='some_run',
+        tasks='some_task',
+    )
+    print(prefect.get_oddrn_by_path("flows"))
+    print(prefect.get_oddrn_by_path("runs"))
+    print(prefect.get_oddrn_by_path("tasks"))
+    print(prefect.get_data_source_oddrn())
+
+    print()
 # def ge_generator_example():
 #     ge = GreatExpectationsGenerator(
 #         cloud_settings={

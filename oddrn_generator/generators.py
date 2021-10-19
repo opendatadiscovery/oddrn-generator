@@ -158,16 +158,16 @@ class DbtGenerator(Generator):
     paths_model = DbtPathsModel
     server_model = HostnameModel
 
+class TableauGenerator(Generator):
+    source = "tableau"
+    paths_model = TableauPathsModel
+    server_model = HostnameModel
+
 class PrefectGenerator(Generator):
     source = "prefect"
     paths_model = PrefectPathsModel
     server_model = HostnameModel
 
-
-class TableauGenerator(Generator):
-    source = "tableau"
-    paths_model = TableauPathsModel
-    server_model = HostnameModel
 #
 #
 # class KubeflowGenerator(Generator):  # todo:
