@@ -2,7 +2,7 @@ from oddrn_generator.path_models import (
     BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
-    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel
+    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel, PrefectPathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -158,11 +158,16 @@ class DbtGenerator(Generator):
     paths_model = DbtPathsModel
     server_model = HostnameModel
 
-
 class TableauGenerator(Generator):
     source = "tableau"
     paths_model = TableauPathsModel
     server_model = HostnameModel
+
+class PrefectGenerator(Generator):
+    source = "prefect"
+    paths_model = PrefectPathsModel
+    server_model = HostnameModel
+
 #
 #
 # class KubeflowGenerator(Generator):  # todo:

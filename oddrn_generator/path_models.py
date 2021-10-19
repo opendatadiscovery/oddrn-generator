@@ -297,6 +297,18 @@ class DbtPathsModel(BasePathsModel):
             'columns':   ('databases', 'schemas', 'tables', 'columns'),
         }
 
+class PrefectPathsModel(BasePathsModel):
+    flows: str
+    tasks: Optional[str]
+    runs: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'flows':       ('flows',),
+            'tasks':       ('flows', 'tasks'),
+            'runs':        ('flows', 'tasks', 'runs'),
+        }
+
 
 class TableauPathsModel(BasePathsModel):
     sites: str
