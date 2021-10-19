@@ -24,8 +24,8 @@ poetry install
 * athena - AthenaGenerator
 * quicksight - QuicksightGenerator
 * dbt - DbtGenerator
-### Work in progress generators
 * tableau - TableauGenerator
+### Work in progress generators
 * kubeflow - KubeflowGenerator
 * dvc - DVCGenerator
 * great_expectations - GreatExpectationsGenerator
@@ -54,7 +54,7 @@ oddrn_gen = PostgresqlGenerator(
 )
 
 oddrn_gen.base_oddrn
-# //postgresql/host/my.host.com:5432/
+# //postgresql/host/my.host.com:5432
 oddrn_gen.available_paths
 # ('schemas', 'databases', 'tables', 'columns')
 

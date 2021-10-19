@@ -2,7 +2,7 @@ from oddrn_generator.path_models import (
     BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
-    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, PrefectPathsModel
+    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel, PrefectPathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -32,7 +32,7 @@ class Generator:
 
     @property
     def base_oddrn(self) -> str:
-        return f"//{self.source}/{self.server_obj}/"
+        return f"//{self.source}/{self.server_obj}"
 
     @property
     def available_paths(self) -> tuple:
@@ -45,7 +45,7 @@ class Generator:
         else:
             self.paths_obj.check_if_path_is_set(path)
         paths_dict = self.paths_obj.dict(include=set(dependency), exclude_none=True, by_alias=True)
-        return self.base_oddrn + '/'.join([f'{k}/{v}' for k, v in paths_dict.items()])
+        return f"{self.base_oddrn}/{'/'.join([f'{k}/{v}' for k, v in paths_dict.items()])}"
 
     def set_oddrn_paths(self, **new_paths) -> None:
         old_paths = {
@@ -164,21 +164,21 @@ class PrefectGenerator(Generator):
     server_model = HostnameModel
 
 
-# class TableauGenerator(Generator):  # todo:
-#     source = "tableau"
-#     path_model = TableauPathsModel
-#     server_model = HostnameModel
+class TableauGenerator(Generator):
+    source = "tableau"
+    paths_model = TableauPathsModel
+    server_model = HostnameModel
 #
 #
 # class KubeflowGenerator(Generator):  # todo:
 #     source = "kubeflow"
-#     path_model = KubeflowPathsModel
+#     paths_model = KubeflowPathsModel
 #     server_model = AWSCloudModel
 #
 #
 # class DVCGenerator(Generator):  # todo:
 #     source = "dvc"
-#     path_model = DVCPathsModel
+#     paths_model = DVCPathsModel
 #     server_model = HostnameModel
 #
 #
