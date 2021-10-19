@@ -1,7 +1,7 @@
 from oddrn_generator.generators import (
     PostgresqlGenerator, MysqlGenerator, SnowflakeGenerator, AirflowGenerator, HiveGenerator, GlueGenerator,
     DynamodbGenerator, OdbcGenerator, MssqlGenerator, OracleGenerator, RedshiftGenerator, ClickHouseGenerator,
-    KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator
+    KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator, TableauGenerator
 )
 
 parameters_host = [
@@ -152,6 +152,22 @@ parameters_host = [
             'host_settings': '127.0.0.1:5034',
             'paths': {
                 'connectors': 'some_connector',
+            },
+            'aliases': {}
+        }
+    ),
+    (
+        TableauGenerator,
+        {
+            'host_settings': 'dub01.online.tableau.com',
+            'paths': {
+                'sites': 'some_site',
+                'databases': 'some_database',
+                'schemas': 'some_schema',
+                'tables': 'some_table',
+                'columns': 'some_column',
+                'workbooks': 'some_workbook',
+                'sheets': 'some_sheet',
             },
             'aliases': {}
         }

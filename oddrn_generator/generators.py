@@ -2,7 +2,7 @@ from oddrn_generator.path_models import (
     BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
-    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel
+    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -159,21 +159,21 @@ class DbtGenerator(Generator):
     server_model = HostnameModel
 
 
-# class TableauGenerator(Generator):  # todo:
-#     source = "tableau"
-#     path_model = TableauPathsModel
-#     server_model = HostnameModel
+class TableauGenerator(Generator):
+    source = "tableau"
+    paths_model = TableauPathsModel
+    server_model = HostnameModel
 #
 #
 # class KubeflowGenerator(Generator):  # todo:
 #     source = "kubeflow"
-#     path_model = KubeflowPathsModel
+#     paths_model = KubeflowPathsModel
 #     server_model = AWSCloudModel
 #
 #
 # class DVCGenerator(Generator):  # todo:
 #     source = "dvc"
-#     path_model = DVCPathsModel
+#     paths_model = DVCPathsModel
 #     server_model = HostnameModel
 #
 #

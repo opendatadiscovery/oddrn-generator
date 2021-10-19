@@ -9,12 +9,17 @@ class BasePathsModel(BaseModel):
     class Config:
         dependencies_map = {}
         data_source_path = None
+        allows_null = []
         extra = 'forbid'
         allow_population_by_field_name = True
 
     def __validate_path(self, field) -> None:
         for deps in reversed(self.__config__.dependencies_map[field]):
-            if not getattr(self, deps, None):
+            deps_value = getattr(self, deps, None)
+            # allow dependency null if it is in allow_null list
+            if deps_value is None and deps in self.__config__.allows_null:
+                return
+            if not deps_value:
                 raise WrongPathOrderException(f"'{field}' can not be without '{deps}' attribute")
 
     def validate_all_paths(self) -> None:
@@ -294,25 +299,29 @@ class DbtPathsModel(BasePathsModel):
         }
 
 
-# class TableauPathsModel(BasePathsModel):  # todo:
-#     schemas: Optional[str]
-#     databases: Optional[str]
-#     tables: Optional[str]
-#     columns: Optional[str]
-#     workbooks: Optional[str]
-#     worksheets: Optional[str]
-#
-#     class Config:
-#         dependencies_map = {
-#             'schemas':    ('schemas',),
-#             'databases':  ('schemas', 'databases'),
-#             'tables':     ('schemas', 'databases', 'tables'),
-#             'columns':    ('schemas', 'databases', 'tables', 'columns'),
-#             'workbooks':  ('workbooks',),
-#             'worksheets': ('workbooks', 'worksheets'),
-#         }
-#
-#
+class TableauPathsModel(BasePathsModel):
+    sites: str
+    databases: Optional[str]
+    schemas: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+    workbooks: Optional[str]
+    sheets: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'sites':      ('sites',),
+            'databases':  ('sites', 'databases',),
+            'schemas':    ('sites', 'databases', 'schemas'),
+            'tables':     ('sites', 'databases', 'schemas', 'tables'),
+            'columns':    ('sites', 'databases', 'schemas', 'tables', 'columns'),
+            'workbooks':  ('sites', 'workbooks',),
+            'sheets':     ('sites', 'workbooks', 'sheets'),
+        }
+        data_source_path = 'sites'
+        allows_null = ['schemas']
+
+
 # class KubeflowPathsModel(BasePathsModel):  # todo:
 #     pipelines: Optional[str]
 #     experiments: Optional[str]

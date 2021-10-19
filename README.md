@@ -24,8 +24,8 @@ poetry install
 * athena - AthenaGenerator
 * quicksight - QuicksightGenerator
 * dbt - DbtGenerator
-### Work in progress generators
 * tableau - TableauGenerator
+### Work in progress generators
 * kubeflow - KubeflowGenerator
 * dvc - DVCGenerator
 * great_expectations - GreatExpectationsGenerator
