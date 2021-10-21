@@ -77,13 +77,11 @@ class MysqlPathsModel(BasePathsModel):
 
 
 class KafkaPathsModel(BasePathsModel):
-    units: str
-    topics: str
+    topics: Optional[str]
 
     class Config:
         dependencies_map = {
-            'units':     ('units',),
-            'topics':    ('units', 'topics'),
+            'topics':    ('topics',),
         }
 
 

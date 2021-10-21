@@ -140,7 +140,6 @@ parameters_host = [
         {
             'host_settings': '127.0.0.1:5034',
             'paths': {
-                'units': 'some_unit',
                 'topics': 'some_topics',
             },
             'aliases': {}
