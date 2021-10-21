@@ -12,7 +12,15 @@ class Generator:
     server_model = None
     paths_model = None
 
-    def __init__(self, *, cloud_settings: dict = None, host_settings: str = None, **path_attributes):
+    def __new__(cls, *args, **kwargs):
+        if not kwargs.get("data_source"):
+            return super(Generator, cls).__new__(cls)
+        subclass = {subclass.source: subclass for subclass in cls.__subclasses__()}.get(kwargs["data_source"])
+        if not subclass:
+            raise Exception("data_source is invalid")
+        return super(Generator, subclass).__new__(subclass)
+
+    def __init__(self, *, data_source=None, cloud_settings: dict = None, host_settings: str = None, **path_attributes):
         if cloud_settings:
             server_settings = cloud_settings
         elif host_settings:
@@ -158,10 +166,12 @@ class DbtGenerator(Generator):
     paths_model = DbtPathsModel
     server_model = HostnameModel
 
+
 class TableauGenerator(Generator):
     source = "tableau"
     paths_model = TableauPathsModel
     server_model = HostnameModel
+
 
 class PrefectGenerator(Generator):
     source = "prefect"
