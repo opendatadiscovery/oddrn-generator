@@ -187,7 +187,7 @@ parameters_host = [
     (
         Neo4jGenerator,
         {
-            'host_settings': 'bolt://127.0.0.1:9687',
+            'host_settings': '127.0.0.1:9687',
             'paths': {
                 'databases': 'some_database',
                 'nodes': 'some_node',
