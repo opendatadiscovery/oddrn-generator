@@ -333,6 +333,18 @@ class TableauPathsModel(BasePathsModel):
         allows_null = ['schemas']
 
 
+class Neo4jPathsModel(BasePathsModel):
+    databases: str
+    nodes: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'databases': ('databases',),
+            'nodes':    ('databases', 'nodes'),
+        }
+        data_source_path = 'databases'
+
+
 # class KubeflowPathsModel(BasePathsModel):  # todo:
 #     pipelines: Optional[str]
 #     experiments: Optional[str]

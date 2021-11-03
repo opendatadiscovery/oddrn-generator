@@ -1,7 +1,8 @@
 from oddrn_generator.generators import (
     PostgresqlGenerator, MysqlGenerator, SnowflakeGenerator, AirflowGenerator, HiveGenerator, GlueGenerator,
     DynamodbGenerator, OdbcGenerator, MssqlGenerator, OracleGenerator, RedshiftGenerator, ClickHouseGenerator,
-    KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator, TableauGenerator, PrefectGenerator
+    KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator, TableauGenerator, PrefectGenerator,
+    Neo4jGenerator
 )
 
 parameters_host = [
@@ -179,6 +180,17 @@ parameters_host = [
                 'flows': 'some_flow',
                 'tasks': 'some_task',
                 'runs': 'some_run',
+            },
+            'aliases': {}
+        }
+    ),
+    (
+        Neo4jGenerator,
+        {
+            'host_settings': '127.0.0.1:9687',
+            'paths': {
+                'databases': 'some_database',
+                'nodes': 'some_node',
             },
             'aliases': {}
         }
