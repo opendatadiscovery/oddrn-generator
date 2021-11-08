@@ -7,6 +7,7 @@ jobs:
   build_and_publish_package:
     name: Build and publish the PyPi package
     runs-on: ubuntu-latest
+    concurrency: publishing
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
