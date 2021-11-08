@@ -258,12 +258,14 @@ class AthenaPathsModel(BasePathsModel):
     catalogs: Optional[str]
     databases: Optional[str]
     tables: Optional[str]
+    columns: Optional[str]
 
     class Config:
         dependencies_map = {
             'catalogs':  ('catalogs',),
             'databases': ('catalogs', 'databases'),
             'tables':    ('catalogs', 'databases', 'tables'),
+            'columns':   ('catalogs', 'databases', 'tables', 'columns'),
         }
 
 

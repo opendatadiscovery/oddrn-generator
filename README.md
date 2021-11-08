@@ -26,6 +26,7 @@ poetry install
 * dbt - DbtGenerator
 * prefect - PrefectGenerator
 * tableau - TableauGenerator
+* neo4j - Neo4jGenerator
 ### Work in progress generators
 * kubeflow - KubeflowGenerator
 * dvc - DVCGenerator
