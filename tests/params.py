@@ -241,6 +241,7 @@ parameters_cloud = [
                 'catalogs': 'some_catalog',
                 'databases': 'some_database',
                 'tables': 'some_table',
+                'columns': 'some_column',
             },
             'aliases': {}
         }
