@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "oddrn-generator"
-version = "0.1.16"
+version = "0.1.17"
 description = "Open Data Discovery Resource Name Generator"
 authors = ["Open Data Discovery <pypi@opendatadiscovery.org>"]
 license = "Apache-2.0"
