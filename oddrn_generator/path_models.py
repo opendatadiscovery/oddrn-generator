@@ -338,11 +338,13 @@ class TableauPathsModel(BasePathsModel):
 class Neo4jPathsModel(BasePathsModel):
     databases: str
     nodes: Optional[str]
+    fields: Optional[str]
 
     class Config:
         dependencies_map = {
             'databases': ('databases',),
-            'nodes':    ('databases', 'nodes'),
+            'nodes':     ('databases', 'nodes'),
+            'fields':    ('databases', 'nodes', 'fields'),
         }
         data_source_path = 'databases'
 

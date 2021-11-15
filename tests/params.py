@@ -191,6 +191,7 @@ parameters_host = [
             'paths': {
                 'databases': 'some_database',
                 'nodes': 'some_node',
+                'fields': 'some_field',
             },
             'aliases': {}
         }
