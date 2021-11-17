@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from oddrn_generator.exceptions import WrongPathOrderException, PathDoestExistException, EmptyPathValueException
 
@@ -50,14 +50,18 @@ class PostgresqlPathsModel(BasePathsModel):
     schemas: Optional[str]
     databases: Optional[str]
     tables: Optional[str]
-    columns: Optional[str]
+    views: Optional[str]
+    tables_columns: Optional[str] = Field(alias='columns')
+    views_columns: Optional[str] = Field(alias='columns')
 
     class Config:
         dependencies_map = {
-            'databases':   ('databases',),
-            'schemas':     ('databases', 'schemas', ),
-            'tables':      ('databases', 'schemas', 'tables'),
-            'columns':     ('databases', 'schemas', 'tables', 'columns'),
+            'databases':       ('databases',),
+            'schemas':         ('databases', 'schemas', ),
+            'tables':          ('databases', 'schemas', 'tables'),
+            'views':           ('databases', 'schemas', 'views'),
+            'tables_columns':  ('databases', 'schemas', 'tables', 'tables_columns'),
+            'views_columns':   ('databases', 'schemas', 'views', 'views_columns'),
         }
         data_source_path = 'databases'
 
@@ -65,13 +69,17 @@ class PostgresqlPathsModel(BasePathsModel):
 class MysqlPathsModel(BasePathsModel):
     databases: str
     tables: Optional[str]
-    columns: Optional[str]
+    views: Optional[str]
+    tables_columns: Optional[str] = Field(alias='columns')
+    views_columns: Optional[str] = Field(alias='columns')
 
     class Config:
         dependencies_map = {
-            'databases': ('databases',),
-            'tables':    ('databases', 'tables'),
-            'columns':   ('databases', 'tables', 'columns'),
+            'databases':       ('databases',),
+            'tables':          ('databases', 'tables'),
+            'views':           ('databases', 'views'),
+            'tables_columns':  ('databases', 'tables', 'tables_columns'),
+            'views_columns':   ('databases', 'views', 'views_columns'),
         }
         data_source_path = 'databases'
 
@@ -243,13 +251,17 @@ class RedshiftPathsModel(BasePathsModel):
 class ClickHousePathsModel(BasePathsModel):
     databases: str
     tables: Optional[str]
-    columns: Optional[str]
+    views: Optional[str]
+    tables_columns: Optional[str] = Field(alias='columns')
+    views_columns: Optional[str] = Field(alias='columns')
 
     class Config:
         dependencies_map = {
-            'databases': ('databases',),
-            'tables':    ('databases', 'tables'),
-            'columns':   ('databases', 'tables', 'columns'),
+            'databases':       ('databases',),
+            'tables':          ('databases', 'tables'),
+            'views':           ('databases', 'views'),
+            'tables_columns':  ('databases', 'tables', 'tables_columns'),
+            'views_columns':   ('databases', 'views', 'views_columns'),
         }
         data_source_path = 'databases'
 

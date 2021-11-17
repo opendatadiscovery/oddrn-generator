@@ -6,25 +6,28 @@ from oddrn_generator.generators import (
 def postgres_generator_example():
     postgres = PostgresqlGenerator(
         host_settings='127.0.0.1:5034',
-        schemas='some_schema', databases='some_database', tables='some_table', columns='some_column'
+        schemas='some_schema', databases='some_database', tables='some_table', views='some_view',
+        tables_columns='some_column_in_table', views_columns='some_column_in_view'
     )
     print(postgres.get_oddrn_by_path("schemas"))
     print(postgres.get_oddrn_by_path("databases"))
     print(postgres.get_oddrn_by_path("tables"))
-    print(postgres.get_oddrn_by_path("columns"))
+    print(postgres.get_oddrn_by_path("views"))
+    print(postgres.get_oddrn_by_path("tables_columns"))
+    print(postgres.get_oddrn_by_path("views_columns"))
 
     print(postgres.get_oddrn_by_path("schemas", "another_schema"))
-    print(postgres.get_oddrn_by_path("columns"), "another_column")
+    print(postgres.get_oddrn_by_path("tables_columns", "another_column"))
     print(postgres.get_data_source_oddrn())
     print()
     postgres2 = PostgresqlGenerator(
         host_settings='127.0.0.1:5034',
         schemas='some_schema', databases='some_database',
     )
-    postgres2.set_oddrn_paths(tables='newnewnew', columns='asjsjsjsj')
+    postgres2.set_oddrn_paths(tables='newnewnew', tables_columns='asjsjsjsj')
     print(postgres2.get_oddrn_by_path("tables"))
-    print(postgres2.get_oddrn_by_path("columns"))
-    print(postgres2.get_oddrn_by_path("columns", 'asdsadsddddddddd'))
+    print(postgres2.get_oddrn_by_path("tables_columns"))
+    print(postgres2.get_oddrn_by_path("tables_columns", 'asdsadsddddddddd'))
     print()
 
 

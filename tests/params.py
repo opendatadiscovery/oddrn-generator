@@ -14,9 +14,14 @@ parameters_host = [
                 'schemas': 'some_schema',
                 'databases': 'some_database',
                 'tables': 'some_table',
-                'columns': 'some_column',
+                'views': 'some_view',
+                'tables_columns': 'some_table_column',
+                'views_columns': 'some_view_column',
             },
-            'aliases': {}
+            'aliases': {
+                'tables_columns': 'columns',
+                'views_columns': 'columns',
+            }
         }
     ),
     (
@@ -26,9 +31,14 @@ parameters_host = [
             'paths': {
                 'databases': 'some_database',
                 'tables': 'some_table',
-                'columns': 'some_column',
+                'views': 'some_view',
+                'tables_columns': 'some_table_column',
+                'views_columns': 'some_view_column',
             },
-            'aliases': {}
+            'aliases': {
+                'tables_columns': 'columns',
+                'views_columns': 'columns',
+            }
         }
     ),
     (
@@ -131,9 +141,14 @@ parameters_host = [
             'paths': {
                 'databases': 'some_database',
                 'tables': 'some_table',
-                'columns': 'some_column',
+                'views': 'some_view',
+                'tables_columns': 'some_table_column',
+                'views_columns': 'some_view_column',
             },
-            'aliases': {}
+            'aliases': {
+                'tables_columns': 'columns',
+                'views_columns': 'columns',
+            }
         }
     ),
     (
