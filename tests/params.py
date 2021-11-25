@@ -1,5 +1,5 @@
 from oddrn_generator.generators import (
-    PostgresqlGenerator, MysqlGenerator, S3Generator, SnowflakeGenerator, AirflowGenerator, HiveGenerator, GlueGenerator,
+    PostgresqlGenerator, MysqlGenerator, SnowflakeGenerator, AirflowGenerator, HiveGenerator, GlueGenerator,
     DynamodbGenerator, OdbcGenerator, MssqlGenerator, OracleGenerator, RedshiftGenerator, ClickHouseGenerator,
     KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator, TableauGenerator, PrefectGenerator,
     Neo4jGenerator, S3Generator
