@@ -10,6 +10,7 @@ poetry install
 * postgresql - PostgresqlGenerator
 * mysql - MysqlGenerator
 * glue - GlueGenerator
+* s3 - S3Generator
 * kafka - KafkaGenerator
 * kafkaconnect - KafkaConnectGenerator
 * snowflake - SnowflakeGenerator
