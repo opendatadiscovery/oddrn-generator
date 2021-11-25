@@ -391,6 +391,17 @@ class Neo4jPathsModel(BasePathsModel):
         data_source_path = 'databases'
 
 
+class S3PathsModel(BasePathsModel):
+    buckets: str
+    keys: str
+
+    class Config:
+        dependencies_map = {
+            'buckets': ('buckets',),
+            'keys':     ('buckets', 'keys'),
+        }
+
+
 # class KubeflowPathsModel(BasePathsModel):  # todo:
 #     pipelines: Optional[str]
 #     experiments: Optional[str]
