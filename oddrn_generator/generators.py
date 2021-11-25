@@ -2,7 +2,8 @@ from oddrn_generator.path_models import (
     BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
-    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel, PrefectPathsModel, Neo4jPathsModel
+    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel, PrefectPathsModel, Neo4jPathsModel,
+    S3PathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -183,6 +184,12 @@ class Neo4jGenerator(Generator):
     source = "neo4j"
     paths_model = Neo4jPathsModel
     server_model = HostnameModel
+
+
+class S3Generator(Generator):
+    source = "s3"
+    paths_model = S3PathsModel
+    server_model = AWSCloudModel
 
 #
 #

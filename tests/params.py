@@ -2,7 +2,7 @@ from oddrn_generator.generators import (
     PostgresqlGenerator, MysqlGenerator, SnowflakeGenerator, AirflowGenerator, HiveGenerator, GlueGenerator,
     DynamodbGenerator, OdbcGenerator, MssqlGenerator, OracleGenerator, RedshiftGenerator, ClickHouseGenerator,
     KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator, TableauGenerator, PrefectGenerator,
-    Neo4jGenerator
+    Neo4jGenerator, S3Generator
 )
 
 parameters_host = [
@@ -308,6 +308,20 @@ parameters_cloud = [
                 'analyses': 'some_analysis',
                 'dashboards': 'some_dashboard',
                 'data_sources': 'some_data_sources',
+            },
+            'aliases': {}
+        }
+    ),
+        (
+        S3Generator,
+        {
+            'cloud_settings': {
+                'account': '21232132',
+                'region': 'us-west',
+            },
+            'paths': {
+                'buckets': 'some_bucket',
+                'keys': 'some_key',
             },
             'aliases': {}
         }
