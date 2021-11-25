@@ -322,6 +322,7 @@ parameters_cloud = [
             'paths': {
                 'buckets': 'some_bucket',
                 'keys': 'some_key',
+                'columns': 'some_column',
             },
             'aliases': {}
         }
