@@ -392,13 +392,13 @@ class Neo4jPathsModel(BasePathsModel):
 
 
 class S3PathsModel(BasePathsModel):
-    buckets: str
-    keys: str
+    buckets: Optional[str]
+    keys: Optional[str]
 
     class Config:
         dependencies_map = {
             'buckets': ('buckets',),
-            'keys':     ('buckets', 'keys'),
+            'keys':    ('buckets', 'keys'),
         }
 
 
