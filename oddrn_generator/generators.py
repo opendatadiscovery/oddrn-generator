@@ -3,7 +3,7 @@ from oddrn_generator.path_models import (
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
     AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel, PrefectPathsModel, Neo4jPathsModel,
-    S3PathsModel
+    S3PathsModel, CassandraPathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -190,6 +190,13 @@ class S3Generator(Generator):
     source = "s3"
     paths_model = S3PathsModel
     server_model = AWSCloudModel
+
+
+class CassandraGenerator(Generator):
+    source = "cassandra"
+    paths_model = CassandraPathsModel
+    server_model = HostnameModel
+
 
 #
 #
