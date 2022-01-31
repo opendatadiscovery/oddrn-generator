@@ -191,6 +191,11 @@ class S3Generator(Generator):
     paths_model = S3PathsModel
     server_model = AWSCloudModel
 
+
+class MongoGenerator(Generator):
+    source = "mongo"
+    paths_model = MongoPathsModel
+    server_model = HostnameModel
 #
 #
 # class KubeflowGenerator(Generator):  # todo:
