@@ -417,7 +417,6 @@ class MongoPathsModel(BasePathsModel):
         }
         data_source_path = 'databases'
 
-
 # class KubeflowPathsModel(BasePathsModel):  # todo:
 #     pipelines: Optional[str]
 #     experiments: Optional[str]
