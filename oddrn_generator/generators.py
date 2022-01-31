@@ -196,6 +196,7 @@ class MongoGenerator(Generator):
     source = "mongo"
     paths_model = MongoPathsModel
     server_model = HostnameModel
+
 #
 #
 # class KubeflowGenerator(Generator):  # todo:
