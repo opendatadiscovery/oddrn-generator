@@ -3,7 +3,7 @@ from oddrn_generator.path_models import (
     AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
     MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
     AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel, PrefectPathsModel, Neo4jPathsModel,
-    S3PathsModel
+    S3PathsModel,ElasticSearchPathsModel
 )
 from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
 
@@ -111,6 +111,12 @@ class AirflowGenerator(Generator):
 class HiveGenerator(Generator):
     source = "hive"
     paths_model = HivePathsModel
+    server_model = HostnameModel
+
+
+class ElasticSearchGenerator(Generator):
+    source = "elasticsearch"
+    paths_model = ElasticSearchPathsModel
     server_model = HostnameModel
 
 
