@@ -197,6 +197,13 @@ class S3Generator(Generator):
     paths_model = S3PathsModel
     server_model = AWSCloudModel
 
+
+class CassandraGenerator(Generator):
+    source = "cassandra"
+    paths_model = CassandraPathsModel
+    server_model = HostnameModel
+
+
 #
 #
 # class KubeflowGenerator(Generator):  # todo:

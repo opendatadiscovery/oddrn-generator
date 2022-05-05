@@ -415,6 +415,20 @@ class S3PathsModel(BasePathsModel):
         }
 
 
+class CassandraPathsModel(BasePathsModel):
+    keyspaces: str
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'keyspaces': ('keyspaces',),
+            'tables': ('keyspaces', 'tables'),
+            'columns': ('keyspaces', 'tables', 'columns')
+        }
+        data_source_path = 'keyspaces'
+
+
 # class KubeflowPathsModel(BasePathsModel):  # todo:
 #     pipelines: Optional[str]
 #     experiments: Optional[str]
