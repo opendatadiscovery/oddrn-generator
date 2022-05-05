@@ -178,6 +178,17 @@ class HivePathsModel(BasePathsModel):
         data_source_path = 'databases'
 
 
+class ElasticSearchPathsModel(BasePathsModel):
+    indexes: Optional[str]
+    fields: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'indexes': ('indexes',),
+            'fields': ('indexes', 'fields'),
+        }
+
+
 class DynamodbPathsModel(BasePathsModel):
     tables: Optional[str]
     columns: Optional[str]
