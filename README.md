@@ -7,6 +7,7 @@ poetry install
 ```
 ## Usage and configuration
 ### Available generators
+* cassandra - CassandraGenerator
 * postgresql - PostgresqlGenerator
 * mysql - MysqlGenerator
 * glue - GlueGenerator
