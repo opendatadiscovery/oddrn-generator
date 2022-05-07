@@ -1,13 +1,22 @@
 from oddrn_generator.generators import (
-    Generator, PostgresqlGenerator, GlueGenerator, TableauGenerator, AirflowGenerator, PrefectGenerator
+    Generator,
+    PostgresqlGenerator,
+    GlueGenerator,
+    TableauGenerator,
+    AirflowGenerator,
+    PrefectGenerator,
 )
 
 
 def postgres_generator_example():
     postgres = PostgresqlGenerator(
-        host_settings='127.0.0.1:5034',
-        schemas='some_schema', databases='some_database', tables='some_table', views='some_view',
-        tables_columns='some_column_in_table', views_columns='some_column_in_view'
+        host_settings="127.0.0.1:5034",
+        schemas="some_schema",
+        databases="some_database",
+        tables="some_table",
+        views="some_view",
+        tables_columns="some_column_in_table",
+        views_columns="some_column_in_view",
     )
     print(postgres.get_oddrn_by_path("schemas"))
     print(postgres.get_oddrn_by_path("databases"))
@@ -21,27 +30,25 @@ def postgres_generator_example():
     print(postgres.get_data_source_oddrn())
     print()
     postgres2 = PostgresqlGenerator(
-        host_settings='127.0.0.1:5034',
-        schemas='some_schema', databases='some_database',
+        host_settings="127.0.0.1:5034",
+        schemas="some_schema",
+        databases="some_database",
     )
-    postgres2.set_oddrn_paths(tables='newnewnew', tables_columns='asjsjsjsj')
+    postgres2.set_oddrn_paths(tables="newnewnew", tables_columns="asjsjsjsj")
     print(postgres2.get_oddrn_by_path("tables"))
     print(postgres2.get_oddrn_by_path("tables_columns"))
-    print(postgres2.get_oddrn_by_path("tables_columns", 'asdsadsddddddddd'))
+    print(postgres2.get_oddrn_by_path("tables_columns", "asdsadsddddddddd"))
     print()
 
 
 def glue_generator_example():
     glue = GlueGenerator(
-        cloud_settings={
-            'account': '21232132',
-            'region': 'us-west'
-        },
-        databases='some_database',
-        tables='some_table',
-        columns='some_column',
-        jobs='some_job',
-        owners='some_owner'
+        cloud_settings={"account": "21232132", "region": "us-west"},
+        databases="some_database",
+        tables="some_table",
+        columns="some_column",
+        jobs="some_job",
+        owners="some_owner",
     )
     print(glue.get_oddrn_by_path("databases"))
     print(glue.get_oddrn_by_path("tables"))
@@ -61,10 +68,13 @@ def glue_generator_example():
 
     glue2 = GlueGenerator(
         cloud_settings={
-            'account': '21232132',
-            'region': 'us-west',
+            "account": "21232132",
+            "region": "us-west",
         },
-        databases='some_database', tables='some_table', columns='some_column', jobs='some_job'
+        databases="some_database",
+        tables="some_table",
+        columns="some_column",
+        jobs="some_job",
     )
     print(glue2.get_oddrn_by_path("jobs"))
     print(glue2.get_oddrn_by_path("columns"))
@@ -74,14 +84,14 @@ def glue_generator_example():
 
 def tableau_generator_example():
     tableau = TableauGenerator(
-        host_settings='dub01.online.tableau.com',
-        sites='some_site',
-        databases='some_database',
-        schemas='some_schema',
-        tables='some_table',
-        columns='some_column',
-        workbooks='some_workbook',
-        sheets='some_sheet'
+        host_settings="dub01.online.tableau.com",
+        sites="some_site",
+        databases="some_database",
+        schemas="some_schema",
+        tables="some_table",
+        columns="some_column",
+        workbooks="some_workbook",
+        sheets="some_sheet",
     )
     print(tableau.get_oddrn_by_path("databases"))
     print(tableau.get_oddrn_by_path("schemas"))
@@ -94,11 +104,11 @@ def tableau_generator_example():
     print()
 
     tableau_no_schema = TableauGenerator(
-        sites='some_site',
-        host_settings='dub01.online.tableau.com',
-        databases='some_database',
-        tables='some_table',
-        columns='some_column',
+        sites="some_site",
+        host_settings="dub01.online.tableau.com",
+        databases="some_database",
+        tables="some_table",
+        columns="some_column",
     )
 
     print(tableau_no_schema.get_oddrn_by_path("tables"))
@@ -108,10 +118,10 @@ def tableau_generator_example():
 
 def airflow_generator_example():
     airflow = AirflowGenerator(
-        host_settings='hostname.airflow.com',
-        dags='some_dag',
-        runs='some_run',
-        tasks='some_task',
+        host_settings="hostname.airflow.com",
+        dags="some_dag",
+        runs="some_run",
+        tasks="some_task",
     )
     print(airflow.get_oddrn_by_path("dags"))
     print(airflow.get_oddrn_by_path("runs"))
@@ -123,10 +133,10 @@ def airflow_generator_example():
 
 def prefect_generator_example():
     prefect = PrefectGenerator(
-        host_settings='hostname.prefect.com',
-        flows='some_flow',
-        runs='some_run',
-        tasks='some_task',
+        host_settings="hostname.prefect.com",
+        flows="some_flow",
+        runs="some_run",
+        tasks="some_task",
     )
     print(prefect.get_oddrn_by_path("flows"))
     print(prefect.get_oddrn_by_path("runs"))
@@ -136,11 +146,30 @@ def prefect_generator_example():
     print()
 
 
+def sagemaker_generator_example():
+    prefect = PrefectGenerator(
+        cloud_settings={"account": "223344", "region": "eu-west-1"},
+        experiments="abalone",
+        trials="first_trial",
+        jobs="training_job",
+    )
+    print(prefect.get_oddrn_by_path("experiments"))
+    print(prefect.get_oddrn_by_path("trials"))
+    print(prefect.get_oddrn_by_path("jobs"))
+    print(prefect.get_data_source_oddrn())
+
+    print()
+
+
 def base_generator_example():
-    base_generator = Generator(host_settings='localhost', data_source='postgresql', databases='Bewzs')
+    base_generator = Generator(
+        host_settings="localhost", data_source="postgresql", databases="Bewzs"
+    )
     print(base_generator.get_data_source_oddrn())
 
-    postgres_generator = PostgresqlGenerator(host_settings='localhost:2431', databases='Newbase')
+    postgres_generator = PostgresqlGenerator(
+        host_settings="localhost:2431", databases="Newbase"
+    )
     print(postgres_generator.get_data_source_oddrn())
 
 

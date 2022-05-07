@@ -1,10 +1,13 @@
 # Open Data Discovery Resource Name Generator
 ## Requirements
-Python >= 3.7
+* __Python >= 3.7__
 ## Installation
+```bash
+poetry add oddrn-generator
+# or
+pip install oddrn-generator
 ```
-poetry install
-```
+
 ## Usage and configuration
 ### Available generators
 * cassandra - CassandraGenerator
@@ -41,7 +44,7 @@ poetry install
 ### Generator methods
 * get_oddrn_by_path(path_name, new_value=None) - Get oddrn string by path. You also can set value for this path using 'new_value' param
 * set_oddrn_paths(**kwargs) - Set or update values of oddrn path
-* get_data_source_oddrn() - Get datasouce oddrn 
+* get_data_source_oddrn() - Get data source oddrn 
 
 ### Generator parameters:
 * host_settings: str - optional. Hostname configuration
@@ -145,4 +148,16 @@ oddrn_gen = PostgresqlGenerator(
 oddrn_gen.get_oddrn_by_path("jobs")
 
 # PathDoestExistException: Path 'jobs' doesn't exist in generator
+```
+
+## Development
+```bash
+#Install dependencies
+poetry install
+
+#Activate shell
+poetry shell
+
+# Run tests
+python run pytest
 ```

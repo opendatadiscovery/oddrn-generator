@@ -2,7 +2,11 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from oddrn_generator.exceptions import WrongPathOrderException, PathDoestExistException, EmptyPathValueException
+from oddrn_generator.exceptions import (
+    WrongPathOrderException,
+    PathDoestExistException,
+    EmptyPathValueException,
+)
 
 
 class BasePathsModel(BaseModel):
@@ -10,7 +14,7 @@ class BasePathsModel(BaseModel):
         dependencies_map = {}
         data_source_path = None
         allows_null = []
-        extra = 'forbid'
+        extra = "forbid"
         allow_population_by_field_name = True
 
     def __validate_path(self, field) -> None:
@@ -20,7 +24,9 @@ class BasePathsModel(BaseModel):
             if deps_value is None and deps in self.__config__.allows_null:
                 return
             if not deps_value:
-                raise WrongPathOrderException(f"'{field}' can not be without '{deps}' attribute")
+                raise WrongPathOrderException(
+                    f"'{field}' can not be without '{deps}' attribute"
+                )
 
     def validate_all_paths(self) -> None:
         for field in self.__fields_set__:
@@ -51,37 +57,40 @@ class PostgresqlPathsModel(BasePathsModel):
     databases: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'databases':       ('databases',),
-            'schemas':         ('databases', 'schemas', ),
-            'tables':          ('databases', 'schemas', 'tables'),
-            'views':           ('databases', 'schemas', 'views'),
-            'tables_columns':  ('databases', 'schemas', 'tables', 'tables_columns'),
-            'views_columns':   ('databases', 'schemas', 'views', 'views_columns'),
+            "databases": ("databases",),
+            "schemas": (
+                "databases",
+                "schemas",
+            ),
+            "tables": ("databases", "schemas", "tables"),
+            "views": ("databases", "schemas", "views"),
+            "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
+            "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class MysqlPathsModel(BasePathsModel):
     databases: str
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'databases':       ('databases',),
-            'tables':          ('databases', 'tables'),
-            'views':           ('databases', 'views'),
-            'tables_columns':  ('databases', 'tables', 'tables_columns'),
-            'views_columns':   ('databases', 'views', 'views_columns'),
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "views": ("databases", "views"),
+            "tables_columns": ("databases", "tables", "tables_columns"),
+            "views_columns": ("databases", "views", "views_columns"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class KafkaPathsModel(BasePathsModel):
@@ -89,7 +98,7 @@ class KafkaPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'topics':    ('topics',),
+            "topics": ("topics",),
         }
 
 
@@ -98,7 +107,7 @@ class KafkaConnectorPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'connectors': ('connectors',),
+            "connectors": ("connectors",),
         }
 
 
@@ -112,12 +121,12 @@ class GluePathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'databases': ('databases',),
-            'tables':    ('databases', 'tables'),
-            'columns':   ('databases', 'tables', 'columns'),
-            'owners':    ('owners',),
-            'jobs':      ('jobs',),
-            'runs':      ('jobs', 'runs'),
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "columns": ("databases", "tables", "columns"),
+            "owners": ("owners",),
+            "jobs": ("jobs",),
+            "runs": ("jobs", "runs"),
         }
 
 
@@ -127,22 +136,34 @@ class SnowflakePathsModel(BasePathsModel):
     schemas: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
     owners: Optional[str]
 
     class Config:
         dependencies_map = {
-            'warehouses':       ('warehouses',),
-            'databases':        ('warehouses', 'databases'),
-            'schemas':          ('warehouses', 'databases', 'schemas'),
-            'tables':           ('warehouses', 'databases', 'schemas', 'tables'),
-            'views':            ('warehouses', 'databases', 'schemas', 'views'),
-            'tables_columns':   ('warehouses', 'databases', 'schemas', 'tables', 'tables_columns'),
-            'views_columns':    ('warehouses', 'databases', 'schemas', 'views', 'views_columns'),
-            'owners':           ('warehouses', 'databases', 'owners'),
+            "warehouses": ("warehouses",),
+            "databases": ("warehouses", "databases"),
+            "schemas": ("warehouses", "databases", "schemas"),
+            "tables": ("warehouses", "databases", "schemas", "tables"),
+            "views": ("warehouses", "databases", "schemas", "views"),
+            "tables_columns": (
+                "warehouses",
+                "databases",
+                "schemas",
+                "tables",
+                "tables_columns",
+            ),
+            "views_columns": (
+                "warehouses",
+                "databases",
+                "schemas",
+                "views",
+                "views_columns",
+            ),
+            "owners": ("warehouses", "databases", "owners"),
         }
-        data_source_path = 'warehouses'
+        data_source_path = "warehouses"
 
 
 class AirflowPathsModel(BasePathsModel):
@@ -152,9 +173,9 @@ class AirflowPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'dags':        ('dags',),
-            'tasks':       ('dags', 'tasks'),
-            'runs':        ('dags', 'tasks', 'runs'),
+            "dags": ("dags",),
+            "tasks": ("dags", "tasks"),
+            "runs": ("dags", "tasks", "runs"),
         }
 
 
@@ -162,20 +183,20 @@ class HivePathsModel(BasePathsModel):
     databases: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
     owners: Optional[str]
 
     class Config:
         dependencies_map = {
-            'databases':       ('databases',),
-            'tables':          ('databases', 'tables'),
-            'views':           ('databases', 'views'),
-            'tables_columns':  ('databases', 'tables', 'tables_columns'),
-            'views_columns':   ('databases', 'views', 'views_columns'),
-            'owners':          ('owners',),
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "views": ("databases", "views"),
+            "tables_columns": ("databases", "tables", "tables_columns"),
+            "views_columns": ("databases", "views", "views_columns"),
+            "owners": ("owners",),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class ElasticSearchPathsModel(BasePathsModel):
@@ -184,8 +205,8 @@ class ElasticSearchPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'indexes': ('indexes',),
-            'fields': ('indexes', 'fields'),
+            "indexes": ("indexes",),
+            "fields": ("indexes", "fields"),
         }
 
 
@@ -195,8 +216,8 @@ class DynamodbPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'tables':     ('tables',),
-            'columns':    ('tables', 'columns'),
+            "tables": ("tables",),
+            "columns": ("tables", "columns"),
         }
 
 
@@ -205,19 +226,19 @@ class OdbcPathsModel(BasePathsModel):
     schemas: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'databases': ('databases',),
-            'schemas':   ('databases', 'schemas'),
-            'tables':    ('databases', 'schemas', 'tables'),
-            'views':     ('databases', 'schemas', 'views'),
-            'tables_columns':   ('databases', 'schemas', 'tables', 'tables_columns'),
-            'views_columns':   ('databases', 'schemas', 'views', 'views_columns'),
+            "databases": ("databases",),
+            "schemas": ("databases", "schemas"),
+            "tables": ("databases", "schemas", "tables"),
+            "views": ("databases", "schemas", "views"),
+            "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
+            "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class MssqlPathsModel(BasePathsModel):
@@ -225,19 +246,19 @@ class MssqlPathsModel(BasePathsModel):
     schemas: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'databases':       ('databases',),
-            'schemas':         ('databases', 'schemas'),
-            'tables':          ('databases', 'schemas', 'tables'),
-            'views':           ('databases', 'schemas', 'views'),
-            'tables_columns':  ('databases', 'schemas', 'tables', 'tables_columns'),
-            'views_columns':   ('databases', 'schemas', 'views', 'views_columns'),
+            "databases": ("databases",),
+            "schemas": ("databases", "schemas"),
+            "tables": ("databases", "schemas", "tables"),
+            "views": ("databases", "schemas", "views"),
+            "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
+            "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class OraclePathsModel(BasePathsModel):
@@ -246,19 +267,19 @@ class OraclePathsModel(BasePathsModel):
     tables: Optional[str]
     views: Optional[str]
     columns: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'schemas':          ('schemas',),
-            'databases':        ('schemas', 'databases'),
-            'tables':           ('schemas', 'databases', 'tables'),
-            'views':            ('schemas', 'databases', 'views'),
-            'tables_columns':   ('schemas', 'databases', 'tables', 'tables_columns'),
-            'views_columns':    ('schemas', 'databases', 'views', 'views_columns'),
+            "schemas": ("schemas",),
+            "databases": ("schemas", "databases"),
+            "tables": ("schemas", "databases", "tables"),
+            "views": ("schemas", "databases", "views"),
+            "tables_columns": ("schemas", "databases", "tables", "tables_columns"),
+            "views_columns": ("schemas", "databases", "views", "views_columns"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class RedshiftPathsModel(BasePathsModel):
@@ -266,37 +287,37 @@ class RedshiftPathsModel(BasePathsModel):
     schemas: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'databases':        ('databases',),
-            'schemas':          ('databases', 'schemas'),
-            'tables':           ('databases', 'schemas', 'tables'),
-            'views':            ('databases', 'schemas', 'views'),
-            'tables_columns':   ('databases', 'schemas', 'tables', 'tables_columns'),
-            'views_columns':    ('databases', 'schemas', 'views', 'views_columns'),
+            "databases": ("databases",),
+            "schemas": ("databases", "schemas"),
+            "tables": ("databases", "schemas", "tables"),
+            "views": ("databases", "schemas", "views"),
+            "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
+            "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class ClickHousePathsModel(BasePathsModel):
     databases: str
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'databases':       ('databases',),
-            'tables':          ('databases', 'tables'),
-            'views':           ('databases', 'views'),
-            'tables_columns':  ('databases', 'tables', 'tables_columns'),
-            'views_columns':   ('databases', 'views', 'views_columns'),
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "views": ("databases", "views"),
+            "tables_columns": ("databases", "tables", "tables_columns"),
+            "views_columns": ("databases", "views", "views_columns"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class AthenaPathsModel(BasePathsModel):
@@ -304,17 +325,17 @@ class AthenaPathsModel(BasePathsModel):
     databases: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'catalogs':        ('catalogs',),
-            'databases':       ('catalogs', 'databases'),
-            'tables':          ('catalogs', 'databases', 'tables'),
-            'views':           ('catalogs', 'databases', 'views'),
-            'tables_columns':  ('catalogs', 'databases', 'tables', 'tables_columns'),
-            'views_columns':   ('catalogs', 'databases', 'views', 'views_columns'),
+            "catalogs": ("catalogs",),
+            "databases": ("catalogs", "databases"),
+            "tables": ("catalogs", "databases", "tables"),
+            "views": ("catalogs", "databases", "views"),
+            "tables_columns": ("catalogs", "databases", "tables", "tables_columns"),
+            "views_columns": ("catalogs", "databases", "views", "views_columns"),
         }
 
 
@@ -326,10 +347,10 @@ class QuicksightPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'datasets':     ('datasets',),
-            'analyses':     ('analyses',),
-            'dashboards':   ('dashboards',),
-            'data_sources': ('data_sources',)
+            "datasets": ("datasets",),
+            "analyses": ("analyses",),
+            "dashboards": ("dashboards",),
+            "data_sources": ("data_sources",),
         }
 
 
@@ -338,17 +359,17 @@ class DbtPathsModel(BasePathsModel):
     schemas: Optional[str]
     tables: Optional[str]
     views: Optional[str]
-    tables_columns: Optional[str] = Field(alias='columns')
-    views_columns: Optional[str] = Field(alias='columns')
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
-            'databases':        ('databases',),
-            'schemas':          ('databases', 'schemas'),
-            'tables':           ('databases', 'schemas', 'tables'),
-            'views':            ('databases', 'schemas', 'views'),
-            'tables_columns':   ('databases', 'schemas', 'tables', 'tables_columns'),
-            'views_columns':    ('databases', 'schemas', 'views', 'views_columns'),
+            "databases": ("databases",),
+            "schemas": ("databases", "schemas"),
+            "tables": ("databases", "schemas", "tables"),
+            "views": ("databases", "schemas", "views"),
+            "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
+            "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
 
 
@@ -359,9 +380,9 @@ class PrefectPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'flows':       ('flows',),
-            'tasks':       ('flows', 'tasks'),
-            'runs':        ('flows', 'tasks', 'runs'),
+            "flows": ("flows",),
+            "tasks": ("flows", "tasks"),
+            "runs": ("flows", "tasks", "runs"),
         }
 
 
@@ -376,16 +397,19 @@ class TableauPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'sites':      ('sites',),
-            'databases':  ('sites', 'databases',),
-            'schemas':    ('sites', 'databases', 'schemas'),
-            'tables':     ('sites', 'databases', 'schemas', 'tables'),
-            'columns':    ('sites', 'databases', 'schemas', 'tables', 'columns'),
-            'workbooks':  ('sites', 'workbooks',),
-            'sheets':     ('sites', 'workbooks', 'sheets'),
+            "sites": ("sites",),
+            "databases": (
+                "sites",
+                "databases",
+            ),
+            "schemas": ("sites", "databases", "schemas"),
+            "tables": ("sites", "databases", "schemas", "tables"),
+            "columns": ("sites", "databases", "schemas", "tables", "columns"),
+            "workbooks": ("sites", "workbooks"),
+            "sheets": ("sites", "workbooks", "sheets"),
         }
-        data_source_path = 'sites'
-        allows_null = ['schemas']
+        data_source_path = "sites"
+        allows_null = ["schemas"]
 
 
 class Neo4jPathsModel(BasePathsModel):
@@ -395,11 +419,11 @@ class Neo4jPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'databases': ('databases',),
-            'nodes':     ('databases', 'nodes'),
-            'fields':    ('databases', 'nodes', 'fields'),
+            "databases": ("databases",),
+            "nodes": ("databases", "nodes"),
+            "fields": ("databases", "nodes", "fields"),
         }
-        data_source_path = 'databases'
+        data_source_path = "databases"
 
 
 class S3PathsModel(BasePathsModel):
@@ -409,9 +433,9 @@ class S3PathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'buckets': ('buckets',),
-            'keys':    ('buckets', 'keys'),
-            'columns': ('buckets', 'keys', 'columns'),
+            "buckets": ("buckets",),
+            "keys": ("buckets", "keys"),
+            "columns": ("buckets", "keys", "columns"),
         }
 
 
@@ -422,11 +446,26 @@ class CassandraPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'keyspaces': ('keyspaces',),
-            'tables': ('keyspaces', 'tables'),
-            'columns': ('keyspaces', 'tables', 'columns')
+            "keyspaces": ("keyspaces",),
+            "tables": ("keyspaces", "tables"),
+            "columns": ("keyspaces", "tables", "columns"),
         }
-        data_source_path = 'keyspaces'
+        data_source_path = "keyspaces"
+
+
+class SagemakerPathsModel(BasePathsModel):
+    experiments: Optional[str]
+    trials: Optional[str]
+    jobs: Optional[str]
+    artifacts: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "experiments": ("experiments",),
+            "trials": ("experiments", "trials"),
+            "jobs": ("experiments", "trials", "jobs"),
+            "artifacts": ("experiments", "trials", "artifacts"),
+        }
 
 
 # class KubeflowPathsModel(BasePathsModel):  # todo:
