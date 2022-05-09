@@ -2,7 +2,7 @@ from oddrn_generator.generators import (
     Generator, PostgresqlGenerator, MysqlGenerator, KafkaGenerator, KafkaConnectGenerator, GlueGenerator,
     SnowflakeGenerator, AirflowGenerator, HiveGenerator, DynamodbGenerator, OdbcGenerator, MssqlGenerator,
     OracleGenerator, RedshiftGenerator, ClickHouseGenerator, AthenaGenerator, QuicksightGenerator, DbtGenerator,
-    TableauGenerator, PrefectGenerator, Neo4jGenerator, ElasticSearchGenerator
+    TableauGenerator, PrefectGenerator, Neo4jGenerator, ElasticSearchGenerator, FeastGenerator
 )
 
 __all__ = [
@@ -28,4 +28,5 @@ __all__ = [
     "TableauGenerator",
     "PrefectGenerator",
     "Neo4jGenerator",
+    "FeastGenerator",
 ]

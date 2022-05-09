@@ -189,6 +189,19 @@ class ElasticSearchPathsModel(BasePathsModel):
         }
 
 
+class FeastPathsModel(BasePathsModel):
+    featureviews: Optional[str]
+    features: Optional[str]
+    subfeatures: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'featureviews': ('featureviews',),
+            'features': ('featureviews', 'features'),
+            'subfeatures': ('featureviews', 'features', 'subfeatures'),
+        }
+
+
 class DynamodbPathsModel(BasePathsModel):
     tables: Optional[str]
     columns: Optional[str]
