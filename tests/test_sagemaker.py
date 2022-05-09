@@ -28,3 +28,17 @@ def test_sagemaker():
         generator.get_oddrn_by_path("trials")
         == f"{generator.base_oddrn}/experiments/C/trials/B"
     )
+
+    generator.set_oddrn_paths(**{"jobs": "JobD"})
+
+    assert (
+        generator.get_oddrn_by_path("jobs")
+        == f"{generator.base_oddrn}/experiments/C/trials/B/jobs/JobD"
+    )
+
+    generator.set_oddrn_paths(**{"artifacts": "artifactE"})
+
+    assert (
+        generator.get_oddrn_by_path("artifacts")
+        == f"{generator.base_oddrn}/experiments/C/trials/B/artifacts/artifactE"
+    )
