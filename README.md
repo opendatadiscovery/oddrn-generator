@@ -1,3 +1,4 @@
+[![PyPI version](https://badge.fury.io/py/oddrn-generator.svg)](https://badge.fury.io/py/oddrn-generator)
 # Open Data Discovery Resource Name Generator
 ## Requirements
 * __Python >= 3.7__
