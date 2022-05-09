@@ -1,11 +1,36 @@
 from oddrn_generator.path_models import (
-    BasePathsModel, PostgresqlPathsModel, MysqlPathsModel, KafkaPathsModel, GluePathsModel, SnowflakePathsModel,
-    AirflowPathsModel, HivePathsModel, DynamodbPathsModel, OdbcPathsModel,
-    MssqlPathsModel, OraclePathsModel, RedshiftPathsModel, ClickHousePathsModel, KafkaConnectorPathsModel,
-    AthenaPathsModel, QuicksightPathsModel, DbtPathsModel, TableauPathsModel, PrefectPathsModel, Neo4jPathsModel,
-    S3PathsModel, ElasticSearchPathsModel, CassandraPathsModel, FeastPathsModel
+    BasePathsModel,
+    PostgresqlPathsModel,
+    MysqlPathsModel,
+    KafkaPathsModel,
+    GluePathsModel,
+    SagemakerPathsModel,
+    SnowflakePathsModel,
+    AirflowPathsModel,
+    HivePathsModel,
+    DynamodbPathsModel,
+    OdbcPathsModel,
+    MssqlPathsModel,
+    OraclePathsModel,
+    RedshiftPathsModel,
+    ClickHousePathsModel,
+    KafkaConnectorPathsModel,
+    AthenaPathsModel,
+    QuicksightPathsModel,
+    DbtPathsModel,
+    TableauPathsModel,
+    PrefectPathsModel,
+    Neo4jPathsModel,
+    S3PathsModel,
+    ElasticSearchPathsModel,
+    CassandraPathsModel,
+    FeastPathsModel,
 )
-from oddrn_generator.server_models import AbstractServerModel, AWSCloudModel, HostnameModel
+from oddrn_generator.server_models import (
+    AbstractServerModel,
+    AWSCloudModel,
+    HostnameModel,
+)
 
 
 class Generator:
@@ -16,18 +41,29 @@ class Generator:
     def __new__(cls, *args, **kwargs):
         if not kwargs.get("data_source"):
             return super(Generator, cls).__new__(cls)
-        subclass = {subclass.source: subclass for subclass in cls.__subclasses__()}.get(kwargs["data_source"])
+        subclass = {subclass.source: subclass for subclass in cls.__subclasses__()}.get(
+            kwargs["data_source"]
+        )
         if not subclass:
-            raise Exception("data_source is invalid")
+            raise ValueError("data_source is invalid")
         return super(Generator, subclass).__new__(subclass)
 
-    def __init__(self, *, data_source=None, cloud_settings: dict = None, host_settings: str = None, **path_attributes):
+    def __init__(
+        self,
+        *,
+        data_source=None,
+        cloud_settings: dict = None,
+        host_settings: str = None,
+        **path_attributes,
+    ):
         if cloud_settings:
             server_settings = cloud_settings
         elif host_settings:
-            server_settings = {'host': host_settings}
+            server_settings = {"host": host_settings}
         else:
-            raise ValueError("You must specify at least one parameter: 'cloud_settings' or 'host_settings'")
+            raise ValueError(
+                "You must specify at least one parameter: 'cloud_settings' or 'host_settings'"
+            )
         self.server_obj: AbstractServerModel = self.__build_server(server_settings)
         self.paths_obj: BasePathsModel = self.__build_paths(**path_attributes)
 
@@ -53,17 +89,28 @@ class Generator:
             self.paths_obj.set_path_value(path, new_value)
         else:
             self.paths_obj.check_if_path_is_set(path)
-        paths_dict = self.paths_obj.dict(include=set(dependency), exclude_none=True, by_alias=True)
-        return f"{self.base_oddrn}/{'/'.join([f'{k}/{v}' for k, v in paths_dict.items()])}"
+        paths_dict = self.paths_obj.dict(
+            include=set(dependency), exclude_none=True, by_alias=True
+        )
+        return (
+            f"{self.base_oddrn}/{'/'.join([f'{k}/{v}' for k, v in paths_dict.items()])}"
+        )
 
     def set_oddrn_paths(self, **new_paths) -> None:
         old_paths = {
-            k: v for k, v in self.paths_obj.dict(exclude_none=True).items() if k not in [f for f in new_paths.keys()]
+            k: v
+            for k, v in self.paths_obj.dict(exclude_none=True).items()
+            if k not in list(new_paths.keys())
         }
+
         self.paths_obj = self.__build_paths(**old_paths, **new_paths)
 
     def get_data_source_oddrn(self):
-        return self.get_oddrn_by_path(self.paths_obj.data_source_path) if self.paths_obj.data_source_path else self.base_oddrn
+        return (
+            self.get_oddrn_by_path(self.paths_obj.data_source_path)
+            if self.paths_obj.data_source_path
+            else self.base_oddrn
+        )
 
 
 class PostgresqlGenerator(Generator):
@@ -208,6 +255,12 @@ class CassandraGenerator(Generator):
     source = "cassandra"
     paths_model = CassandraPathsModel
     server_model = HostnameModel
+
+
+class SagemakerGenerator(Generator):
+    source = "sagemaker"
+    paths_model = SagemakerPathsModel
+    server_model = AWSCloudModel
 
 
 #
