@@ -2,7 +2,7 @@ from oddrn_generator.generators import (
     PostgresqlGenerator, MysqlGenerator, SnowflakeGenerator, AirflowGenerator, HiveGenerator, GlueGenerator,
     DynamodbGenerator, OdbcGenerator, MssqlGenerator, OracleGenerator, RedshiftGenerator, ClickHouseGenerator,
     KafkaConnectGenerator, KafkaGenerator, AthenaGenerator, QuicksightGenerator, TableauGenerator, PrefectGenerator,
-    Neo4jGenerator, S3Generator, ElasticSearchGenerator
+    Neo4jGenerator, S3Generator, ElasticSearchGenerator, FeastGenerator
 )
 
 parameters_host = [
@@ -247,6 +247,18 @@ parameters_host = [
             'paths': {
                 'indexes': 'some_index',
                 'fields': 'some_field',
+            },
+            'aliases': {}
+        }
+    ),
+    (
+        FeastGenerator,
+        {
+            'host_settings': 'some_unit_id',
+            'paths': {
+                'featureviews': 'some_feature_view_name',
+                'features': 'some_feature_name',
+                'subfeatures': 'some_subfeature_name',
             },
             'aliases': {}
         }

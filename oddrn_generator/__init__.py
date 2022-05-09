@@ -22,6 +22,7 @@ from oddrn_generator.generators import (
     Neo4jGenerator,
     ElasticSearchGenerator,
     SagemakerGenerator,
+    FeastGenerator
 )
 
 __all__ = [
@@ -31,6 +32,7 @@ __all__ = [
     "DbtGenerator",
     "DynamodbGenerator",
     "ElasticSearchGenerator",
+    "FeastGenerator",
     "Generator",
     "GlueGenerator",
     "HiveGenerator",
@@ -47,5 +49,5 @@ __all__ = [
     "RedshiftGenerator",
     "SagemakerGenerator",
     "SnowflakeGenerator",
-    "TableauGenerator",
+    "TableauGenerator"
 ]

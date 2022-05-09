@@ -24,6 +24,7 @@ from oddrn_generator.path_models import (
     S3PathsModel,
     ElasticSearchPathsModel,
     CassandraPathsModel,
+    FeastPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -163,6 +164,12 @@ class HiveGenerator(Generator):
 class ElasticSearchGenerator(Generator):
     source = "elasticsearch"
     paths_model = ElasticSearchPathsModel
+    server_model = HostnameModel
+
+
+class FeastGenerator(Generator):
+    source = "feast"
+    paths_model = FeastPathsModel
     server_model = HostnameModel
 
 
