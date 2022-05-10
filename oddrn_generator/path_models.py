@@ -217,9 +217,9 @@ class FeastPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'featureviews': ('featureviews',),
-            'features': ('featureviews', 'features'),
-            'subfeatures': ('featureviews', 'features', 'subfeatures'),
+            "featureviews": ("featureviews",),
+            "features": ("featureviews", "features"),
+            "subfeatures": ("featureviews", "features", "subfeatures"),
         }
 
 
@@ -481,17 +481,22 @@ class SagemakerPathsModel(BasePathsModel):
         }
 
 
-# class KubeflowPathsModel(BasePathsModel):  # todo:
-#     pipelines: Optional[str]
-#     experiments: Optional[str]
-#     runs: Optional[str]
-#
-#     class Config:
-#         dependencies_map = {
-#             'pipelines':   ('pipelines',),
-#             'experiments': ('experiments',),
-#             'runs':        ('experiments', 'runs',),
-#         }
+class KubeflowPathsModel(BasePathsModel):
+    pipelines: Optional[str]
+    experiments: Optional[str]
+    runs: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "pipelines": ("pipelines",),
+            "experiments": ("experiments",),
+            "runs": (
+                "experiments",
+                "runs",
+            ),
+        }
+
+
 #
 #
 # class DVCPathsModel(BasePathsModel):  # todo:

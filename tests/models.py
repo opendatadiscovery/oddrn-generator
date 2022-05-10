@@ -12,17 +12,17 @@ class ExamplePathModel(BasePathsModel):
     field_2: str
     field_3: Optional[str]
     field_4: Optional[str]
-    field_5_1: Optional[str] = Field(alias='field_5')
-    field_5_2: Optional[str] = Field(alias='field_5')
+    field_5_1: Optional[str] = Field(alias="field_5")
+    field_5_2: Optional[str] = Field(alias="field_5")
 
     class Config:
         dependencies_map = {
-            'field_1':   ('field_1',),
-            'field_2':   ('field_1', 'field_2'),
-            'field_3':   ('field_1', 'field_2', 'field_3'),
-            'field_4':   ('field_1', 'field_2', 'field_3', 'field_4'),
-            'field_5_1': ('field_1', 'field_2', 'field_3', 'field_4', 'field_5_1'),
-            'field_5_2': ('field_1', 'field_2', 'field_3', 'field_4', 'field_5_2'),
+            "field_1": ("field_1",),
+            "field_2": ("field_1", "field_2"),
+            "field_3": ("field_1", "field_2", "field_3"),
+            "field_4": ("field_1", "field_2", "field_3", "field_4"),
+            "field_5_1": ("field_1", "field_2", "field_3", "field_4", "field_5_1"),
+            "field_5_2": ("field_1", "field_2", "field_3", "field_4", "field_5_2"),
         }
 
 
@@ -33,17 +33,17 @@ class ExampleGenerator(Generator):
 
 
 example_generator_settings = {
-    'host_settings': 'testhost.com:3841',
-    'paths': {
-        'field_1': 'some_field_1',
-        'field_2': 'some_field_2',
-        'field_3': 'some_field_3',
-        'field_4': 'some_field_4',
-        'field_5_1': 'some_field_5_1',
-        'field_5_2': 'some_field_5_2',
+    "host_settings": "testhost.com:3841",
+    "paths": {
+        "field_1": "some_field_1",
+        "field_2": "some_field_2",
+        "field_3": "some_field_3",
+        "field_4": "some_field_4",
+        "field_5_1": "some_field_5_1",
+        "field_5_2": "some_field_5_2",
     },
-    'aliases': {
-        'field_5_1': 'field_5',
-        'field_5_2': 'field_5',
-    }
+    "aliases": {
+        "field_5_1": "field_5",
+        "field_5_2": "field_5",
+    },
 }

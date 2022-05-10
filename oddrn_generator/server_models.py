@@ -22,4 +22,3 @@ class AWSCloudModel(AbstractServerModel, BaseModel):
 
     def __str__(self) -> str:
         return f"cloud/aws/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
-
