@@ -26,6 +26,7 @@ from oddrn_generator.path_models import (
     CassandraPathsModel,
     FeastPathsModel,
     KubeflowPathsModel,
+    TarantoolPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -269,6 +270,12 @@ class SagemakerGenerator(Generator):
 class KubeflowGenerator(Generator):
     source = "kubeflow"
     paths_model = KubeflowPathsModel
+    server_model = HostnameModel
+
+
+class TarantoolGenerator(Generator):
+    source = "tarantool"
+    paths_model = TarantoolPathsModel
     server_model = HostnameModel
 
 

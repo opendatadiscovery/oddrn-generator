@@ -24,6 +24,7 @@ from oddrn_generator.generators import (
     SagemakerGenerator,
     FeastGenerator,
     KubeflowGenerator,
+    TarantoolGenerator,
 )
 
 __all__ = [
@@ -52,4 +53,5 @@ __all__ = [
     "SagemakerGenerator",
     "SnowflakeGenerator",
     "TableauGenerator",
+    "TarantoolGenerator",
 ]
