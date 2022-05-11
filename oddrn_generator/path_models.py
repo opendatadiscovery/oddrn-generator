@@ -497,6 +497,17 @@ class KubeflowPathsModel(BasePathsModel):
         }
 
 
+class TarantoolPathsModel(BasePathsModel):
+    spaces: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "spaces": ("spaces",),
+            "columns": ("spaces", "columns"),
+        }
+
+
 #
 #
 # class DVCPathsModel(BasePathsModel):  # todo:
