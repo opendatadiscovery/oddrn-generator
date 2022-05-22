@@ -27,6 +27,7 @@ from oddrn_generator.path_models import (
     FeastPathsModel,
     KubeflowPathsModel,
     TarantoolPathsModel,
+    KinesisPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -265,8 +266,12 @@ class SagemakerGenerator(Generator):
     server_model = AWSCloudModel
 
 
-#
-#
+class KinesisGenerator(Generator):
+    source = "kinesis"
+    paths_model = KinesisPathsModel
+    server_model = AWSCloudModel
+
+
 class KubeflowGenerator(Generator):
     source = "kubeflow"
     paths_model = KubeflowPathsModel

@@ -21,6 +21,7 @@ from oddrn_generator.generators import (
     S3Generator,
     ElasticSearchGenerator,
     FeastGenerator,
+    KinesisGenerator,
 )
 
 parameters_host = [
@@ -365,6 +366,21 @@ parameters_cloud = [
                 "buckets": "some_bucket",
                 "keys": "some_key",
                 "columns": "some_column",
+            },
+            "aliases": {},
+        },
+    ),
+    (
+        KinesisGenerator,
+        {
+            "cloud_settings": {
+                "account": "21232132",
+                "region": "us-west",
+            },
+            "paths": {
+                "streams": "some_stream",
+                "shards": "some_shard",
+                "data_records": "some_data_record",
             },
             "aliases": {},
         },
