@@ -508,8 +508,19 @@ class TarantoolPathsModel(BasePathsModel):
         }
 
 
-#
-#
+class KinesisPathsModel(BasePathsModel):
+    streams: Optional[str]
+    shards: Optional[str]
+    data_records: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            'streams': ('streams',),
+            'shards': ('streams', 'shards'),
+            'data_records': ('streams', 'shards', 'data_records')
+        }
+
+
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
 #
