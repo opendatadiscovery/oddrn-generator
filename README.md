@@ -33,6 +33,7 @@ pip install oddrn-generator
 * prefect - PrefectGenerator
 * tableau - TableauGenerator
 * neo4j - Neo4jGenerator
+* mongodb - MongoGenerator
 ### Work in progress generators
 * kubeflow - KubeflowGenerator
 * dvc - DVCGenerator

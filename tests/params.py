@@ -22,6 +22,7 @@ from oddrn_generator.generators import (
     ElasticSearchGenerator,
     FeastGenerator,
     KinesisGenerator,
+    MongoGenerator
 )
 
 parameters_host = [
@@ -278,6 +279,18 @@ parameters_host = [
                 'featureviews': 'some_feature_view_name',
                 'features': 'some_feature_name',
                 'subfeatures': 'some_subfeature_name',
+            },
+            'aliases': {}
+        }
+    ),
+    (
+        MongoGenerator,
+        {
+            'host_settings': '127.0.0.1:5034',
+            'paths': {
+                'databases': 'some_database',
+                'schemas': 'some_schemas',
+                'collections': 'some_collections',
             },
             'aliases': {}
         }
