@@ -521,6 +521,20 @@ class KinesisPathsModel(BasePathsModel):
         }
 
 
+class MongoPathsModel(BasePathsModel):
+    databases: str
+    collections: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "databases": ("databases",),
+            "collections": ("databases", "collections"),
+            "columns": ("databases", "collections", "columns"),
+        }
+        data_source_path = "databases"
+
+
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
 #

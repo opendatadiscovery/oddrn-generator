@@ -28,6 +28,7 @@ from oddrn_generator.path_models import (
     KubeflowPathsModel,
     TarantoolPathsModel,
     KinesisPathsModel,
+    MongoPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -281,6 +282,12 @@ class KubeflowGenerator(Generator):
 class TarantoolGenerator(Generator):
     source = "tarantool"
     paths_model = TarantoolPathsModel
+    server_model = HostnameModel
+
+
+class MongoGenerator(Generator):
+    source = "mongo"
+    paths_model = MongoPathsModel
     server_model = HostnameModel
 
 

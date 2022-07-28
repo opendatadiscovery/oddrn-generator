@@ -26,6 +26,7 @@ from oddrn_generator.generators import (
     KubeflowGenerator,
     TarantoolGenerator,
     KinesisGenerator,
+    MongoGenerator,
 )
 
 __all__ = [
@@ -56,4 +57,5 @@ __all__ = [
     "TableauGenerator",
     "TarantoolGenerator",
     "KinesisGenerator",
+    "MongoGenerator",
 ]
