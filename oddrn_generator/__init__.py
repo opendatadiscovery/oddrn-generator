@@ -27,6 +27,7 @@ from oddrn_generator.generators import (
     TarantoolGenerator,
     KinesisGenerator,
     MongoGenerator,
+    VerticaGenerator,
 )
 
 __all__ = [
@@ -58,4 +59,5 @@ __all__ = [
     "TarantoolGenerator",
     "KinesisGenerator",
     "MongoGenerator",
+    "VerticaGenerator",
 ]
