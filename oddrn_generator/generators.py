@@ -29,6 +29,7 @@ from oddrn_generator.path_models import (
     TarantoolPathsModel,
     KinesisPathsModel,
     MongoPathsModel,
+    VerticaPathsModel
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -288,6 +289,12 @@ class TarantoolGenerator(Generator):
 class MongoGenerator(Generator):
     source = "mongo"
     paths_model = MongoPathsModel
+    server_model = HostnameModel
+
+
+class VerticaGenerator(Generator):
+    source = "vertica"
+    paths_model = VerticaPathsModel
     server_model = HostnameModel
 
 

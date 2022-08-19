@@ -34,6 +34,7 @@ pip install oddrn-generator
 * tableau - TableauGenerator
 * neo4j - Neo4jGenerator
 * mongodb - MongoGenerator
+* vertica - VerticaGenerator
 ### Work in progress generators
 * kubeflow - KubeflowGenerator
 * dvc - DVCGenerator

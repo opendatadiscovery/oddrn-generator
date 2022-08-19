@@ -22,7 +22,8 @@ from oddrn_generator.generators import (
     ElasticSearchGenerator,
     FeastGenerator,
     KinesisGenerator,
-    MongoGenerator
+    MongoGenerator,
+    VerticaGenerator,
 )
 
 parameters_host = [
@@ -295,6 +296,24 @@ parameters_host = [
             'aliases': {}
         }
     ),
+    (
+        VerticaGenerator,
+        {
+            'host_settings': '127.0.0.1:5034',
+            'paths': {
+                'databases': 'some_database',
+                'schemas': 'some_schemas',
+                'tables': 'some_table',
+                'views': 'some_view',
+                'tables_columns': 'some_table_column',
+                'views_columns': 'some_view_column',
+            },
+            'aliases': {
+                'tables_columns': 'columns',
+                'views_columns': 'columns',
+            },
+        }
+    )
 ]
 
 parameters_cloud = [
