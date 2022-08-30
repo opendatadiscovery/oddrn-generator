@@ -290,8 +290,8 @@ parameters_host = [
             'host_settings': '127.0.0.1:5034',
             'paths': {
                 'databases': 'some_database',
-                'schemas': 'some_schemas',
                 'collections': 'some_collections',
+                'columns': 'column_one'
             },
             'aliases': {}
         }

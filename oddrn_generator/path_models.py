@@ -554,6 +554,13 @@ class VerticaPathsModel(BasePathsModel):
         }
         data_source_path = "databases"
 
+
+class CubeJsPathModel(BasePathsModel):
+    cubes: str = ""
+
+    class Config:
+        dependencies_map = {"cubes": ("cubes",)}
+
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
 #

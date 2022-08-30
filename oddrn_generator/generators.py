@@ -29,7 +29,8 @@ from oddrn_generator.path_models import (
     TarantoolPathsModel,
     KinesisPathsModel,
     MongoPathsModel,
-    VerticaPathsModel
+    VerticaPathsModel,
+    CubeJsPathModel
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -54,12 +55,12 @@ class Generator:
         return super(Generator, subclass).__new__(subclass)
 
     def __init__(
-        self,
-        *,
-        data_source=None,
-        cloud_settings: dict = None,
-        host_settings: str = None,
-        **path_attributes,
+            self,
+            *,
+            data_source=None,
+            cloud_settings: dict = None,
+            host_settings: str = None,
+            **path_attributes,
     ):
         if cloud_settings:
             server_settings = cloud_settings
@@ -297,6 +298,11 @@ class VerticaGenerator(Generator):
     paths_model = VerticaPathsModel
     server_model = HostnameModel
 
+
+class CubeJsGenerator(Generator):
+    source = 'cubejs'
+    paths_model = CubeJsPathModel
+    server_model = HostnameModel
 
 #
 #
