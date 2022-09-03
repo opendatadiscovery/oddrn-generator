@@ -387,21 +387,6 @@ parameters_cloud = [
         }
     ),
     (
-        S3Generator,
-        {
-            'cloud_settings': {
-                'account': '21232132',
-                'region': 'us-west',
-            },
-            'paths': {
-                'buckets': 'some_bucket',
-                'keys': 'some_key',
-                'columns': 'some_column',
-            },
-            'aliases': {}
-        }
-    ),
-    (
         KinesisGenerator,
         {
             'cloud_settings': {

@@ -2,7 +2,7 @@ class WrongPathOrderException(Exception):
     pass
 
 
-class PathDoestExistException(Exception):
+class PathDoesntExistException(Exception):
     pass
 
 

@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 from oddrn_generator.exceptions import (
     WrongPathOrderException,
-    PathDoestExistException,
+    PathDoesntExistException,
     EmptyPathValueException,
 )
 
@@ -35,7 +35,7 @@ class BasePathsModel(BaseModel):
     def get_dependency(self, field) -> tuple:
         dependency = self.__config__.dependencies_map.get(field)
         if not dependency:
-            raise PathDoestExistException(f"Path '{field}' doesn't exist in generator")
+            raise PathDoesntExistException(f"Path '{field}' doesn't exist in generator")
         return dependency
 
     def check_if_path_is_set(self, path: str) -> None:

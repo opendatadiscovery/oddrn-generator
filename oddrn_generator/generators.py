@@ -1,57 +1,69 @@
+from typing import Type
+from urllib.parse import urlparse
+
 from oddrn_generator.path_models import (
+    AirflowPathsModel,
+    AthenaPathsModel,
     BasePathsModel,
-    PostgresqlPathsModel,
-    MysqlPathsModel,
-    KafkaPathsModel,
+    CassandraPathsModel,
+    ClickHousePathsModel,
+    CubeJsPathModel,
+    DbtPathsModel,
+    DynamodbPathsModel,
+    ElasticSearchPathsModel,
+    FeastPathsModel,
     GluePathsModel,
+    HivePathsModel,
+    KafkaConnectorPathsModel,
+    KafkaPathsModel,
+    KinesisPathsModel,
+    KubeflowPathsModel,
+    MongoPathsModel,
+    MssqlPathsModel,
+    MysqlPathsModel,
+    Neo4jPathsModel,
+    OdbcPathsModel,
+    OraclePathsModel,
+    PostgresqlPathsModel,
+    PrefectPathsModel,
+    QuicksightPathsModel,
+    RedshiftPathsModel,
+    S3PathsModel,
     SagemakerPathsModel,
     SnowflakePathsModel,
-    AirflowPathsModel,
-    HivePathsModel,
-    DynamodbPathsModel,
-    OdbcPathsModel,
-    MssqlPathsModel,
-    OraclePathsModel,
-    RedshiftPathsModel,
-    ClickHousePathsModel,
-    KafkaConnectorPathsModel,
-    AthenaPathsModel,
-    QuicksightPathsModel,
-    DbtPathsModel,
     TableauPathsModel,
-    PrefectPathsModel,
-    Neo4jPathsModel,
-    S3PathsModel,
-    ElasticSearchPathsModel,
-    CassandraPathsModel,
-    FeastPathsModel,
-    KubeflowPathsModel,
     TarantoolPathsModel,
-    KinesisPathsModel,
-    MongoPathsModel,
     VerticaPathsModel,
-    CubeJsPathModel
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
+    CloudSettings,
     HostnameModel,
+    HostSettings,
+    S3CloudModel,
+    ServerModelConfig,
 )
 
 
 class Generator:
     source: str = None
-    server_model = None
-    paths_model = None
+    server_model: Type[AbstractServerModel] = None
+    paths_model: Type[BasePathsModel] = None
 
     def __new__(cls, *args, **kwargs):
+        # TODO: didn't find any case when kwargs has data_source
         if not kwargs.get("data_source"):
             return super(Generator, cls).__new__(cls)
+
+        # TODO: looks like useless statement
         subclass = {subclass.source: subclass for subclass in cls.__subclasses__()}.get(
             kwargs["data_source"]
         )
+
         if not subclass:
             raise ValueError("data_source is invalid")
+
         return super(Generator, subclass).__new__(subclass)
 
     def __init__(
@@ -60,21 +72,15 @@ class Generator:
             data_source=None,
             cloud_settings: dict = None,
             host_settings: str = None,
-            **path_attributes,
+            **paths,
     ):
-        if cloud_settings:
-            server_settings = cloud_settings
-        elif host_settings:
-            server_settings = {"host": host_settings}
-        else:
-            raise ValueError(
-                "You must specify at least one parameter: 'cloud_settings' or 'host_settings'"
-            )
-        self.server_obj: AbstractServerModel = self.__build_server(server_settings)
-        self.paths_obj: BasePathsModel = self.__build_paths(**path_attributes)
+        config = ServerModelConfig(
+            cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
+            host_settings=HostSettings(host=host_settings) if host_settings else None
+        )
 
-    def __build_server(self, server: dict) -> AbstractServerModel:
-        return self.server_model(**server)
+        self.server_obj: AbstractServerModel = self.server_model.create(config)
+        self.paths_obj: BasePathsModel = self.__build_paths(**paths)
 
     def __build_paths(self, **paths) -> BasePathsModel:
         path_obj: BasePathsModel = self.paths_model(**paths)
@@ -252,9 +258,22 @@ class Neo4jGenerator(Generator):
 
 
 class S3Generator(Generator):
+    __KEYS_JOINER = ":"
     source = "s3"
     paths_model = S3PathsModel
-    server_model = AWSCloudModel
+    server_model = S3CloudModel
+
+    @classmethod
+    def from_s3_url(cls, url: str):
+        parsed = urlparse(url)
+        bucket = parsed.netloc
+        keys = parsed.path.lstrip("/").replace("/", cls.__KEYS_JOINER)
+
+        generator = cls()
+        generator.set_oddrn_paths(buckets=bucket, keys=keys)
+
+        return generator
+
 
 
 class CassandraGenerator(Generator):

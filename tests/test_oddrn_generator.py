@@ -1,16 +1,17 @@
 import datetime
 
 import pytest
+from oddrn_generator.exceptions import (
+    EmptyPathValueException,
+    PathDoesntExistException,
+    WrongPathOrderException,
+)
+from oddrn_generator.generators import AthenaGenerator, PostgresqlGenerator
 from pydantic import ValidationError
 
-from oddrn_generator.exceptions import (
-    WrongPathOrderException,
-    PathDoestExistException,
-    EmptyPathValueException,
-)
-from tests.helpers import create_host_oddrn_string, create_cloud_oddrn_string
-from tests.models import example_generator_settings, ExampleGenerator
-from tests.params import parameters_host, parameters_cloud
+from tests.helpers import create_cloud_oddrn_string, create_host_oddrn_string
+from tests.models import ExampleGenerator, example_generator_settings
+from tests.params import parameters_cloud, parameters_host
 
 
 def check_host_oddrn_paths(gen, settings, path):
@@ -59,7 +60,7 @@ def test_example_generator():
     ) == example_gen.get_oddrn_by_path("field_3", "another_field_3")
 
     # check not existing paths
-    with pytest.raises(PathDoestExistException):
+    with pytest.raises(PathDoesntExistException):
         example_gen.get_oddrn_by_path("wrong_path")
 
     # create new generator with empty values
@@ -117,3 +118,15 @@ def test_cloud_generators(generator_class, settings):
     for p in gen.available_paths:
         check_cloud_oddrn_paths(gen, settings, p)
     assert gen.get_data_source_oddrn()
+
+
+def test_host_settings_adapter():
+    with pytest.raises(ValueError, match='You must specify host settings') as e:
+        PostgresqlGenerator()
+
+def test_cloud_settings_adapter():
+    with pytest.raises(ValueError, match='You must specify cloud settings') as e:
+        AthenaGenerator()
+         
+
+    
