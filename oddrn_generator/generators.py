@@ -31,7 +31,7 @@ from oddrn_generator.path_models import (
     MongoPathsModel,
     VerticaPathsModel,
     CubeJsPathModel,
-    SupersetPathsModel
+    SupersetPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -56,12 +56,12 @@ class Generator:
         return super(Generator, subclass).__new__(subclass)
 
     def __init__(
-            self,
-            *,
-            data_source=None,
-            cloud_settings: dict = None,
-            host_settings: str = None,
-            **path_attributes,
+        self,
+        *,
+        data_source=None,
+        cloud_settings: dict = None,
+        host_settings: str = None,
+        **path_attributes,
     ):
         if cloud_settings:
             server_settings = cloud_settings
@@ -301,7 +301,7 @@ class VerticaGenerator(Generator):
 
 
 class CubeJsGenerator(Generator):
-    source = 'cubejs'
+    source = "cubejs"
     paths_model = CubeJsPathModel
     server_model = HostnameModel
 
@@ -310,6 +310,8 @@ class SupersetGenerator(Generator):
     source = "superset"
     paths_model = SupersetPathsModel
     server_model = HostnameModel
+
+
 #
 #
 # class DVCGenerator(Generator):  # todo:
