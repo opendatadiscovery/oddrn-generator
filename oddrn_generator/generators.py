@@ -30,7 +30,8 @@ from oddrn_generator.path_models import (
     KinesisPathsModel,
     MongoPathsModel,
     VerticaPathsModel,
-    CubeJsPathModel
+    CubeJsPathModel,
+    SupersetPathsModel
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -304,6 +305,11 @@ class CubeJsGenerator(Generator):
     paths_model = CubeJsPathModel
     server_model = HostnameModel
 
+
+class SupersetGenerator(Generator):
+    source = "superset"
+    paths_model = SupersetPathsModel
+    server_model = HostnameModel
 #
 #
 # class DVCGenerator(Generator):  # todo:
