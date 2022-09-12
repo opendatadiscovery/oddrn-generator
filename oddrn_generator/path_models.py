@@ -533,6 +533,22 @@ class VerticaPathsModel(BasePathsModel):
         data_source_path = "databases"
 
 
+class PrestoPathsModel(BasePathsModel):
+    catalogs: Optional[str]
+    schemas: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "catalogs": ("catalogs",),
+            "schemas": ("catalogs", "schemas"),
+            "tables": ("catalogs", "schemas", "tables"),
+            "columns": ("catalogs", "schemas", "tables", "columns"),
+        }
+        # data_source_path = "databases"
+
+
 class SupersetPathsModel(BasePathsModel):
     databases: Optional[str]
     datasets: Optional[str]
