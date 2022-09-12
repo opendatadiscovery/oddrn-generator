@@ -32,6 +32,7 @@ from oddrn_generator.path_models import (
     VerticaPathsModel,
     CubeJsPathModel,
     SupersetPathsModel,
+    PrestoPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -201,6 +202,12 @@ class MssqlGenerator(Generator):
 class OracleGenerator(Generator):
     source = "oracle"
     paths_model = OraclePathsModel
+    server_model = HostnameModel
+
+
+class PrestoGenerator(Generator):
+    source = "presto"
+    paths_model = PrestoPathsModel
     server_model = HostnameModel
 
 
