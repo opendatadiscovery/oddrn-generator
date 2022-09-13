@@ -25,12 +25,14 @@ from oddrn_generator.path_models import (
     OdbcPathsModel,
     OraclePathsModel,
     PostgresqlPathsModel,
+    PrestoPathsModel,
     PrefectPathsModel,
     QuicksightPathsModel,
     RedshiftPathsModel,
     S3PathsModel,
     SagemakerPathsModel,
     SnowflakePathsModel,
+    SupersetPathsModel,
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
@@ -213,6 +215,12 @@ class OracleGenerator(Generator):
     server_model = HostnameModel
 
 
+class PrestoGenerator(Generator):
+    source = "presto"
+    paths_model = PrestoPathsModel
+    server_model = HostnameModel
+
+
 class RedshiftGenerator(Generator):
     source = "redshift"
     paths_model = RedshiftPathsModel
@@ -325,6 +333,11 @@ class CubeJsGenerator(Generator):
     paths_model = CubeJsPathModel
     server_model = HostnameModel
 
+
+class SupersetGenerator(Generator):
+    source = "superset"
+    paths_model = SupersetPathsModel
+    server_model = HostnameModel
 
 #
 #

@@ -63,10 +63,7 @@ class PostgresqlPathsModel(BasePathsModel):
     class Config:
         dependencies_map = {
             "databases": ("databases",),
-            "schemas": (
-                "databases",
-                "schemas",
-            ),
+            "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
             "views": ("databases", "schemas", "views"),
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
@@ -97,18 +94,14 @@ class KafkaPathsModel(BasePathsModel):
     topics: Optional[str]
 
     class Config:
-        dependencies_map = {
-            "topics": ("topics",),
-        }
+        dependencies_map = {"topics": ("topics",)}
 
 
 class KafkaConnectorPathsModel(BasePathsModel):
     connectors: str
 
     class Config:
-        dependencies_map = {
-            "connectors": ("connectors",),
-        }
+        dependencies_map = {"connectors": ("connectors",)}
 
 
 class GluePathsModel(BasePathsModel):
@@ -204,10 +197,7 @@ class ElasticSearchPathsModel(BasePathsModel):
     fields: Optional[str]
 
     class Config:
-        dependencies_map = {
-            "indexes": ("indexes",),
-            "fields": ("indexes", "fields"),
-        }
+        dependencies_map = {"indexes": ("indexes",), "fields": ("indexes", "fields")}
 
 
 class FeastPathsModel(BasePathsModel):
@@ -228,10 +218,7 @@ class DynamodbPathsModel(BasePathsModel):
     columns: Optional[str]
 
     class Config:
-        dependencies_map = {
-            "tables": ("tables",),
-            "columns": ("tables", "columns"),
-        }
+        dependencies_map = {"tables": ("tables",), "columns": ("tables", "columns")}
 
 
 class OdbcPathsModel(BasePathsModel):
@@ -411,10 +398,7 @@ class TableauPathsModel(BasePathsModel):
     class Config:
         dependencies_map = {
             "sites": ("sites",),
-            "databases": (
-                "sites",
-                "databases",
-            ),
+            "databases": ("sites", "databases"),
             "schemas": ("sites", "databases", "schemas"),
             "tables": ("sites", "databases", "schemas", "tables"),
             "columns": ("sites", "databases", "schemas", "tables", "columns"),
@@ -490,10 +474,7 @@ class KubeflowPathsModel(BasePathsModel):
         dependencies_map = {
             "pipelines": ("pipelines",),
             "experiments": ("experiments",),
-            "runs": (
-                "experiments",
-                "runs",
-            ),
+            "runs": ("experiments", "runs"),
         }
 
 
@@ -502,10 +483,7 @@ class TarantoolPathsModel(BasePathsModel):
     columns: Optional[str]
 
     class Config:
-        dependencies_map = {
-            "spaces": ("spaces",),
-            "columns": ("spaces", "columns"),
-        }
+        dependencies_map = {"spaces": ("spaces",), "columns": ("spaces", "columns")}
 
 
 class KinesisPathsModel(BasePathsModel):
@@ -553,6 +531,38 @@ class VerticaPathsModel(BasePathsModel):
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
         data_source_path = "databases"
+
+
+class PrestoPathsModel(BasePathsModel):
+    catalogs: Optional[str]
+    schemas: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "catalogs": ("catalogs",),
+            "schemas": ("catalogs", "schemas"),
+            "tables": ("catalogs", "schemas", "tables"),
+            "columns": ("catalogs", "schemas", "tables", "columns"),
+        }
+        # data_source_path = "databases"
+
+
+class SupersetPathsModel(BasePathsModel):
+    databases: Optional[str]
+    datasets: Optional[str]
+    columns: Optional[str]
+    dashboards: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "databases": ("databases",),
+            "datasets": ("databases", "datasets"),
+            "columns": ("databases", "datasets", "columns"),
+            "dashboards": ("dashboards",),
+        }
+        # data_source_path = "databases"
 
 
 class CubeJsPathModel(BasePathsModel):

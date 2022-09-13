@@ -29,33 +29,34 @@ pip install oddrn-generator
 ## Usage and configuration
 
 ### Available generators
-| DataSource | Generator class name |
-|------------|----------------------|
-| cassandra |  CassandraGenerator |
-| postgresql |  PostgresqlGenerator |
-| mysql |  MysqlGenerator |
-| glue |  GlueGenerator |
-| s3 |  S3Generator |
-| kafka |  KafkaGenerator |
-| kafkaconnect |  KafkaConnectGenerator |
-| snowflake |  SnowflakeGenerator |
-| airflow |  AirflowGenerator |
-| hive |  HiveGenerator |
-| dynamodb |  DynamodbGenerator |
-| odbc |  OdbcGenerator |
-| mssql |  MssqlGenerator |
-| oracle |  OracleGenerator |
-| redshift |  RedshiftGenerator |
-| clickhouse |  ClickHouseGenerator |
-| athena |  AthenaGenerator |
-| quicksight |  QuicksightGenerator |
-| dbt |  DbtGenerator |
-| prefect |  PrefectGenerator |
-| tableau |  TableauGenerator |
-| neo4j |  Neo4jGenerator |
-| mongodb |  MongoGenerator |
-| vertica |  VerticaGenerator |
-| CubeJs |  CubeJsGenerator |
+| DataSource   | Generator class name  |
+|--------------|-----------------------|
+| cassandra    | CassandraGenerator    |
+| postgresql   | PostgresqlGenerator   |
+| mysql        | MysqlGenerator        |
+| glue         | GlueGenerator         |
+| s3           | S3Generator           |
+| kafka        | KafkaGenerator        |
+| kafkaconnect | KafkaConnectGenerator |
+| snowflake    | SnowflakeGenerator    |
+| airflow      | AirflowGenerator      |
+| hive         | HiveGenerator         |
+| dynamodb     | DynamodbGenerator     |
+| odbc         | OdbcGenerator         |
+| mssql        | MssqlGenerator        |
+| oracle       | OracleGenerator       |
+| redshift     | RedshiftGenerator     |
+| clickhouse   | ClickHouseGenerator   |
+| athena       | AthenaGenerator       |
+| quicksight   | QuicksightGenerator   |
+| dbt          | DbtGenerator          |
+| prefect      | PrefectGenerator      |
+| tableau      | TableauGenerator      |
+| neo4j        | Neo4jGenerator        |
+| mongodb      | MongoGenerator        |
+| vertica      | VerticaGenerator      |
+| CubeJs       | CubeJsGenerator       |
+| superset     | SupersetGenerator     |
 
 ### Generator properties
 
