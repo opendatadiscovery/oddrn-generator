@@ -74,7 +74,7 @@ class Generator:
         data_source=None,
         cloud_settings: dict = None,
         host_settings: str = None,
-        **path_attributes,
+        **paths,
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
