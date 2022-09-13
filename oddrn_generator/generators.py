@@ -45,6 +45,8 @@ from oddrn_generator.server_models import (
     ServerModelConfig,
 )
 
+from .utils import escape
+
 
 class Generator:
     source: str = None
@@ -67,23 +69,25 @@ class Generator:
         return super(Generator, subclass).__new__(subclass)
 
     def __init__(
-            self,
-            *,
-            data_source=None,
-            cloud_settings: dict = None,
-            host_settings: str = None,
-            **paths,
+        self,
+        *,
+        data_source=None,
+        cloud_settings: dict = None,
+        host_settings: str = None,
+        **paths,
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
-            host_settings=HostSettings(host=host_settings) if host_settings else None
+            host_settings=HostSettings(host=host_settings) if host_settings else None,
         )
 
         self.server_obj: AbstractServerModel = self.server_model.create(config)
         self.paths_obj: BasePathsModel = self.__build_paths(**paths)
 
     def __build_paths(self, **paths) -> BasePathsModel:
-        path_obj: BasePathsModel = self.paths_model(**paths)
+        escaped = {k: escape(v) for k, v in paths.items()}
+
+        path_obj: BasePathsModel = self.paths_model(**escaped)
         path_obj.validate_all_paths()
         return path_obj
 
@@ -258,7 +262,6 @@ class Neo4jGenerator(Generator):
 
 
 class S3Generator(Generator):
-    __KEYS_JOINER = ":"
     source = "s3"
     paths_model = S3PathsModel
     server_model = S3CloudModel
@@ -267,13 +270,12 @@ class S3Generator(Generator):
     def from_s3_url(cls, url: str):
         parsed = urlparse(url)
         bucket = parsed.netloc
-        keys = parsed.path.lstrip("/").replace("/", cls.__KEYS_JOINER)
+        keys = parsed.path.lstrip("/")
 
         generator = cls()
         generator.set_oddrn_paths(buckets=bucket, keys=keys)
 
         return generator
-
 
 
 class CassandraGenerator(Generator):
@@ -319,9 +321,10 @@ class VerticaGenerator(Generator):
 
 
 class CubeJsGenerator(Generator):
-    source = 'cubejs'
+    source = "cubejs"
     paths_model = CubeJsPathModel
     server_model = HostnameModel
+
 
 #
 #

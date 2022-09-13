@@ -121,12 +121,10 @@ def test_cloud_generators(generator_class, settings):
 
 
 def test_host_settings_adapter():
-    with pytest.raises(ValueError, match='You must specify host settings') as e:
+    with pytest.raises(ValueError, match="You must specify host settings") as e:
         PostgresqlGenerator()
 
-def test_cloud_settings_adapter():
-    with pytest.raises(ValueError, match='You must specify cloud settings') as e:
-        AthenaGenerator()
-         
 
-    
+def test_cloud_settings_adapter():
+    with pytest.raises(ValueError, match="You must specify cloud settings") as e:
+        AthenaGenerator()

@@ -3,9 +3,9 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 from oddrn_generator.exceptions import (
-    WrongPathOrderException,
-    PathDoesntExistException,
     EmptyPathValueException,
+    PathDoesntExistException,
+    WrongPathOrderException,
 )
 
 
@@ -515,9 +515,9 @@ class KinesisPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            'streams': ('streams',),
-            'shards': ('streams', 'shards'),
-            'data_records': ('streams', 'shards', 'data_records')
+            "streams": ("streams",),
+            "shards": ("streams", "shards"),
+            "data_records": ("streams", "shards", "data_records"),
         }
 
 
@@ -560,6 +560,7 @@ class CubeJsPathModel(BasePathsModel):
 
     class Config:
         dependencies_map = {"cubes": ("cubes",)}
+
 
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
