@@ -3,9 +3,9 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 from oddrn_generator.exceptions import (
-    WrongPathOrderException,
-    PathDoesntExistException,
     EmptyPathValueException,
+    PathDoesntExistException,
+    WrongPathOrderException,
 )
 
 

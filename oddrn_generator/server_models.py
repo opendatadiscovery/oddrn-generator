@@ -6,13 +6,16 @@ from pydantic import BaseModel
 class HostSettings(BaseModel):
     host: str
 
+
 class CloudSettings(BaseModel):
     account: str
     region: str
 
+
 class ServerModelConfig(BaseModel):
     host_settings: HostSettings = None
     cloud_settings: CloudSettings = None
+
 
 class AbstractServerModel(ABC):
     @abstractmethod
@@ -22,7 +25,6 @@ class AbstractServerModel(ABC):
     @classmethod
     def create(cls, config: ServerModelConfig):
         raise NotImplementedError
-
 
 
 class HostnameModel(AbstractServerModel, BaseModel):
@@ -39,8 +41,6 @@ class HostnameModel(AbstractServerModel, BaseModel):
             return cls(host=host_settings.host)
         else:
             raise ValueError("You must specify host settings")
-
-
 
 
 class AWSCloudModel(AbstractServerModel, BaseModel):
@@ -61,8 +61,7 @@ class AWSCloudModel(AbstractServerModel, BaseModel):
 
 
 class S3CloudModel(AbstractServerModel, BaseModel):
-    """Bucket name is unique across AWS 
-    """
+    """Bucket name is unique across AWS"""
 
     def __str__(self) -> str:
         return "cloud/aws"
