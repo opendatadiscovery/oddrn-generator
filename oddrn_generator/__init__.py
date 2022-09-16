@@ -31,6 +31,7 @@ from oddrn_generator.generators import (
     CubeJsGenerator,
     SupersetGenerator,
     PrestoGenerator,
+    TrinoGenerator,
 )
 
 __all__ = [
@@ -66,4 +67,5 @@ __all__ = [
     "CubeJsGenerator",
     "SupersetGenerator",
     "PrestoGenerator",
+    "TrinoGenerator",
 ]
