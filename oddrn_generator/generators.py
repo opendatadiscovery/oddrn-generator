@@ -211,6 +211,10 @@ class PrestoGenerator(Generator):
     server_model = HostnameModel
 
 
+class TrinoGenerator(PrestoGenerator):
+    source = "trino"
+
+
 class RedshiftGenerator(Generator):
     source = "redshift"
     paths_model = RedshiftPathsModel
