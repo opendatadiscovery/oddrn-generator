@@ -57,6 +57,8 @@ pip install oddrn-generator
 | vertica      | VerticaGenerator      |
 | CubeJs       | CubeJsGenerator       |
 | superset     | SupersetGenerator     |
+| Presto       | PrestoGenerator       |
+| Trino        | TrinoGenerator        |
 
 ### Generator properties
 
