@@ -343,6 +343,7 @@ class SupersetGenerator(Generator):
     paths_model = SupersetPathsModel
     server_model = HostnameModel
 
+
 #
 #
 # class DVCGenerator(Generator):  # todo:
