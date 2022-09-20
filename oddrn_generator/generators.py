@@ -18,6 +18,7 @@ from oddrn_generator.path_models import (
     KafkaPathsModel,
     KinesisPathsModel,
     KubeflowPathsModel,
+    MetabasePathModel,
     MongoPathsModel,
     MssqlPathsModel,
     MysqlPathsModel,
@@ -25,8 +26,8 @@ from oddrn_generator.path_models import (
     OdbcPathsModel,
     OraclePathsModel,
     PostgresqlPathsModel,
-    PrestoPathsModel,
     PrefectPathsModel,
+    PrestoPathsModel,
     QuicksightPathsModel,
     RedshiftPathsModel,
     S3PathsModel,
@@ -343,6 +344,10 @@ class SupersetGenerator(Generator):
     paths_model = SupersetPathsModel
     server_model = HostnameModel
 
+class MetabaseGenerator(Generator):
+    source = "metabase"
+    paths_model = MetabasePathModel
+    server_model = HostnameModel
 
 #
 #
