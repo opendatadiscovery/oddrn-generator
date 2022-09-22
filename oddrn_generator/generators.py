@@ -8,6 +8,7 @@ from oddrn_generator.path_models import (
     CassandraPathsModel,
     ClickHousePathsModel,
     CubeJsPathModel,
+    DmsPathsModel,
     DbtPathsModel,
     DynamodbPathsModel,
     ElasticSearchPathsModel,
@@ -344,10 +345,18 @@ class SupersetGenerator(Generator):
     paths_model = SupersetPathsModel
     server_model = HostnameModel
 
+
 class MetabaseGenerator(Generator):
     source = "metabase"
     paths_model = MetabasePathModel
     server_model = HostnameModel
+
+
+class DmsGenerator(Generator):
+    source = "dms"
+    paths_model = DmsPathsModel
+    server_model = AWSCloudModel
+
 
 #
 #
