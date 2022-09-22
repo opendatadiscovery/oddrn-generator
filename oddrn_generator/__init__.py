@@ -4,6 +4,7 @@ from oddrn_generator.generators import (
     ClickHouseGenerator,
     CubeJsGenerator,
     DbtGenerator,
+    DmsGenerator,
     DynamodbGenerator,
     ElasticSearchGenerator,
     FeastGenerator,
@@ -69,5 +70,5 @@ __all__ = [
     "SupersetGenerator",
     "PrestoGenerator",
     "TrinoGenerator",
-    "MetabaseGenerator"
+    "MetabaseGenerator",
 ]

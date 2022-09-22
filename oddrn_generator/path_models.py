@@ -571,6 +571,7 @@ class CubeJsPathModel(BasePathsModel):
     class Config:
         dependencies_map = {"cubes": ("cubes",)}
 
+
 class MetabasePathModel(BasePathsModel):
     collections: str = ""
     dashboards: Optional[str]
@@ -579,16 +580,17 @@ class MetabasePathModel(BasePathsModel):
     class Config:
         dependencies_map = {
             "collections": ("collections",),
-            "dashboards": (
-                "collections",
-                "dashboards",
-            ),
-            "cards": (
-                "collections",
-                "cards",
-            ),
+            "dashboards": ("collections", "dashboards"),
+            "cards": ("collections", "cards"),
         }
 
+
+class DmsPathsModel(BasePathsModel):
+    tasks: Optional[str]
+    runs: Optional[str]
+
+    class Config:
+        dependencies_map = {"tasks": ("tasks",), "runs": ("tasks", "runs")}
 
 
 # class DVCPathsModel(BasePathsModel):  # todo:
