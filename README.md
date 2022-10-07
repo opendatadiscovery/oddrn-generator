@@ -59,6 +59,8 @@ pip install oddrn-generator
 | superset     | SupersetGenerator     |
 | Presto       | PrestoGenerator       |
 | Trino        | TrinoGenerator        |
+| dms          | DmsGenerator          |
+| powerbi      | PowerBiGenerator      |
 
 ### Generator properties
 
