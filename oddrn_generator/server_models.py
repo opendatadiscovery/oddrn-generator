@@ -12,9 +12,14 @@ class CloudSettings(BaseModel):
     region: str
 
 
+class AzureCloudSettings(BaseModel):
+    domain: str
+
+
 class ServerModelConfig(BaseModel):
     host_settings: HostSettings = None
     cloud_settings: CloudSettings = None
+    azure_cloud_settings: AzureCloudSettings = None
 
 
 class AbstractServerModel(ABC):
@@ -56,6 +61,22 @@ class AWSCloudModel(AbstractServerModel, BaseModel):
 
         if cloud_settings:
             return cls(account=cloud_settings.account, region=cloud_settings.region)
+        else:
+            raise ValueError("You must specify cloud settings")
+
+
+class AzureCloudModel(AbstractServerModel, BaseModel):
+    domain: str
+
+    def __str__(self) -> str:
+        return f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+
+    @classmethod
+    def create(cls, config: ServerModelConfig):
+        azure_cloud_settings = config.azure_cloud_settings
+
+        if azure_cloud_settings:
+            return cls(domain=azure_cloud_settings.domain)
         else:
             raise ValueError("You must specify cloud settings")
 

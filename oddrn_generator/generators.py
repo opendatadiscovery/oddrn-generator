@@ -42,6 +42,7 @@ from oddrn_generator.path_models import (
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
+    AzureCloudSettings,
     CloudSettings,
     HostnameModel,
     HostSettings,
@@ -73,15 +74,17 @@ class Generator:
         return super(Generator, subclass).__new__(subclass)
 
     def __init__(
-        self,
-        *,
-        data_source=None,
-        cloud_settings: dict = None,
-        host_settings: str = None,
-        **paths,
+            self,
+            *,
+            data_source=None,
+            cloud_settings: dict = None,
+            azure_cloud_settings: dict = None,
+            host_settings: str = None,
+            **paths,
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
+            azure_cloud_settings=AzureCloudSettings(**azure_cloud_settings) if azure_cloud_settings else None,
             host_settings=HostSettings(host=host_settings) if host_settings else None,
         )
 
@@ -356,7 +359,6 @@ class DmsGenerator(Generator):
     source = "dms"
     paths_model = DmsPathsModel
     server_model = AWSCloudModel
-
 
 #
 #
