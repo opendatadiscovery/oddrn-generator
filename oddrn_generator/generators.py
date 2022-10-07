@@ -27,6 +27,7 @@ from oddrn_generator.path_models import (
     OdbcPathsModel,
     OraclePathsModel,
     PostgresqlPathsModel,
+    PowerBiPathModel,
     PrefectPathsModel,
     PrestoPathsModel,
     QuicksightPathsModel,
@@ -42,6 +43,8 @@ from oddrn_generator.path_models import (
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
+    AzureCloudSettings,
+    AzureCloudModel,
     CloudSettings,
     HostnameModel,
     HostSettings,
@@ -77,11 +80,15 @@ class Generator:
         *,
         data_source=None,
         cloud_settings: dict = None,
+        azure_cloud_settings: dict = None,
         host_settings: str = None,
         **paths,
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
+            azure_cloud_settings=AzureCloudSettings(**azure_cloud_settings)
+            if azure_cloud_settings
+            else None,
             host_settings=HostSettings(host=host_settings) if host_settings else None,
         )
 
@@ -356,6 +363,12 @@ class DmsGenerator(Generator):
     source = "dms"
     paths_model = DmsPathsModel
     server_model = AWSCloudModel
+
+
+class PowerBiGenerator(Generator):
+    source = "powerbi"
+    paths_model = PowerBiPathModel
+    server_model = AzureCloudModel
 
 
 #

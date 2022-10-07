@@ -593,6 +593,17 @@ class DmsPathsModel(BasePathsModel):
         dependencies_map = {"tasks": ("tasks",), "runs": ("tasks", "runs")}
 
 
+class PowerBiPathModel(BasePathsModel):
+    datasets: Optional[str]
+    dashboards: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "datasets": ("datasets",),
+            "dashboards": ("dashboards",),
+        }
+
+
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
 #
