@@ -69,7 +69,9 @@ class AzureCloudModel(AbstractServerModel, BaseModel):
     domain: str
 
     def __str__(self) -> str:
-        return f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+        return (
+            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+        )
 
     @classmethod
     def create(cls, config: ServerModelConfig):

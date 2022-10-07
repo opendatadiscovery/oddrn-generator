@@ -603,6 +603,7 @@ class PowerBiPathModel(BasePathsModel):
             "dashboards": ("dashboards",),
         }
 
+
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
 #
