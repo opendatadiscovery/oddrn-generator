@@ -604,6 +604,18 @@ class PowerBiPathModel(BasePathsModel):
         }
 
 
+class RedashPathsModel(BasePathsModel):
+    queries: Optional[str]
+    dashboards: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "queries": ("queries",),
+            "dashboards": ("dashboards",),
+            "jobs": ("jobs",),
+        }
+
+
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
 #

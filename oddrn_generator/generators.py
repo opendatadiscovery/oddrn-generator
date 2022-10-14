@@ -30,6 +30,7 @@ from oddrn_generator.path_models import (
     PowerBiPathModel,
     PrefectPathsModel,
     PrestoPathsModel,
+    RedashPathsModel,
     QuicksightPathsModel,
     RedshiftPathsModel,
     S3PathsModel,
@@ -369,6 +370,12 @@ class PowerBiGenerator(Generator):
     source = "powerbi"
     paths_model = PowerBiPathModel
     server_model = AzureCloudModel
+
+
+class RedashGenerator(Generator):
+    source = "redash"
+    paths_model = RedashPathsModel
+    server_model = HostnameModel
 
 
 #
