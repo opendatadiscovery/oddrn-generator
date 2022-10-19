@@ -7,7 +7,7 @@ from oddrn_generator.generators import (
     MssqlGenerator,
     MysqlGenerator,
     PrestoGenerator,
-    TrinoGenerator
+    TrinoGenerator,
 )
 
 
@@ -15,6 +15,7 @@ class ExternalGeneratorMappingError(Exception):
     """
     Raise an exception if undefined source was found during mapping.
     """
+
     def __init__(self, source_name: str):
         super().__init__(f"Datasource {source_name} wasn't implemented yet")
 
@@ -23,6 +24,7 @@ class ExternalDbSettings(BaseSettings):
     """
     Stores connection settings and db name for an external source.
     """
+
     host: str
     port: Optional[int]
     database_name: str
@@ -100,7 +102,7 @@ class ExternalDbGenerator:
         pass
 
     def get_generator_for_table_lvl(
-            self, schema_name: str, table_name: str
+        self, schema_name: str, table_name: str
     ) -> Generator:
         """
         Get generator with predefined database and schema and table as well.
@@ -134,6 +136,7 @@ class ExternalGeneratorBuilder:
         how this source is named in a specific adapter
 
     """
+
     external_generator: Type[ExternalDbGenerator]
     type: str
 
@@ -172,6 +175,7 @@ class DeepLvlGenerator(ExternalDbGenerator):
     ...
 
     """
+
     def get_generator_for_schema_lvl(self, schema_name: str) -> Generator:
         gen = self.get_generator_for_database_lvl()
         gen.get_oddrn_by_path(self.schema_path_name, schema_name)
@@ -186,6 +190,7 @@ class ShallowLvlGenerator(ExternalDbGenerator):
     ...
 
     """
+
     def get_generator_for_schema_lvl(self, schema_name: str) -> Generator:
         return self.get_generator_for_database_lvl()
 
@@ -215,4 +220,3 @@ class ExternalPrestoGenerator(DeepLvlGenerator):
 
 class ExternalTrinoGenerator(ExternalPrestoGenerator):
     generator_cls = TrinoGenerator
-
