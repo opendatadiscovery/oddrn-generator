@@ -8,6 +8,16 @@ from oddrn_generator.generators import (
     MysqlGenerator,
     PrestoGenerator,
     TrinoGenerator,
+    AthenaGenerator,
+    CassandraGenerator,
+    ClickHouseGenerator,
+    HiveGenerator,
+    MongoGenerator,
+    Neo4jGenerator,
+    OdbcGenerator,
+    OracleGenerator,
+    RedshiftGenerator,
+    VerticaGenerator,
 )
 
 
@@ -168,7 +178,6 @@ class ExternalGeneratorBuilder:
 
 
 class DeepLvlGenerator(ExternalDbGenerator):
-
     """
     A class to get external generator for sources with 3 level structure.
     (databases-schema-table) for example Mssql, Postgres so on.
@@ -183,7 +192,6 @@ class DeepLvlGenerator(ExternalDbGenerator):
 
 
 class ShallowLvlGenerator(ExternalDbGenerator):
-
     """
     A class to get external generator for sources with 2 level structure.
     (databases-table) for example Mysql.
@@ -220,3 +228,60 @@ class ExternalPrestoGenerator(DeepLvlGenerator):
 
 class ExternalTrinoGenerator(ExternalPrestoGenerator):
     generator_cls = TrinoGenerator
+
+
+class ExternalAthenaGenerator(DeepLvlGenerator):
+    generator_cls = AthenaGenerator
+    database_path_name = "catalogs"
+    schema_path_name = "databases"
+
+
+class ExternalCassandraGenerator(ShallowLvlGenerator):
+    generator_cls = CassandraGenerator
+    database_path_name = "keyspaces"
+
+
+class ExternalClickHouseGenerator(ShallowLvlGenerator):
+    generator_cls = ClickHouseGenerator
+    database_path_name = "databases"
+
+
+class ExternalHiveGenerator(ShallowLvlGenerator):
+    generator_cls = HiveGenerator
+    database_path_name = "databases"
+
+
+class ExternalMongoGenerator(ShallowLvlGenerator):
+    generator_cls = MongoGenerator
+    database_path_name = "databases"
+    table_path_name = "collections"
+
+
+class ExternalNeo4jGenerator(ShallowLvlGenerator):
+    generator_cls = Neo4jGenerator
+    database_path_name = "databases"
+    table_path_name = "nodes"
+
+
+class ExternalOdbcGenerator(DeepLvlGenerator):
+    generator_cls = OdbcGenerator
+    database_path_name = "databases"
+    schema_path_name = "schemas"
+
+
+class ExternalOracleGenerator(DeepLvlGenerator):
+    generator_cls = OracleGenerator
+    database_path_name = "schemas"
+    schema_path_name = "databases"
+
+
+class ExternalRedshiftGenerator(DeepLvlGenerator):
+    generator_cls = RedshiftGenerator
+    database_path_name = "databases"
+    schema_path_name = "schemas"
+
+
+class ExternalVerticaGenerator(DeepLvlGenerator):
+    generator_cls = VerticaGenerator
+    database_path_name = "databases"
+    schema_path_name = "schemas"
