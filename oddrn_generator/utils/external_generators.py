@@ -18,6 +18,7 @@ from oddrn_generator.generators import (
     OracleGenerator,
     RedshiftGenerator,
     VerticaGenerator,
+    SnowflakeGenerator,
 )
 
 
@@ -283,5 +284,11 @@ class ExternalRedshiftGenerator(DeepLvlGenerator):
 
 class ExternalVerticaGenerator(DeepLvlGenerator):
     generator_cls = VerticaGenerator
+    database_path_name = "databases"
+    schema_path_name = "schemas"
+
+
+class ExternalSnowflakeGenerator(DeepLvlGenerator):
+    generator_cls = SnowflakeGenerator
     database_path_name = "databases"
     schema_path_name = "schemas"
