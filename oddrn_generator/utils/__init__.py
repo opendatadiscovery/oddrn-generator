@@ -1,6 +1,8 @@
-def escape(value: any) -> str:
+def escape(value: any) -> any:
     if isinstance(value, str):
         return value.replace("/", "\\\\")
+    else:
+        return value
 
 
 def unescape(value: str) -> str:
