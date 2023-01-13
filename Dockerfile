@@ -8,7 +8,7 @@ ENV PYPI_PASSWORD=$PYPI_PASSWORD
 
 # installing poetry
 ENV POETRY_HOME=/etc/poetry \
-    POETRY_VERSION=1.2.0
+    POETRY_VERSION=1.3.1
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get update && \
