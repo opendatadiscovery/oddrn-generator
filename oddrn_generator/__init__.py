@@ -1,6 +1,7 @@
 from oddrn_generator.generators import (
     AirflowGenerator,
     AthenaGenerator,
+    CassandraGenerator,
     ClickHouseGenerator,
     CubeJsGenerator,
     DbtGenerator,
@@ -42,6 +43,7 @@ from oddrn_generator.generators import (
 __all__ = [
     "AirflowGenerator",
     "AthenaGenerator",
+    "CassandraGenerator",
     "ClickHouseGenerator",
     "DbtGenerator",
     "DynamodbGenerator",
