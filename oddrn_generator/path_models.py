@@ -124,7 +124,6 @@ class GluePathsModel(BasePathsModel):
 
 
 class SnowflakePathsModel(BasePathsModel):
-    warehouses: Optional[str]
     databases: Optional[str]
     schemas: Optional[str]
     tables: Optional[str]
@@ -135,7 +134,6 @@ class SnowflakePathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            "warehouses": ("warehouses",),
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),

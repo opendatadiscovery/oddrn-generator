@@ -67,7 +67,6 @@ parameters_host = [
         {
             "host_settings": "127.0.0.1:5034",
             "paths": {
-                "warehouses": "some_warehouse",
                 "databases": "some_database",
                 "schemas": "some_schema",
                 "tables": "some_table",
