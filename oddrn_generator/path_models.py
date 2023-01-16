@@ -612,6 +612,14 @@ class RedashPathsModel(BasePathsModel):
         }
 
 
+class AirbytePathsModel(BasePathsModel):
+    connections: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "connections": ("connections",),
+        }
+
 # class DVCPathsModel(BasePathsModel):  # todo:
 #     pass
 #

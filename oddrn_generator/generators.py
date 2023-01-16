@@ -40,6 +40,7 @@ from oddrn_generator.path_models import (
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
+    AirbytePathsModel
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -377,6 +378,11 @@ class RedashGenerator(Generator):
     paths_model = RedashPathsModel
     server_model = HostnameModel
 
+
+class AirbyteGenerator(Generator):
+    source = "airbyte"
+    paths_model = AirbytePathsModel
+    server_model = HostnameModel
 
 #
 #
