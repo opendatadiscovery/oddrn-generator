@@ -38,6 +38,7 @@ from oddrn_generator.generators import (
     TarantoolGenerator,
     TrinoGenerator,
     VerticaGenerator,
+    AirbyteGenerator,
 )
 
 __all__ = [
@@ -79,4 +80,5 @@ __all__ = [
     "TrinoGenerator",
     "PowerBiGenerator",
     "MetabaseGenerator",
+    "AirbyteGenerator",
 ]
