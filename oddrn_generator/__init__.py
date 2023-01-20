@@ -1,4 +1,5 @@
 from oddrn_generator.generators import (
+    AirbyteGenerator,
     AirflowGenerator,
     AthenaGenerator,
     CassandraGenerator,
@@ -9,8 +10,10 @@ from oddrn_generator.generators import (
     DynamodbGenerator,
     ElasticSearchGenerator,
     FeastGenerator,
+    FilesystemGenerator,
     Generator,
     GlueGenerator,
+    GreatExpectationsGenerator,
     HiveGenerator,
     KafkaConnectGenerator,
     KafkaGenerator,
@@ -27,8 +30,8 @@ from oddrn_generator.generators import (
     PowerBiGenerator,
     PrefectGenerator,
     PrestoGenerator,
-    RedashGenerator,
     QuicksightGenerator,
+    RedashGenerator,
     RedshiftGenerator,
     S3Generator,
     SagemakerGenerator,
@@ -38,7 +41,6 @@ from oddrn_generator.generators import (
     TarantoolGenerator,
     TrinoGenerator,
     VerticaGenerator,
-    AirbyteGenerator,
 )
 
 __all__ = [
@@ -81,4 +83,7 @@ __all__ = [
     "PowerBiGenerator",
     "MetabaseGenerator",
     "AirbyteGenerator",
+    "FilesystemGenerator",
+    "GreatExpectationsGenerator",
+    "S3Generator",
 ]

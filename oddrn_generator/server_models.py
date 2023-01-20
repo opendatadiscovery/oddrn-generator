@@ -92,3 +92,14 @@ class S3CloudModel(AbstractServerModel, BaseModel):
     @classmethod
     def create(cls, config):
         return cls()
+
+
+class FileSystemServerModel(AbstractServerModel, BaseModel):
+    """Filesystem"""
+
+    def __str__(self) -> str:
+        return "filesystem"
+
+    @classmethod
+    def create(cls, config):
+        return cls()
