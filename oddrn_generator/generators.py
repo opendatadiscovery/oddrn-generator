@@ -2,18 +2,21 @@ from typing import Type
 from urllib.parse import urlparse
 
 from oddrn_generator.path_models import (
+    AirbytePathsModel,
     AirflowPathsModel,
     AthenaPathsModel,
     BasePathsModel,
     CassandraPathsModel,
     ClickHousePathsModel,
     CubeJsPathModel,
-    DmsPathsModel,
     DbtPathsModel,
+    DmsPathsModel,
     DynamodbPathsModel,
     ElasticSearchPathsModel,
     FeastPathsModel,
+    FilesystemPathModel,
     GluePathsModel,
+    GreatExpectationsPathsModel,
     HivePathsModel,
     KafkaConnectorPathsModel,
     KafkaPathsModel,
@@ -30,8 +33,8 @@ from oddrn_generator.path_models import (
     PowerBiPathModel,
     PrefectPathsModel,
     PrestoPathsModel,
-    RedashPathsModel,
     QuicksightPathsModel,
+    RedashPathsModel,
     RedshiftPathsModel,
     S3PathsModel,
     SagemakerPathsModel,
@@ -40,14 +43,14 @@ from oddrn_generator.path_models import (
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
-    AirbytePathsModel
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
-    AzureCloudSettings,
     AzureCloudModel,
+    AzureCloudSettings,
     CloudSettings,
+    FileSystemServerModel,
     HostnameModel,
     HostSettings,
     S3CloudModel,
@@ -384,15 +387,14 @@ class AirbyteGenerator(Generator):
     paths_model = AirbytePathsModel
     server_model = HostnameModel
 
-#
-#
-# class DVCGenerator(Generator):  # todo:
-#     source = "dvc"
-#     paths_model = DVCPathsModel
-#     server_model = HostnameModel
-#
-#
-# class GreatExpectationsGenerator(Generator):  # todo:
-#     source = "great_expectations"
-#     paths_model = GreatExpectationsPathsModel
-#     server_model = AWSCloudModel
+
+class FilesystemGenerator(Generator):
+    source = "filesystem"
+    paths_model = FilesystemPathModel
+    server_model = FileSystemServerModel
+
+
+class GreatExpectationsGenerator(Generator):
+    source = "great_expectations"
+    paths_model = GreatExpectationsPathsModel
+    server_model = FileSystemServerModel

@@ -620,20 +620,23 @@ class AirbytePathsModel(BasePathsModel):
             "connections": ("connections",),
         }
 
-# class DVCPathsModel(BasePathsModel):  # todo:
-#     pass
-#
-#
-# class GreatExpectationsPathsModel(BasePathsModel):  # todo:
-#     suits: Optional[str]
-#     runs: Optional[str]
-#     suits_types: Optional[str] = Field(alias='types')
-#     runs_types: Optional[str] = Field(alias='types')
-#
-#     class Config:
-#         dependencies_map = {
-#             'suits':        ('suits',),
-#             'suits_types':  ('suits', 'suits_types'),
-#             'runs':         ('runs',),
-#             'runs_types':   ('runs', 'runs_types'),
-#         }
+
+class FilesystemPathModel(BasePathsModel):
+    path: Optional[str]
+    fields: Optional[str]
+
+    class Config:
+        dependencies_map = {"path": ("path",), "fields": ("path", "fields")}
+
+
+class GreatExpectationsPathsModel(BasePathsModel):
+    suites: Optional[str]
+    types: Optional[str]
+    runs: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "suites": ("suites",),
+            "types": ("suites", "types"),
+            "runs": ("suites", "types", "runs"),
+        }
