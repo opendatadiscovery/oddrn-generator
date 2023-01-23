@@ -640,3 +640,16 @@ class GreatExpectationsPathsModel(BasePathsModel):
             "types": ("suites", "types"),
             "runs": ("suites", "types", "runs"),
         }
+
+
+class DatabricksLakehousePathModel(BasePathsModel):
+    databases: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "columns": ("databases", "tables", "columns"),
+        }
