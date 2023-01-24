@@ -50,7 +50,6 @@ from oddrn_generator.server_models import (
     AzureCloudModel,
     AzureCloudSettings,
     CloudSettings,
-    FileSystemServerModel,
     HostnameModel,
     HostSettings,
     S3CloudModel,
@@ -391,10 +390,10 @@ class AirbyteGenerator(Generator):
 class FilesystemGenerator(Generator):
     source = "filesystem"
     paths_model = FilesystemPathModel
-    server_model = FileSystemServerModel
+    server_model = HostnameModel
 
 
 class GreatExpectationsGenerator(Generator):
     source = "great_expectations"
     paths_model = GreatExpectationsPathsModel
-    server_model = FileSystemServerModel
+    server_model = HostnameModel
