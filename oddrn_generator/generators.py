@@ -9,6 +9,7 @@ from oddrn_generator.path_models import (
     CassandraPathsModel,
     ClickHousePathsModel,
     CubeJsPathModel,
+    DatabricksLakehousePathModel,
     DbtPathsModel,
     DmsPathsModel,
     DynamodbPathsModel,
@@ -396,4 +397,10 @@ class FilesystemGenerator(Generator):
 class GreatExpectationsGenerator(Generator):
     source = "great_expectations"
     paths_model = GreatExpectationsPathsModel
+    server_model = HostnameModel
+
+
+class DatabricksLakehouseGenerator(Generator):
+    source = "databricks_lakehouse"
+    paths_model = DatabricksLakehousePathModel
     server_model = HostnameModel
