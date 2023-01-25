@@ -124,13 +124,12 @@ class GluePathsModel(BasePathsModel):
 
 
 class SnowflakePathsModel(BasePathsModel):
-    databases: Optional[str]
+    databases: str
     schemas: Optional[str]
     tables: Optional[str]
     views: Optional[str]
     tables_columns: Optional[str] = Field(alias="columns")
     views_columns: Optional[str] = Field(alias="columns")
-    owners: Optional[str]
 
     class Config:
         dependencies_map = {
@@ -138,19 +137,8 @@ class SnowflakePathsModel(BasePathsModel):
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
             "views": ("databases", "schemas", "views"),
-            "tables_columns": (
-                "databases",
-                "schemas",
-                "tables",
-                "tables_columns",
-            ),
-            "views_columns": (
-                "databases",
-                "schemas",
-                "views",
-                "views_columns",
-            ),
-            "owners": ("databases", "owners"),
+            "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
+            "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
         data_source_path = "databases"
 
