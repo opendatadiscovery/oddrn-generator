@@ -36,6 +36,7 @@ from oddrn_generator.generators import (
     RedshiftGenerator,
     S3Generator,
     SagemakerGenerator,
+    SingleStoreGenerator,
     SnowflakeGenerator,
     SupersetGenerator,
     TableauGenerator,
@@ -88,4 +89,5 @@ __all__ = [
     "FilesystemGenerator",
     "GreatExpectationsGenerator",
     "S3Generator",
+    "SingleStoreGenerator",
 ]
