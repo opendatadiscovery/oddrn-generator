@@ -39,6 +39,7 @@ from oddrn_generator.path_models import (
     RedshiftPathsModel,
     S3PathsModel,
     SagemakerPathsModel,
+    SingleStorePathsModel,
     SnowflakePathsModel,
     SupersetPathsModel,
     TableauPathsModel,
@@ -403,4 +404,10 @@ class GreatExpectationsGenerator(Generator):
 class DatabricksLakehouseGenerator(Generator):
     source = "databricks_lakehouse"
     paths_model = DatabricksLakehousePathModel
+    server_model = HostnameModel
+
+
+class SingleStoreGenerator(Generator):
+    source = "singlestore"
+    paths_model = SingleStorePathsModel
     server_model = HostnameModel
