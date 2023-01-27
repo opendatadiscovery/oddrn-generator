@@ -2,18 +2,22 @@ from typing import Type
 from urllib.parse import urlparse
 
 from oddrn_generator.path_models import (
+    AirbytePathsModel,
     AirflowPathsModel,
     AthenaPathsModel,
     BasePathsModel,
     CassandraPathsModel,
     ClickHousePathsModel,
     CubeJsPathModel,
-    DmsPathsModel,
+    DatabricksLakehousePathModel,
     DbtPathsModel,
+    DmsPathsModel,
     DynamodbPathsModel,
     ElasticSearchPathsModel,
     FeastPathsModel,
+    FilesystemPathModel,
     GluePathsModel,
+    GreatExpectationsPathsModel,
     HivePathsModel,
     KafkaConnectorPathsModel,
     KafkaPathsModel,
@@ -30,11 +34,12 @@ from oddrn_generator.path_models import (
     PowerBiPathModel,
     PrefectPathsModel,
     PrestoPathsModel,
-    RedashPathsModel,
     QuicksightPathsModel,
+    RedashPathsModel,
     RedshiftPathsModel,
     S3PathsModel,
     SagemakerPathsModel,
+    SingleStorePathsModel,
     SnowflakePathsModel,
     SupersetPathsModel,
     TableauPathsModel,
@@ -44,8 +49,8 @@ from oddrn_generator.path_models import (
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
-    AzureCloudSettings,
     AzureCloudModel,
+    AzureCloudSettings,
     CloudSettings,
     HostnameModel,
     HostSettings,
@@ -378,15 +383,31 @@ class RedashGenerator(Generator):
     server_model = HostnameModel
 
 
-#
-#
-# class DVCGenerator(Generator):  # todo:
-#     source = "dvc"
-#     paths_model = DVCPathsModel
-#     server_model = HostnameModel
-#
-#
-# class GreatExpectationsGenerator(Generator):  # todo:
-#     source = "great_expectations"
-#     paths_model = GreatExpectationsPathsModel
-#     server_model = AWSCloudModel
+class AirbyteGenerator(Generator):
+    source = "airbyte"
+    paths_model = AirbytePathsModel
+    server_model = HostnameModel
+
+
+class FilesystemGenerator(Generator):
+    source = "filesystem"
+    paths_model = FilesystemPathModel
+    server_model = HostnameModel
+
+
+class GreatExpectationsGenerator(Generator):
+    source = "great_expectations"
+    paths_model = GreatExpectationsPathsModel
+    server_model = HostnameModel
+
+
+class DatabricksLakehouseGenerator(Generator):
+    source = "databricks_lakehouse"
+    paths_model = DatabricksLakehousePathModel
+    server_model = HostnameModel
+
+
+class SingleStoreGenerator(Generator):
+    source = "singlestore"
+    paths_model = SingleStorePathsModel
+    server_model = HostnameModel

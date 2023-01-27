@@ -67,14 +67,13 @@ parameters_host = [
         {
             "host_settings": "127.0.0.1:5034",
             "paths": {
-                "warehouses": "some_warehouse",
                 "databases": "some_database",
                 "schemas": "some_schema",
                 "tables": "some_table",
                 "views": "some_view",
                 "tables_columns": "some_table_column",
                 "views_columns": "some_view_column",
-                "owners": "some_owner",
+                "pipes": "pipe"
             },
             "aliases": {
                 "tables_columns": "columns",

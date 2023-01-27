@@ -124,13 +124,13 @@ class GluePathsModel(BasePathsModel):
 
 
 class SnowflakePathsModel(BasePathsModel):
-    databases: Optional[str]
+    databases: str
     schemas: Optional[str]
     tables: Optional[str]
     views: Optional[str]
     tables_columns: Optional[str] = Field(alias="columns")
     views_columns: Optional[str] = Field(alias="columns")
-    owners: Optional[str]
+    pipes: Optional[str]
 
     class Config:
         dependencies_map = {
@@ -138,19 +138,9 @@ class SnowflakePathsModel(BasePathsModel):
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
             "views": ("databases", "schemas", "views"),
-            "tables_columns": (
-                "databases",
-                "schemas",
-                "tables",
-                "tables_columns",
-            ),
-            "views_columns": (
-                "databases",
-                "schemas",
-                "views",
-                "views_columns",
-            ),
-            "owners": ("databases", "owners"),
+            "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
+            "views_columns": ("databases", "schemas", "views", "views_columns"),
+            "pipes": ("pipes",),
         }
         data_source_path = "databases"
 
@@ -617,20 +607,62 @@ class RedashPathsModel(BasePathsModel):
         }
 
 
-# class DVCPathsModel(BasePathsModel):  # todo:
-#     pass
-#
-#
-# class GreatExpectationsPathsModel(BasePathsModel):  # todo:
-#     suits: Optional[str]
-#     runs: Optional[str]
-#     suits_types: Optional[str] = Field(alias='types')
-#     runs_types: Optional[str] = Field(alias='types')
-#
-#     class Config:
-#         dependencies_map = {
-#             'suits':        ('suits',),
-#             'suits_types':  ('suits', 'suits_types'),
-#             'runs':         ('runs',),
-#             'runs_types':   ('runs', 'runs_types'),
-#         }
+class AirbytePathsModel(BasePathsModel):
+    connections: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "connections": ("connections",),
+        }
+
+
+class FilesystemPathModel(BasePathsModel):
+    path: Optional[str]
+    fields: Optional[str]
+
+    class Config:
+        dependencies_map = {"path": ("path",), "fields": ("path", "fields")}
+
+
+class GreatExpectationsPathsModel(BasePathsModel):
+    suites: Optional[str]
+    types: Optional[str]
+    runs: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "suites": ("suites",),
+            "types": ("suites", "types"),
+            "runs": ("suites", "types", "runs"),
+        }
+
+
+class DatabricksLakehousePathModel(BasePathsModel):
+    databases: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "columns": ("databases", "tables", "columns"),
+        }
+
+
+class SingleStorePathsModel(BasePathsModel):
+    databases: str
+    tables: Optional[str]
+    views: Optional[str]
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
+
+    class Config:
+        dependencies_map = {
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "views": ("databases", "views"),
+            "tables_columns": ("databases", "tables", "tables_columns"),
+            "views_columns": ("databases", "views", "views_columns"),
+        }
+        data_source_path = "databases"
