@@ -425,13 +425,18 @@ class S3PathsModel(BasePathsModel):
 class CassandraPathsModel(BasePathsModel):
     keyspaces: str
     tables: Optional[str]
+    views: Optional[str]
     columns: Optional[str]
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
 
     class Config:
         dependencies_map = {
             "keyspaces": ("keyspaces",),
             "tables": ("keyspaces", "tables"),
-            "columns": ("keyspaces", "tables", "columns"),
+            "views": ("keyspaces", "views"),
+            "tables_columns": ("keyspaces", "tables", "tables_columns"),
+            "views_columns": ("keyspaces", "views", "views_columns"),
         }
         data_source_path = "keyspaces"
 
