@@ -12,8 +12,8 @@ include = ["LICENSE"]
 
 
 [tool.poetry.dependencies]
-python = "^3.7"
-pydantic = "^1.8.2"
+python = "^3.9"
+pydantic = "^1.9.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
