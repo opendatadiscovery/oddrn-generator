@@ -347,6 +347,8 @@ class DbtPathsModel(BasePathsModel):
     views: Optional[str]
     tables_columns: Optional[str] = Field(alias="columns")
     views_columns: Optional[str] = Field(alias="columns")
+    tests: Optional[str]
+    runs: Optional[str]
 
     class Config:
         dependencies_map = {
@@ -356,6 +358,8 @@ class DbtPathsModel(BasePathsModel):
             "views": ("databases", "schemas", "views"),
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
+            "tests": ("databases", "tests"),
+            "runs": ("databases", "tests", "runs"),
         }
 
 
