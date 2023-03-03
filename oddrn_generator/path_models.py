@@ -515,8 +515,6 @@ class VerticaPathsModel(BasePathsModel):
     views: Optional[str]
     tables_columns: Optional[str] = Field(alias="columns")
     views_columns: Optional[str] = Field(alias="columns")
-    tests: Optional[str]
-    runs: Optional[str]
 
     class Config:
         dependencies_map = {
