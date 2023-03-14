@@ -46,6 +46,7 @@ from oddrn_generator.path_models import (
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
+    AzureSQLPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -416,4 +417,10 @@ class DatabricksFeatureStoreGenerator(Generator):
 class SingleStoreGenerator(Generator):
     source = "singlestore"
     paths_model = SingleStorePathsModel
+    server_model = HostnameModel
+
+
+class AzureSQLGenerator(Generator):
+    source = "azure"
+    paths_model = AzureSQLPathsModel
     server_model = HostnameModel
