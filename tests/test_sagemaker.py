@@ -2,7 +2,6 @@ from oddrn_generator.generators import SagemakerGenerator
 
 
 def test_sagemaker():
-
     generator = SagemakerGenerator(
         cloud_settings={"account": "account", "region": "region"}
     )

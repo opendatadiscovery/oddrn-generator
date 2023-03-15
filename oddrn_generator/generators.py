@@ -47,6 +47,7 @@ from oddrn_generator.path_models import (
     TarantoolPathsModel,
     VerticaPathsModel,
     AzureSQLPathsModel,
+    FivetranPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -408,6 +409,7 @@ class DatabricksLakehouseGenerator(Generator):
     paths_model = DatabricksLakehousePathModel
     server_model = HostnameModel
 
+
 class DatabricksFeatureStoreGenerator(Generator):
     source = "databricks_feature_store"
     paths_model = DatabricksFeatureStorePathModel
@@ -423,4 +425,10 @@ class SingleStoreGenerator(Generator):
 class AzureSQLGenerator(Generator):
     source = "azure"
     paths_model = AzureSQLPathsModel
+    server_model = HostnameModel
+
+
+class FivetranGenerator(Generator):
+    source = "fivetran"
+    paths_model = FivetranPathsModel
     server_model = HostnameModel
