@@ -73,7 +73,7 @@ parameters_host = [
                 "views": "some_view",
                 "tables_columns": "some_table_column",
                 "views_columns": "some_view_column",
-                "pipes": "pipe"
+                "pipes": "pipe",
             },
             "aliases": {
                 "tables_columns": "columns",
