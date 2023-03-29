@@ -707,16 +707,9 @@ class AzureSQLPathsModel(BasePathsModel):
 
 
 class FivetranPathsModel(BasePathsModel):
-    databases: str
-    schemas: str
-    tables: Optional[str]
-    columns: Optional[str]
+    transformers: Optional[str]
 
     class Config:
         dependencies_map = {
-            "databases": ("databases",),
-            "schemas": ("databases", "schemas"),
-            "tables": ("databases", "schemas", "tables"),
-            "columns": ("databases", "schemas", "tables", "columns"),
+            "transformers": ("transformers",),
         }
-        data_source_path = "databases"
