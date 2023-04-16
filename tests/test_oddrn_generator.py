@@ -1,14 +1,12 @@
 import datetime
 
 import pytest
-from oddrn_generator.exceptions import (
-    EmptyPathValueException,
-    PathDoesntExistException,
-    WrongPathOrderException,
-)
-from oddrn_generator.generators import AthenaGenerator, PostgresqlGenerator
 from pydantic import ValidationError
 
+from oddrn_generator.exceptions import (EmptyPathValueException,
+                                        PathDoesntExistException,
+                                        WrongPathOrderException)
+from oddrn_generator.generators import AthenaGenerator, PostgresqlGenerator
 from tests.helpers import create_cloud_oddrn_string, create_host_oddrn_string
 from tests.models import ExampleGenerator, example_generator_settings
 from tests.params import parameters_cloud, parameters_host
