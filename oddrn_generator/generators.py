@@ -47,7 +47,7 @@ from oddrn_generator.path_models import (
     TarantoolPathsModel,
     VerticaPathsModel,
     AzureSQLPathsModel,
-    FivetranPathsModel,
+    FivetranPathsModel, LambdaPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -432,3 +432,13 @@ class FivetranGenerator(Generator):
     source = "fivetran"
     paths_model = FivetranPathsModel
     server_model = HostnameModel
+
+class LambdaGenerator(Generator):
+    source = "lambda"
+    paths_model = LambdaPathsModel
+    server_model = AWSCloudModel
+
+    @classmethod
+    def from_params(cls, region: str, account: str, function_name: str):
+        generator = cls(cloud_settings={"region": region, "account": account}, function_name=function_name)
+        return generator

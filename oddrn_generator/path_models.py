@@ -713,3 +713,12 @@ class FivetranPathsModel(BasePathsModel):
         dependencies_map = {
             "transformers": ("transformers",),
         }
+
+
+class LambdaPathsModel(BasePathsModel):
+    functions: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "functions": ("functions",),
+        }

@@ -46,6 +46,7 @@ from oddrn_generator.generators import (
     TrinoGenerator,
     VerticaGenerator,
     FivetranGenerator,
+    LambdaGenerator
 )
 
 __all__ = [
@@ -96,4 +97,5 @@ __all__ = [
     "SingleStoreGenerator",
     "AzureSQLGenerator",
     "FivetranGenerator",
+    "LambdaGenerator"
 ]
