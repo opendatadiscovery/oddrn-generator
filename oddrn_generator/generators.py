@@ -420,6 +420,6 @@ class LambdaGenerator(Generator):
     def from_params(cls, region: str, account: str, function_name: str):
         generator = cls(
             cloud_settings={"region": region, "account": account},
-            function_name=function_name,
+            functions=function_name,
         )
         return generator
