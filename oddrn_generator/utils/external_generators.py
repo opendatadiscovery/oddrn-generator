@@ -1,25 +1,17 @@
 from abc import abstractmethod
+from typing import Optional, Type
+
 from pydantic import BaseSettings
-from typing import Type, Optional
-from oddrn_generator.generators import (
-    Generator,
-    PostgresqlGenerator,
-    MssqlGenerator,
-    MysqlGenerator,
-    PrestoGenerator,
-    TrinoGenerator,
-    AthenaGenerator,
-    CassandraGenerator,
-    ClickHouseGenerator,
-    HiveGenerator,
-    MongoGenerator,
-    Neo4jGenerator,
-    OdbcGenerator,
-    OracleGenerator,
-    RedshiftGenerator,
-    VerticaGenerator,
-    SnowflakeGenerator,
-)
+
+from oddrn_generator.generators import (AthenaGenerator, CassandraGenerator,
+                                        ClickHouseGenerator, Generator,
+                                        HiveGenerator, MongoGenerator,
+                                        MssqlGenerator, MysqlGenerator,
+                                        Neo4jGenerator, OdbcGenerator,
+                                        OracleGenerator, PostgresqlGenerator,
+                                        PrestoGenerator, RedshiftGenerator,
+                                        SnowflakeGenerator, TrinoGenerator,
+                                        VerticaGenerator)
 
 
 class ExternalGeneratorMappingError(Exception):

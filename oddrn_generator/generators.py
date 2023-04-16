@@ -1,65 +1,42 @@
 from typing import Type
 from urllib.parse import urlparse
 
-from oddrn_generator.path_models import (
-    AirbytePathsModel,
-    AirflowPathsModel,
-    AthenaPathsModel,
-    BasePathsModel,
-    CassandraPathsModel,
-    ClickHousePathsModel,
-    CubeJsPathModel,
-    DatabricksLakehousePathModel,
-    DatabricksFeatureStorePathModel,
-    DbtPathsModel,
-    DmsPathsModel,
-    DynamodbPathsModel,
-    ElasticSearchPathsModel,
-    FeastPathsModel,
-    FilesystemPathModel,
-    GluePathsModel,
-    GreatExpectationsPathsModel,
-    HivePathsModel,
-    KafkaConnectorPathsModel,
-    KafkaPathsModel,
-    KinesisPathsModel,
-    KubeflowPathsModel,
-    MetabasePathModel,
-    MongoPathsModel,
-    MssqlPathsModel,
-    MysqlPathsModel,
-    Neo4jPathsModel,
-    OdbcPathsModel,
-    OraclePathsModel,
-    PostgresqlPathsModel,
-    PowerBiPathModel,
-    PrefectPathsModel,
-    PrestoPathsModel,
-    QuicksightPathsModel,
-    RedashPathsModel,
-    RedshiftPathsModel,
-    S3PathsModel,
-    SagemakerPathsModel,
-    SingleStorePathsModel,
-    SnowflakePathsModel,
-    SupersetPathsModel,
-    TableauPathsModel,
-    TarantoolPathsModel,
-    VerticaPathsModel,
-    AzureSQLPathsModel,
-    FivetranPathsModel,
-)
-from oddrn_generator.server_models import (
-    AbstractServerModel,
-    AWSCloudModel,
-    AzureCloudModel,
-    AzureCloudSettings,
-    CloudSettings,
-    HostnameModel,
-    HostSettings,
-    S3CloudModel,
-    ServerModelConfig,
-)
+from oddrn_generator.path_models import (AirbytePathsModel, AirflowPathsModel,
+                                         AthenaPathsModel, AzureSQLPathsModel,
+                                         BasePathsModel, CassandraPathsModel,
+                                         ClickHousePathsModel, CubeJsPathModel,
+                                         DatabricksFeatureStorePathModel,
+                                         DatabricksLakehousePathModel,
+                                         DbtPathsModel, DmsPathsModel,
+                                         DynamodbPathsModel,
+                                         ElasticSearchPathsModel,
+                                         FeastPathsModel, FilesystemPathModel,
+                                         FivetranPathsModel, GluePathsModel,
+                                         GreatExpectationsPathsModel,
+                                         HivePathsModel,
+                                         KafkaConnectorPathsModel,
+                                         KafkaPathsModel, KinesisPathsModel,
+                                         KubeflowPathsModel, LambdaPathsModel,
+                                         MetabasePathModel, MongoPathsModel,
+                                         MssqlPathsModel, MysqlPathsModel,
+                                         Neo4jPathsModel, OdbcPathsModel,
+                                         OraclePathsModel,
+                                         PostgresqlPathsModel,
+                                         PowerBiPathModel, PrefectPathsModel,
+                                         PrestoPathsModel,
+                                         QuicksightPathsModel,
+                                         RedashPathsModel, RedshiftPathsModel,
+                                         S3PathsModel, SagemakerPathsModel,
+                                         SingleStorePathsModel,
+                                         SnowflakePathsModel,
+                                         SupersetPathsModel, TableauPathsModel,
+                                         TarantoolPathsModel,
+                                         VerticaPathsModel)
+from oddrn_generator.server_models import (AbstractServerModel, AWSCloudModel,
+                                           AzureCloudModel, AzureCloudSettings,
+                                           CloudSettings, HostnameModel,
+                                           HostSettings, S3CloudModel,
+                                           ServerModelConfig)
 
 from .utils import escape
 
@@ -432,3 +409,17 @@ class FivetranGenerator(Generator):
     source = "fivetran"
     paths_model = FivetranPathsModel
     server_model = HostnameModel
+
+
+class LambdaGenerator(Generator):
+    source = "lambda"
+    paths_model = LambdaPathsModel
+    server_model = AWSCloudModel
+
+    @classmethod
+    def from_params(cls, region: str, account: str, function_name: str):
+        generator = cls(
+            cloud_settings={"region": region, "account": account},
+            functions=function_name,
+        )
+        return generator

@@ -2,11 +2,9 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from oddrn_generator.exceptions import (
-    EmptyPathValueException,
-    PathDoesntExistException,
-    WrongPathOrderException,
-)
+from oddrn_generator.exceptions import (EmptyPathValueException,
+                                        PathDoesntExistException,
+                                        WrongPathOrderException)
 
 
 class BasePathsModel(BaseModel):
@@ -712,4 +710,13 @@ class FivetranPathsModel(BasePathsModel):
     class Config:
         dependencies_map = {
             "transformers": ("transformers",),
+        }
+
+
+class LambdaPathsModel(BasePathsModel):
+    functions: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "functions": ("functions",),
         }
