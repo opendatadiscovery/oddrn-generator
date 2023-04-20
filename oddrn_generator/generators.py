@@ -423,3 +423,9 @@ class LambdaGenerator(Generator):
             functions=function_name,
         )
         return generator
+
+
+class CouchbaseGenerator(Generator):
+    source = "couchbase"
+    paths_model = CouchbasePathsModel
+    server_model = HostnameModel
