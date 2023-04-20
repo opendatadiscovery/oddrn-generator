@@ -24,7 +24,8 @@ from oddrn_generator.generators import (AirbyteGenerator, AirflowGenerator,
                                         SingleStoreGenerator,
                                         SnowflakeGenerator, SupersetGenerator,
                                         TableauGenerator, TarantoolGenerator,
-                                        TrinoGenerator, VerticaGenerator)
+                                        TrinoGenerator, VerticaGenerator,
+                                        CouchbaseGenerator)
 
 __all__ = [
     "AirflowGenerator",
@@ -75,4 +76,5 @@ __all__ = [
     "AzureSQLGenerator",
     "FivetranGenerator",
     "LambdaGenerator",
+    "CouchbaseGenerator"
 ]
