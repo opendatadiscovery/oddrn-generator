@@ -31,7 +31,7 @@ from oddrn_generator.path_models import (AirbytePathsModel, AirflowPathsModel,
                                          SnowflakePathsModel,
                                          SupersetPathsModel, TableauPathsModel,
                                          TarantoolPathsModel,
-                                         VerticaPathsModel)
+                                         VerticaPathsModel, CouchbasePathsModel)
 from oddrn_generator.server_models import (AbstractServerModel, AWSCloudModel,
                                            AzureCloudModel, AzureCloudSettings,
                                            CloudSettings, HostnameModel,
