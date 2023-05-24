@@ -7,6 +7,7 @@ from oddrn_generator.path_models import (AirbytePathsModel, AirflowPathsModel,
                                          ClickHousePathsModel, CubeJsPathModel,
                                          DatabricksFeatureStorePathModel,
                                          DatabricksLakehousePathModel,
+                                         DatabricksUnityCatalogPathModel,
                                          DbtPathsModel, DmsPathsModel,
                                          DynamodbPathsModel,
                                          ElasticSearchPathsModel,
@@ -384,6 +385,12 @@ class GreatExpectationsGenerator(Generator):
 class DatabricksLakehouseGenerator(Generator):
     source = "databricks_lakehouse"
     paths_model = DatabricksLakehousePathModel
+    server_model = HostnameModel
+
+
+class DatabricksUnityCatalogGenerator(Generator):
+    source = "databricks_unity_catalog"
+    paths_model = DatabricksUnityCatalogPathModel
     server_model = HostnameModel
 
 
