@@ -652,6 +652,21 @@ class DatabricksLakehousePathModel(BasePathsModel):
         }
 
 
+class DatabricksUnityCatalogPathModel(BasePathsModel):
+    catalogs: Optional[str]
+    schemas: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "catalogs": ("catalogs",),
+            "schemas": ("catalogs", "schemas"),
+            "tables": ("catalogs", "schemas", "tables"),
+            "columns": ("catalogs", "schemas", "tables", "columns"),
+        }
+
+
 class DatabricksFeatureStorePathModel(BasePathsModel):
     databases: Optional[str]
     tables: Optional[str]

@@ -7,6 +7,7 @@ from oddrn_generator.path_models import (AirbytePathsModel, AirflowPathsModel,
                                          ClickHousePathsModel, CubeJsPathModel,
                                          DatabricksFeatureStorePathModel,
                                          DatabricksLakehousePathModel,
+                                         DatabricksUnityCatalogPathModel,
                                          DbtPathsModel, DmsPathsModel,
                                          DynamodbPathsModel,
                                          ElasticSearchPathsModel,
@@ -62,13 +63,13 @@ class Generator:
         return super(Generator, subclass).__new__(subclass)
 
     def __init__(
-        self,
-        *,
-        data_source=None,
-        cloud_settings: dict = None,
-        azure_cloud_settings: dict = None,
-        host_settings: str = None,
-        **paths,
+            self,
+            *,
+            data_source=None,
+            cloud_settings: dict = None,
+            azure_cloud_settings: dict = None,
+            host_settings: str = None,
+            **paths,
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
@@ -384,6 +385,12 @@ class GreatExpectationsGenerator(Generator):
 class DatabricksLakehouseGenerator(Generator):
     source = "databricks_lakehouse"
     paths_model = DatabricksLakehousePathModel
+    server_model = HostnameModel
+
+
+class DatabricksUnityCatalogGenerator(Generator):
+    source = "databricks_unity_catalog"
+    paths_model = DatabricksUnityCatalogPathModel
     server_model = HostnameModel
 
 
