@@ -3,15 +3,25 @@ from typing import Optional, Type
 
 from pydantic import BaseSettings
 
-from oddrn_generator.generators import (AthenaGenerator, CassandraGenerator,
-                                        ClickHouseGenerator, Generator,
-                                        HiveGenerator, MongoGenerator,
-                                        MssqlGenerator, MysqlGenerator,
-                                        Neo4jGenerator, OdbcGenerator,
-                                        OracleGenerator, PostgresqlGenerator,
-                                        PrestoGenerator, RedshiftGenerator,
-                                        SnowflakeGenerator, TrinoGenerator,
-                                        VerticaGenerator)
+from oddrn_generator.generators import (
+    AthenaGenerator,
+    CassandraGenerator,
+    ClickHouseGenerator,
+    Generator,
+    HiveGenerator,
+    MongoGenerator,
+    MssqlGenerator,
+    MysqlGenerator,
+    Neo4jGenerator,
+    OdbcGenerator,
+    OracleGenerator,
+    PostgresqlGenerator,
+    PrestoGenerator,
+    RedshiftGenerator,
+    SnowflakeGenerator,
+    TrinoGenerator,
+    VerticaGenerator,
+)
 
 
 class ExternalGeneratorMappingError(Exception):

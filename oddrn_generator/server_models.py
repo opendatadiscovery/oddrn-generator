@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class HostSettings(BaseModel):
@@ -16,10 +16,23 @@ class AzureCloudSettings(BaseModel):
     domain: str
 
 
+class S3CustomSettings(BaseModel):
+    endpoint: str
+
+    @validator("endpoint")
+    def name_must_contain_space(cls, v):
+        if v.startswith("http://") or v.startswith("https://"):
+            raise ValueError(
+                "Value must not contain scheme http:// or https://. Please use only netloc or escape it with escape() function"
+            )
+        return v
+
+
 class ServerModelConfig(BaseModel):
     host_settings: HostSettings = None
     cloud_settings: CloudSettings = None
     azure_cloud_settings: AzureCloudSettings = None
+    s3_custom_cloud_settings: S3CustomSettings = None
 
 
 class AbstractServerModel(ABC):
@@ -81,6 +94,17 @@ class AzureCloudModel(AbstractServerModel, BaseModel):
             return cls(domain=azure_cloud_settings.domain)
         else:
             raise ValueError("You must specify cloud settings")
+
+
+class S3CustomModel(AbstractServerModel, BaseModel):
+    endpoint: str
+
+    def __str__(self) -> str:
+        return f"{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+
+    @classmethod
+    def create(cls, config: ServerModelConfig):
+        return cls(endpoint=config.s3_custom_cloud_settings.endpoint)
 
 
 class S3CloudModel(AbstractServerModel, BaseModel):

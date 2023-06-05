@@ -1,6 +1,11 @@
-from oddrn_generator.generators import (AirflowGenerator, Generator,
-                                        GlueGenerator, PostgresqlGenerator,
-                                        PrefectGenerator, TableauGenerator)
+from oddrn_generator.generators import (
+    AirflowGenerator,
+    Generator,
+    GlueGenerator,
+    PostgresqlGenerator,
+    PrefectGenerator,
+    TableauGenerator,
+)
 
 
 def postgres_generator_example():
