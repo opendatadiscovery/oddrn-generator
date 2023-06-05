@@ -9,9 +9,11 @@ from oddrn_generator.path_models import (
     BasePathsModel,
     CassandraPathsModel,
     ClickHousePathsModel,
+    CouchbasePathsModel,
     CubeJsPathModel,
     DatabricksFeatureStorePathModel,
     DatabricksLakehousePathModel,
+    DatabricksUnityCatalogPathModel,
     DbtPathsModel,
     DmsPathsModel,
     DynamodbPathsModel,
@@ -429,6 +431,12 @@ class DatabricksLakehouseGenerator(Generator):
     server_model = HostnameModel
 
 
+class DatabricksUnityCatalogGenerator(Generator):
+    source = "databricks_unity_catalog"
+    paths_model = DatabricksUnityCatalogPathModel
+    server_model = HostnameModel
+
+
 class DatabricksFeatureStoreGenerator(Generator):
     source = "databricks_feature_store"
     paths_model = DatabricksFeatureStorePathModel
@@ -465,3 +473,9 @@ class LambdaGenerator(Generator):
             functions=function_name,
         )
         return generator
+
+
+class CouchbaseGenerator(Generator):
+    source = "couchbase"
+    paths_model = CouchbasePathsModel
+    server_model = HostnameModel

@@ -666,6 +666,21 @@ class DatabricksLakehousePathModel(BasePathsModel):
         }
 
 
+class DatabricksUnityCatalogPathModel(BasePathsModel):
+    catalogs: Optional[str]
+    schemas: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "catalogs": ("catalogs",),
+            "schemas": ("catalogs", "schemas"),
+            "tables": ("catalogs", "schemas", "tables"),
+            "columns": ("catalogs", "schemas", "tables", "columns"),
+        }
+
+
 class DatabricksFeatureStorePathModel(BasePathsModel):
     databases: Optional[str]
     tables: Optional[str]
@@ -734,3 +749,19 @@ class LambdaPathsModel(BasePathsModel):
         dependencies_map = {
             "functions": ("functions",),
         }
+
+
+class CouchbasePathsModel(BasePathsModel):
+    buckets: str
+    scopes: Optional[str]
+    collections: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "buckets": ("buckets",),
+            "scopes": ("buckets", "scopes"),
+            "collections": ("buckets", "scopes", "collections"),
+            "columns": ("buckets", "scopes", "collections", "columns"),
+        }
+        data_source_path = "buckets"
