@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from urllib.parse import urlparse
 
 from pydantic import BaseModel, validator
 
@@ -20,12 +21,13 @@ class S3CustomSettings(BaseModel):
     endpoint: str
 
     @validator("endpoint")
-    def name_must_contain_space(cls, v):
-        if v.startswith("http://") or v.startswith("https://"):
-            raise ValueError(
-                "Value must not contain scheme http:// or https://. Please use only netloc or escape it with escape() function"
-            )
-        return v
+    def name_must_contain_space(cls, endpoint):
+        try:
+            parsed = urlparse(endpoint)
+            return parsed.hostname
+        except Exception as e:
+            print(f"Could not parse {endpoint=}")
+            return endpoint
 
 
 class ServerModelConfig(BaseModel):

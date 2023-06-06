@@ -58,7 +58,7 @@ __all__ = [
     "AzureSQLGenerator",
     "CassandraGenerator",
     "ClickHouseGenerator",
-    "CouchbaseGenerator"
+    "CouchbaseGenerator",
     "CubeJsGenerator",
     "DatabricksFeatureStoreGenerator",
     "DatabricksLakehouseGenerator",

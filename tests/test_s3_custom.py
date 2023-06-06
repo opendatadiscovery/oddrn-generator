@@ -3,29 +3,29 @@ from oddrn_generator.utils import escape
 
 
 def test_generator():
-    generator = S3CustomGenerator(endpoint="localhost:9000")
-    assert generator.get_data_source_oddrn() == "//s3-custom/endpoint/localhost:9000"
+    generator = S3CustomGenerator(endpoint="http://localhost:9000")
+    assert generator.get_data_source_oddrn() == "//s3-custom/endpoint/localhost"
 
     generator.set_oddrn_paths(buckets="bucket1")
     assert (
         generator.get_oddrn_by_path("buckets")
-        == "//s3-custom/endpoint/localhost:9000/buckets/bucket1"
+        == "//s3-custom/endpoint/localhost/buckets/bucket1"
     )
 
     generator.set_oddrn_paths(keys="object1")
     assert (
         generator.get_oddrn_by_path("keys")
-        == "//s3-custom/endpoint/localhost:9000/buckets/bucket1/keys/object1"
+        == "//s3-custom/endpoint/localhost/buckets/bucket1/keys/object1"
     )
 
     generator.set_oddrn_paths(columns="age")
     assert (
         generator.get_oddrn_by_path("columns")
-        == "//s3-custom/endpoint/localhost:9000/buckets/bucket1/keys/object1/columns/age"
+        == "//s3-custom/endpoint/localhost/buckets/bucket1/keys/object1/columns/age"
     )
 
     generator.set_oddrn_paths(keys="object2/object3")
     assert (
         generator.get_oddrn_by_path("keys")
-        == "//s3-custom/endpoint/localhost:9000/buckets/bucket1/keys/object2\\\\object3"
+        == "//s3-custom/endpoint/localhost/buckets/bucket1/keys/object2\\\\object3"
     )
