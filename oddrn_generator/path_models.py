@@ -2,9 +2,11 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from oddrn_generator.exceptions import (EmptyPathValueException,
-                                        PathDoesntExistException,
-                                        WrongPathOrderException)
+from oddrn_generator.exceptions import (
+    EmptyPathValueException,
+    PathDoesntExistException,
+    WrongPathOrderException,
+)
 
 
 class BasePathsModel(BaseModel):
@@ -52,7 +54,6 @@ class BasePathsModel(BaseModel):
 class PostgresqlPathsModel(BasePathsModel):
     databases: str
     schemas: Optional[str]
-    databases: Optional[str]
     tables: Optional[str]
     views: Optional[str]
     tables_columns: Optional[str] = Field(alias="columns")
@@ -412,6 +413,19 @@ class Neo4jPathsModel(BasePathsModel):
 
 
 class S3PathsModel(BasePathsModel):
+    buckets: Optional[str]
+    keys: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "buckets": ("buckets",),
+            "keys": ("buckets", "keys"),
+            "columns": ("buckets", "keys", "columns"),
+        }
+
+
+class S3CustomPathsModel(BasePathsModel):
     buckets: Optional[str]
     keys: Optional[str]
     columns: Optional[str]

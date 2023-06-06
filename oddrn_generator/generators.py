@@ -1,45 +1,78 @@
 from typing import Type
 from urllib.parse import urlparse
 
-from oddrn_generator.path_models import (AirbytePathsModel, AirflowPathsModel,
-                                         AthenaPathsModel, AzureSQLPathsModel,
-                                         BasePathsModel, CassandraPathsModel,
-                                         ClickHousePathsModel, CubeJsPathModel,
-                                         DatabricksFeatureStorePathModel,
-                                         DatabricksLakehousePathModel,
-                                         DatabricksUnityCatalogPathModel,
-                                         DbtPathsModel, DmsPathsModel,
-                                         DynamodbPathsModel,
-                                         ElasticSearchPathsModel,
-                                         FeastPathsModel, FilesystemPathModel,
-                                         FivetranPathsModel, GluePathsModel,
-                                         GreatExpectationsPathsModel,
-                                         HivePathsModel,
-                                         KafkaConnectorPathsModel,
-                                         KafkaPathsModel, KinesisPathsModel,
-                                         KubeflowPathsModel, LambdaPathsModel,
-                                         MetabasePathModel, MongoPathsModel,
-                                         MssqlPathsModel, MysqlPathsModel,
-                                         Neo4jPathsModel, OdbcPathsModel,
-                                         OraclePathsModel,
-                                         PostgresqlPathsModel,
-                                         PowerBiPathModel, PrefectPathsModel,
-                                         PrestoPathsModel,
-                                         QuicksightPathsModel,
-                                         RedashPathsModel, RedshiftPathsModel,
-                                         S3PathsModel, SagemakerPathsModel,
-                                         SingleStorePathsModel,
-                                         SnowflakePathsModel,
-                                         SupersetPathsModel, TableauPathsModel,
-                                         TarantoolPathsModel,
-                                         VerticaPathsModel, CouchbasePathsModel)
-from oddrn_generator.server_models import (AbstractServerModel, AWSCloudModel,
-                                           AzureCloudModel, AzureCloudSettings,
-                                           CloudSettings, HostnameModel,
-                                           HostSettings, S3CloudModel,
-                                           ServerModelConfig)
+from oddrn_generator.path_models import (
+    AirbytePathsModel,
+    AirflowPathsModel,
+    AthenaPathsModel,
+    AzureSQLPathsModel,
+    BasePathsModel,
+    CassandraPathsModel,
+    ClickHousePathsModel,
+    CouchbasePathsModel,
+    CubeJsPathModel,
+    DatabricksFeatureStorePathModel,
+    DatabricksLakehousePathModel,
+    DatabricksUnityCatalogPathModel,
+    DbtPathsModel,
+    DmsPathsModel,
+    DynamodbPathsModel,
+    ElasticSearchPathsModel,
+    FeastPathsModel,
+    FilesystemPathModel,
+    FivetranPathsModel,
+    GluePathsModel,
+    GreatExpectationsPathsModel,
+    HivePathsModel,
+    KafkaConnectorPathsModel,
+    KafkaPathsModel,
+    KinesisPathsModel,
+    KubeflowPathsModel,
+    LambdaPathsModel,
+    MetabasePathModel,
+    MongoPathsModel,
+    MssqlPathsModel,
+    MysqlPathsModel,
+    Neo4jPathsModel,
+    OdbcPathsModel,
+    OraclePathsModel,
+    PostgresqlPathsModel,
+    PowerBiPathModel,
+    PrefectPathsModel,
+    PrestoPathsModel,
+    QuicksightPathsModel,
+    RedashPathsModel,
+    RedshiftPathsModel,
+    S3CustomPathsModel,
+    S3PathsModel,
+    SagemakerPathsModel,
+    SingleStorePathsModel,
+    SnowflakePathsModel,
+    SupersetPathsModel,
+    TableauPathsModel,
+    TarantoolPathsModel,
+    VerticaPathsModel,
+)
+from oddrn_generator.server_models import (
+    AbstractServerModel,
+    AWSCloudModel,
+    AzureCloudModel,
+    AzureCloudSettings,
+    CloudSettings,
+    HostnameModel,
+    HostSettings,
+    S3CloudModel,
+    S3CustomModel,
+    S3CustomSettings,
+    ServerModelConfig,
+)
 
 from .utils import escape
+
+
+def parse_url(url: str) -> dict:
+    parsed = urlparse(url)
+    return {k: v for k, v in parsed._asdict().items() if v}
 
 
 class Generator:
@@ -69,6 +102,7 @@ class Generator:
         cloud_settings: dict = None,
         azure_cloud_settings: dict = None,
         host_settings: str = None,
+        endpoint: str = None,
         **paths,
     ):
         config = ServerModelConfig(
@@ -77,6 +111,9 @@ class Generator:
             if azure_cloud_settings
             else None,
             host_settings=HostSettings(host=host_settings) if host_settings else None,
+            s3_custom_cloud_settings=S3CustomSettings(endpoint=endpoint)
+            if endpoint
+            else None,
         )
 
         self.server_obj: AbstractServerModel = self.server_model.create(config)
@@ -284,6 +321,12 @@ class S3Generator(Generator):
         generator.set_oddrn_paths(buckets=bucket, keys=keys)
 
         return generator
+
+
+class S3CustomGenerator(Generator):
+    source = "s3-custom"
+    paths_model = S3CustomPathsModel
+    server_model = S3CustomModel
 
 
 class CassandraGenerator(Generator):
