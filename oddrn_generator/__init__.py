@@ -49,6 +49,7 @@ from oddrn_generator.generators import (
     TarantoolGenerator,
     TrinoGenerator,
     VerticaGenerator,
+    SQLiteGenerator,
 )
 
 __all__ = [
@@ -102,4 +103,5 @@ __all__ = [
     "TarantoolGenerator",
     "TrinoGenerator",
     "VerticaGenerator",
+    "SQLiteGenerator",
 ]

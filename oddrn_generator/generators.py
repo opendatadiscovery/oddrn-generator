@@ -52,6 +52,7 @@ from oddrn_generator.path_models import (
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
+    SQLitePathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -65,6 +66,7 @@ from oddrn_generator.server_models import (
     S3CustomModel,
     S3CustomSettings,
     ServerModelConfig,
+    SQLiteModel,
 )
 
 from .utils import escape
@@ -479,3 +481,9 @@ class CouchbaseGenerator(Generator):
     source = "couchbase"
     paths_model = CouchbasePathsModel
     server_model = HostnameModel
+
+
+class SQLiteGenerator(Generator):
+    source = "sqlite"
+    paths_model = SQLitePathsModel
+    server_model = SQLiteModel
