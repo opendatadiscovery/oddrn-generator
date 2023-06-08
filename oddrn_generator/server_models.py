@@ -118,3 +118,9 @@ class S3CloudModel(AbstractServerModel, BaseModel):
     @classmethod
     def create(cls, config):
         return cls()
+
+
+class SQLiteModel(BaseModel):
+    @classmethod
+    def create(cls, config):
+        return cls()

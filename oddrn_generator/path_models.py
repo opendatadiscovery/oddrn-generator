@@ -765,3 +765,22 @@ class CouchbasePathsModel(BasePathsModel):
             "columns": ("buckets", "scopes", "collections", "columns"),
         }
         data_source_path = "buckets"
+
+
+class SQLitePathsModel(BasePathsModel):
+    databases: Optional[str]
+    tables: Optional[str]
+    views: Optional[str]
+    columns: Optional[str]
+    tables_columns: Optional[str] = Field(alias="columns")
+    views_columns: Optional[str] = Field(alias="columns")
+
+    class Config:
+        dependencies_map = {
+            "databases": ("databases",),
+            "tables": ("databases", "tables"),
+            "views": ("databases", "views"),
+            "tables_columns": ("databases", "tables", "tables_columns"),
+            "views_columns": ("databases", "views", "views_columns"),
+        }
+        data_source_path = "databases"
