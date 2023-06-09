@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FilePath
 
 from oddrn_generator.exceptions import (
     EmptyPathValueException,
@@ -768,7 +768,7 @@ class CouchbasePathsModel(BasePathsModel):
 
 
 class SQLitePathsModel(BasePathsModel):
-    databases: Optional[str]
+    path: Optional[FilePath]
     tables: Optional[str]
     views: Optional[str]
     columns: Optional[str]
@@ -777,10 +777,10 @@ class SQLitePathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            "databases": ("databases",),
-            "tables": ("databases", "tables"),
-            "views": ("databases", "views"),
-            "tables_columns": ("databases", "tables", "tables_columns"),
-            "views_columns": ("databases", "views", "views_columns"),
+            "path": ("path",),
+            "tables": ("path", "tables"),
+            "views": ("path", "views"),
+            "tables_columns": ("path", "tables", "tables_columns"),
+            "views_columns": ("path", "views", "views_columns"),
         }
-        data_source_path = "databases"
+        data_source_path = "path"
