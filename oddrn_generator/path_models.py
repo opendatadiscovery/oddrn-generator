@@ -784,3 +784,18 @@ class SQLitePathsModel(BasePathsModel):
             "views_columns": ("path", "views", "views_columns"),
         }
         data_source_path = "path"
+
+
+class DuckDBPathsModel(BasePathsModel):
+    catalogs: Optional[str]
+    schemas: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "catalogs": ("catalogs",),
+            "schemas": ("catalogs", "schemas"),
+            "tables": ("catalogs", "schemas", "tables"),
+            "columns": ("catalogs", "schemas", "tables", "columns"),
+        }

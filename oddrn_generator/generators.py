@@ -53,6 +53,7 @@ from oddrn_generator.path_models import (
     TarantoolPathsModel,
     VerticaPathsModel,
     SQLitePathsModel,
+    DuckDBPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -98,14 +99,14 @@ class Generator:
         return super(Generator, subclass).__new__(subclass)
 
     def __init__(
-        self,
-        *,
-        data_source=None,
-        cloud_settings: dict = None,
-        azure_cloud_settings: dict = None,
-        host_settings: str = None,
-        endpoint: str = None,
-        **paths,
+            self,
+            *,
+            data_source=None,
+            cloud_settings: dict = None,
+            azure_cloud_settings: dict = None,
+            host_settings: str = None,
+            endpoint: str = None,
+            **paths,
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
@@ -487,3 +488,9 @@ class SQLiteGenerator(Generator):
     source = "sqlite"
     paths_model = SQLitePathsModel
     server_model = SQLiteModel
+
+
+class DuckDBGenerator(Generator):
+    source = "duckdb"
+    paths_model = DuckDBPathsModel
+    server_model = HostnameModel
