@@ -54,6 +54,7 @@ from oddrn_generator.path_models import (
     VerticaPathsModel,
     SQLitePathsModel,
     BigTablePathsModel,
+    DuckDBPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -500,3 +501,9 @@ class BigTableGenerator(Generator):
     source = "bigtable"
     paths_model = BigTablePathsModel
     server_model = GCPCloudModel
+
+
+class DuckDBGenerator(Generator):
+    source = "duckdb"
+    paths_model = DuckDBPathsModel
+    server_model = HostnameModel
