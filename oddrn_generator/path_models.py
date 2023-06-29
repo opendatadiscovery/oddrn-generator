@@ -784,3 +784,16 @@ class SQLitePathsModel(BasePathsModel):
             "views_columns": ("path", "views", "views_columns"),
         }
         data_source_path = "path"
+
+
+class BigTablePathsModel(BasePathsModel):
+    instances: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "instances": ("instances",),
+            "tables": ("instances", "tables"),
+            "columns": ("instances", "tables", "columns"),
+        }

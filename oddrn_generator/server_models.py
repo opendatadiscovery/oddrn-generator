@@ -17,6 +17,10 @@ class AzureCloudSettings(BaseModel):
     domain: str
 
 
+class GoogleCloudSettings(BaseModel):
+    project: str
+
+
 class S3CustomSettings(BaseModel):
     endpoint: str
 
@@ -35,6 +39,7 @@ class ServerModelConfig(BaseModel):
     cloud_settings: CloudSettings = None
     azure_cloud_settings: AzureCloudSettings = None
     s3_custom_cloud_settings: S3CustomSettings = None
+    google_cloud_settings: GoogleCloudSettings = None
 
 
 class AbstractServerModel(ABC):
@@ -124,3 +129,14 @@ class SQLiteModel(BaseModel):
     @classmethod
     def create(cls, config):
         return cls()
+
+
+class GCPCloudModel(BaseModel):
+    project: str
+
+    def __str__(self) -> str:
+        return f"cloud/gcp/project/{self.project}"
+
+    @classmethod
+    def create(cls, config):
+        return cls(project=config.google_cloud_settings.project)

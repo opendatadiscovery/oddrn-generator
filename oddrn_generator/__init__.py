@@ -51,6 +51,7 @@ from oddrn_generator.generators import (
     TarantoolGenerator,
     TrinoGenerator,
     VerticaGenerator,
+    BigTableGenerator,
 )
 
 __all__ = [
@@ -106,4 +107,5 @@ __all__ = [
     "VerticaGenerator",
     "SQLiteGenerator",
     "S3CustomGenerator",
+    "BigTableGenerator",
 ]
