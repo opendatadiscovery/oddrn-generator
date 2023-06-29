@@ -812,3 +812,16 @@ class DuckDBPathsModel(BasePathsModel):
             "tables": ("catalogs", "schemas", "tables"),
             "columns": ("catalogs", "schemas", "tables", "columns"),
         }
+
+
+class GCSPathsModel(BasePathsModel):
+    buckets: Optional[str]
+    keys: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "buckets": ("buckets",),
+            "keys": ("buckets", "keys"),
+            "columns": ("buckets", "keys", "columns"),
+        }

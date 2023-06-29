@@ -55,6 +55,7 @@ from oddrn_generator.path_models import (
     SQLitePathsModel,
     BigTablePathsModel,
     DuckDBPathsModel,
+    GCSPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -507,3 +508,9 @@ class DuckDBGenerator(Generator):
     source = "duckdb"
     paths_model = DuckDBPathsModel
     server_model = HostnameModel
+
+
+class GCSGenerator(Generator):
+    source = "gcs"
+    paths_model = GCSPathsModel
+    server_model = GCPCloudModel
