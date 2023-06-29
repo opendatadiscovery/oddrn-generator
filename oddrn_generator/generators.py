@@ -53,6 +53,7 @@ from oddrn_generator.path_models import (
     TarantoolPathsModel,
     VerticaPathsModel,
     SQLitePathsModel,
+    BigTablePathsModel,
     DuckDBPathsModel,
 )
 from oddrn_generator.server_models import (
@@ -68,6 +69,8 @@ from oddrn_generator.server_models import (
     S3CustomSettings,
     ServerModelConfig,
     SQLiteModel,
+    GoogleCloudSettings,
+    GCPCloudModel,
 )
 
 from .utils import escape
@@ -106,6 +109,7 @@ class Generator:
         azure_cloud_settings: dict = None,
         host_settings: str = None,
         endpoint: str = None,
+        google_cloud_settings: dict = None,
         **paths,
     ):
         config = ServerModelConfig(
@@ -116,6 +120,9 @@ class Generator:
             host_settings=HostSettings(host=host_settings) if host_settings else None,
             s3_custom_cloud_settings=S3CustomSettings(endpoint=endpoint)
             if endpoint
+            else None,
+            google_cloud_settings=GoogleCloudSettings(**google_cloud_settings)
+            if google_cloud_settings
             else None,
         )
 
@@ -488,6 +495,12 @@ class SQLiteGenerator(Generator):
     source = "sqlite"
     paths_model = SQLitePathsModel
     server_model = SQLiteModel
+
+
+class BigTableGenerator(Generator):
+    source = "bigtable"
+    paths_model = BigTablePathsModel
+    server_model = GCPCloudModel
 
 
 class DuckDBGenerator(Generator):

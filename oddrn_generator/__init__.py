@@ -40,16 +40,18 @@ from oddrn_generator.generators import (
     QuicksightGenerator,
     RedashGenerator,
     RedshiftGenerator,
+    S3CustomGenerator,
     S3Generator,
     SagemakerGenerator,
     SingleStoreGenerator,
     SnowflakeGenerator,
+    SQLiteGenerator,
     SupersetGenerator,
     TableauGenerator,
     TarantoolGenerator,
     TrinoGenerator,
     VerticaGenerator,
-    SQLiteGenerator,
+    BigTableGenerator,
     DuckDBGenerator,
 )
 
@@ -105,5 +107,7 @@ __all__ = [
     "TrinoGenerator",
     "VerticaGenerator",
     "SQLiteGenerator",
+    "S3CustomGenerator",
+    "BigTableGenerator",
     "DuckDBGenerator",
 ]

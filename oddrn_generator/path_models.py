@@ -786,6 +786,19 @@ class SQLitePathsModel(BasePathsModel):
         data_source_path = "path"
 
 
+class BigTablePathsModel(BasePathsModel):
+    instances: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "instances": ("instances",),
+            "tables": ("instances", "tables"),
+            "columns": ("instances", "tables", "columns"),
+        }
+
+
 class DuckDBPathsModel(BasePathsModel):
     catalogs: Optional[str]
     schemas: Optional[str]
