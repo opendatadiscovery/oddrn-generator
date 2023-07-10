@@ -345,6 +345,10 @@ class CassandraGenerator(Generator):
     server_model = HostnameModel
 
 
+class ScyllaDBGenerator(CassandraGenerator):
+    source = "scylladb"
+
+
 class SagemakerGenerator(Generator):
     source = "sagemaker"
     paths_model = SagemakerPathsModel
