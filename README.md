@@ -201,5 +201,5 @@ poetry install
 poetry shell
 
 # Run tests
-python run pytest
+poetry run pytest
 ```
