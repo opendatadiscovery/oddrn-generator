@@ -12,8 +12,9 @@ ENV POETRY_HOME=/etc/poetry \
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get update && \
-    apt-get install -y -q build-essential curl
-RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} python3 -
+    apt-get install -y -q build-essential curl && \
+    curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} python3 - && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # copying package files
 COPY . ./
