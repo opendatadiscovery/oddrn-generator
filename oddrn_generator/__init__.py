@@ -53,6 +53,7 @@ from oddrn_generator.generators import (
     VerticaGenerator,
     BigTableGenerator,
     DuckDBGenerator,
+    ScyllaDBGenerator,
     GCSGenerator,
 )
 
@@ -111,5 +112,6 @@ __all__ = [
     "S3CustomGenerator",
     "BigTableGenerator",
     "DuckDBGenerator",
+    "ScyllaDBGenerator",
     "GCSGenerator",
 ]
