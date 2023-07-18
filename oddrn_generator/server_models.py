@@ -138,5 +138,10 @@ class GCPCloudModel(BaseModel):
         return f"cloud/gcp/project/{self.project}"
 
     @classmethod
-    def create(cls, config):
-        return cls(project=config.google_cloud_settings.project)
+    def create(cls, config: ServerModelConfig):
+        gcp_cloud_settings = config.google_cloud_settings
+
+        if gcp_cloud_settings:
+            return cls(project=gcp_cloud_settings.project)
+        else:
+            raise ValueError("You must specify cloud settings")

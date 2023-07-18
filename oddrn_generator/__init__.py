@@ -54,6 +54,7 @@ from oddrn_generator.generators import (
     BigTableGenerator,
     DuckDBGenerator,
     ScyllaDBGenerator,
+    GCSGenerator,
 )
 
 __all__ = [
@@ -112,4 +113,5 @@ __all__ = [
     "BigTableGenerator",
     "DuckDBGenerator",
     "ScyllaDBGenerator",
+    "GCSGenerator",
 ]
