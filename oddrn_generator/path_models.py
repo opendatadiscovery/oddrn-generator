@@ -413,7 +413,7 @@ class Neo4jPathsModel(BasePathsModel):
 
 
 class S3PathsModel(BasePathsModel):
-    buckets: Optional[str]
+    buckets: str
     keys: Optional[str]
     columns: Optional[str]
 
@@ -423,10 +423,10 @@ class S3PathsModel(BasePathsModel):
             "keys": ("buckets", "keys"),
             "columns": ("buckets", "keys", "columns"),
         }
-
+        data_source_path = "buckets"
 
 class S3CustomPathsModel(BasePathsModel):
-    buckets: Optional[str]
+    buckets: str
     keys: Optional[str]
     columns: Optional[str]
 
@@ -436,6 +436,7 @@ class S3CustomPathsModel(BasePathsModel):
             "keys": ("buckets", "keys"),
             "columns": ("buckets", "keys", "columns"),
         }
+        data_source_path = "buckets"
 
 
 class CassandraPathsModel(BasePathsModel):

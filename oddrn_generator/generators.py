@@ -7,6 +7,7 @@ from oddrn_generator.path_models import (
     AthenaPathsModel,
     AzureSQLPathsModel,
     BasePathsModel,
+    BigTablePathsModel,
     CassandraPathsModel,
     ClickHousePathsModel,
     CouchbasePathsModel,
@@ -16,11 +17,13 @@ from oddrn_generator.path_models import (
     DatabricksUnityCatalogPathModel,
     DbtPathsModel,
     DmsPathsModel,
+    DuckDBPathsModel,
     DynamodbPathsModel,
     ElasticSearchPathsModel,
     FeastPathsModel,
     FilesystemPathModel,
     FivetranPathsModel,
+    GCSPathsModel,
     GluePathsModel,
     GreatExpectationsPathsModel,
     HivePathsModel,
@@ -48,14 +51,11 @@ from oddrn_generator.path_models import (
     SagemakerPathsModel,
     SingleStorePathsModel,
     SnowflakePathsModel,
+    SQLitePathsModel,
     SupersetPathsModel,
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
-    SQLitePathsModel,
-    BigTablePathsModel,
-    DuckDBPathsModel,
-    GCSPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -63,6 +63,8 @@ from oddrn_generator.server_models import (
     AzureCloudModel,
     AzureCloudSettings,
     CloudSettings,
+    GCPCloudModel,
+    GoogleCloudSettings,
     HostnameModel,
     HostSettings,
     S3CloudModel,
@@ -70,8 +72,6 @@ from oddrn_generator.server_models import (
     S3CustomSettings,
     ServerModelConfig,
     SQLiteModel,
-    GoogleCloudSettings,
-    GCPCloudModel,
 )
 
 from .utils import escape
@@ -328,8 +328,8 @@ class S3Generator(Generator):
         bucket = parsed.netloc
         keys = parsed.path.lstrip("/")
 
-        generator = cls()
-        generator.set_oddrn_paths(buckets=bucket, keys=keys)
+        generator = cls(buckets=bucket)
+        generator.set_oddrn_paths(keys=keys)
 
         return generator
 

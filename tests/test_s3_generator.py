@@ -2,8 +2,8 @@ from oddrn_generator.generators import S3Generator
 
 
 def test_s3_generator():
-    generator = S3Generator()
-    generator.set_oddrn_paths(buckets="accounts", keys="developers.csv", columns="age")
+    generator = S3Generator(buckets="accounts")
+    generator.set_oddrn_paths(keys="developers.csv", columns="age")
 
     assert (
         generator.get_oddrn_by_path("columns")
