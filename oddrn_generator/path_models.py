@@ -413,7 +413,7 @@ class Neo4jPathsModel(BasePathsModel):
 
 
 class S3PathsModel(BasePathsModel):
-    buckets: str
+    buckets: Optional[str]
     keys: Optional[str]
     columns: Optional[str]
 
@@ -426,7 +426,7 @@ class S3PathsModel(BasePathsModel):
         data_source_path = "buckets"
 
 class S3CustomPathsModel(BasePathsModel):
-    buckets: str
+    buckets: Optional[str]
     keys: Optional[str]
     columns: Optional[str]
 

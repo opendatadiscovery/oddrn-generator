@@ -1,3 +1,6 @@
+import pytest
+
+from oddrn_generator.exceptions import EmptyPathValueException, WrongPathOrderException
 from oddrn_generator.generators import S3Generator
 
 
@@ -17,3 +20,14 @@ def test_s3_generator_from_s3_url():
         generator.get_oddrn_by_path("keys")
         == "//s3/cloud/aws/buckets/accounts/keys/company\\\\developers\\\\middle.csv"
     )
+
+def test_s3_generator_with_empty_bucket():
+    generator = S3Generator()
+
+    with pytest.raises(WrongPathOrderException):
+        generator.set_oddrn_paths(keys="developers.csv", columns="age")
+
+    with pytest.raises(EmptyPathValueException):
+        generator.get_data_source_oddrn()
+
+

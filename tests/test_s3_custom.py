@@ -1,5 +1,4 @@
 from oddrn_generator.generators import S3CustomGenerator
-from oddrn_generator.utils import escape
 
 
 def test_generator():
