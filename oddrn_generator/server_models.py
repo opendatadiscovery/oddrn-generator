@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 from urllib.parse import urlparse
 
 from pydantic import BaseModel, validator
@@ -14,7 +15,8 @@ class CloudSettings(BaseModel):
 
 
 class AzureCloudSettings(BaseModel):
-    domain: str
+    domain: Optional[str]
+    account_name: Optional[str]
 
 
 class GoogleCloudSettings(BaseModel):
@@ -85,7 +87,7 @@ class AWSCloudModel(AbstractServerModel, BaseModel):
             raise ValueError("You must specify cloud settings")
 
 
-class AzureCloudModel(AbstractServerModel, BaseModel):
+class AzureDomainCloudModel(AbstractServerModel, BaseModel):
     domain: str
 
     def __str__(self) -> str:
@@ -99,6 +101,40 @@ class AzureCloudModel(AbstractServerModel, BaseModel):
 
         if azure_cloud_settings:
             return cls(domain=azure_cloud_settings.domain)
+        else:
+            raise ValueError("You must specify cloud settings")
+
+class AzureDomainCloudModel(AbstractServerModel, BaseModel):
+    domain: str
+
+    def __str__(self) -> str:
+        return (
+            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+        )
+
+    @classmethod
+    def create(cls, config: ServerModelConfig):
+        azure_cloud_settings = config.azure_cloud_settings
+
+        if azure_cloud_settings:
+            return cls(domain=azure_cloud_settings.domain)
+        else:
+            raise ValueError("You must specify cloud settings")
+
+class AzureCloudModel(AbstractServerModel, BaseModel):
+    account_name: str
+
+    def __str__(self) -> str:
+        return (
+            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+        )
+
+    @classmethod
+    def create(cls, config: ServerModelConfig):
+        azure_cloud_settings = config.azure_cloud_settings
+
+        if azure_cloud_settings:
+            return cls(domain=azure_cloud_settings.account_name)
         else:
             raise ValueError("You must specify cloud settings")
 

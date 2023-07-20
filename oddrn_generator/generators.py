@@ -62,6 +62,7 @@ from oddrn_generator.server_models import (
     AWSCloudModel,
     AzureCloudModel,
     AzureCloudSettings,
+    AzureDomainCloudModel,
     CloudSettings,
     GCPCloudModel,
     GoogleCloudSettings,
@@ -413,7 +414,7 @@ class DmsGenerator(Generator):
 class PowerBiGenerator(Generator):
     source = "powerbi"
     paths_model = PowerBiPathModel
-    server_model = AzureCloudModel
+    server_model = AzureDomainCloudModel
 
 
 class RedashGenerator(Generator):
@@ -469,6 +470,10 @@ class AzureSQLGenerator(Generator):
     paths_model = AzureSQLPathsModel
     server_model = HostnameModel
 
+class AzureGenerator(Generator):
+    source = "azure"
+    paths_model = "" # use  azure collector
+    server_model = AzureCloudModel
 
 class FivetranGenerator(Generator):
     source = "fivetran"
