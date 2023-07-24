@@ -56,11 +56,13 @@ from oddrn_generator.path_models import (
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
+    BlobPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
     AzureCloudModel,
+    AzureDomainCloudModel,
     AzureCloudSettings,
     CloudSettings,
     GCPCloudModel,
@@ -413,7 +415,7 @@ class DmsGenerator(Generator):
 class PowerBiGenerator(Generator):
     source = "powerbi"
     paths_model = PowerBiPathModel
-    server_model = AzureCloudModel
+    server_model = AzureDomainCloudModel
 
 
 class RedashGenerator(Generator):
@@ -518,3 +520,9 @@ class GCSGenerator(Generator):
     source = "gcs"
     paths_model = GCSPathsModel
     server_model = GCPCloudModel
+
+
+class AzureBlobStorageGenerator(Generator):
+    source = "blob_storage"
+    paths_model = BlobPathsModel
+    server_model = AzureCloudModel
