@@ -425,6 +425,7 @@ class S3PathsModel(BasePathsModel):
         }
         data_source_path = "buckets"
 
+
 class S3CustomPathsModel(BasePathsModel):
     buckets: Optional[str]
     keys: Optional[str]
@@ -562,15 +563,16 @@ class SupersetPathsModel(BasePathsModel):
     datasets: Optional[str]
     columns: Optional[str]
     dashboards: Optional[str]
+    charts: Optional[str]
 
     class Config:
         dependencies_map = {
             "databases": ("databases",),
             "datasets": ("databases", "datasets"),
             "columns": ("databases", "datasets", "columns"),
+            "charts": ("charts",),
             "dashboards": ("dashboards",),
         }
-        # data_source_path = "databases"
 
 
 class CubeJsPathModel(BasePathsModel):
