@@ -6,8 +6,8 @@ from oddrn_generator.generators import AzureBlobStorageGenerator
 def test_blob_storage_generator():
     generator = AzureBlobStorageGenerator(
         azure_cloud_settings={
-            "account_name": "test_account_name",
-            "container_name": "test_container_name"
+            "account": "test_account_name",
+            "container": "test_container_name"
         }
     )
     generator.set_oddrn_paths(keys="test.csv", columns="age")
@@ -15,13 +15,13 @@ def test_blob_storage_generator():
     # Data source oddrn.
     assert (
         generator.get_data_source_oddrn()
-        == "//blob_storage/cloud/azure/account_name/test_account_name/container_name/test_container_name"
+        == "//blob_storage/cloud/azure/account/test_account_name/container/test_container_name"
     )
 
     # Oddrn by path.
     assert (
         generator.get_oddrn_by_path("columns")
-        == "//blob_storage/cloud/azure/account_name/test_account_name/container_name/test_container_name/keys/test.csv/columns/age"
+        == "//blob_storage/cloud/azure/account/test_account_name/container/test_container_name/keys/test.csv/columns/age"
     )
 
 

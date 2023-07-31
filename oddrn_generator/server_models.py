@@ -120,8 +120,8 @@ class BlobStorageCloudModel(AbstractServerModel, BaseModel):
 
         if azure_cloud_settings:
             return cls(
-                account_name=azure_cloud_settings.account,
-                container_name=azure_cloud_settings.container
+                account=azure_cloud_settings.account,
+                container=azure_cloud_settings.container
             )
         else:
             raise ValueError("You must specify cloud settings")
