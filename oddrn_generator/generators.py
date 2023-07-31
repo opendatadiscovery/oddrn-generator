@@ -61,7 +61,7 @@ from oddrn_generator.path_models import (
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
-    AzureCloudModel,
+    BlobStorageCloudModel,
     AzureDomainCloudModel,
     AzureCloudSettings,
     CloudSettings,
@@ -525,4 +525,4 @@ class GCSGenerator(Generator):
 class AzureBlobStorageGenerator(Generator):
     source = "blob_storage"
     paths_model = BlobPathsModel
-    server_model = AzureCloudModel
+    server_model = BlobStorageCloudModel

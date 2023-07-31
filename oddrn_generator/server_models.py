@@ -15,8 +15,8 @@ class CloudSettings(BaseModel):
 
 class AzureCloudSettings(BaseModel):
     domain: Optional[str]
-    account_name: Optional[str]
-    container_name: Optional[str]
+    account: Optional[str]
+    container: Optional[str]
 
 
 class GoogleCloudSettings(BaseModel):
@@ -105,9 +105,9 @@ class AzureDomainCloudModel(AbstractServerModel, BaseModel):
             raise ValueError("You must specify cloud settings")
 
 
-class AzureCloudModel(AbstractServerModel, BaseModel):
-    account_name: str
-    container_name: str
+class BlobStorageCloudModel(AbstractServerModel, BaseModel):
+    account: str
+    container: str
 
     def __str__(self) -> str:
         return (
@@ -120,8 +120,8 @@ class AzureCloudModel(AbstractServerModel, BaseModel):
 
         if azure_cloud_settings:
             return cls(
-                account_name=azure_cloud_settings.account_name,
-                container_name=azure_cloud_settings.container_name
+                account_name=azure_cloud_settings.account,
+                container_name=azure_cloud_settings.container
             )
         else:
             raise ValueError("You must specify cloud settings")
