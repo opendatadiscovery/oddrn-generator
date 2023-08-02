@@ -828,3 +828,14 @@ class GCSPathsModel(BasePathsModel):
             "keys": ("buckets", "keys"),
             "columns": ("buckets", "keys", "columns"),
         }
+
+
+class BlobPathsModel(BasePathsModel):
+    keys: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "keys": ("keys", ),
+            "columns": ("keys", "columns", )
+        }
