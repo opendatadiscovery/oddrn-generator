@@ -57,6 +57,7 @@ from oddrn_generator.path_models import (
     TarantoolPathsModel,
     VerticaPathsModel,
     BlobPathsModel,
+    BigQueryStoragePathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -526,3 +527,9 @@ class AzureBlobStorageGenerator(Generator):
     source = "blob_storage"
     paths_model = BlobPathsModel
     server_model = BlobStorageCloudModel
+
+
+class BigQueryStorageGenerator(Generator):
+    source = "bigquery_storage"
+    paths_model = BigQueryStoragePathsModel
+    server_model = GCPCloudModel
