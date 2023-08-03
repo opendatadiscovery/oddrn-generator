@@ -839,3 +839,16 @@ class BlobPathsModel(BasePathsModel):
             "keys": ("keys", ),
             "columns": ("keys", "columns", )
         }
+
+
+class BigQueryStoragePathsModel(BasePathsModel):
+    datasets: Optional[str]
+    tables: Optional[str]
+    columns: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "datasets": ("datasets",),
+            "tables": ("datasets", "tables"),
+            "columns": ("datasets", "tables", "columns"),
+        }

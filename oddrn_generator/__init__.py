@@ -56,6 +56,7 @@ from oddrn_generator.generators import (
     ScyllaDBGenerator,
     GCSGenerator,
     AzureBlobStorageGenerator,
+    BigQueryStorageGenerator,
 )
 
 __all__ = [
@@ -116,4 +117,5 @@ __all__ = [
     "ScyllaDBGenerator",
     "GCSGenerator",
     "AzureBlobStorageGenerator",
+    "BigQueryStorageGenerator",
 ]
