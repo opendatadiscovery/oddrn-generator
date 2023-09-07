@@ -837,10 +837,7 @@ class BlobPathsModel(BasePathsModel):
     class Config:
         dependencies_map = {
             "keys": ("keys",),
-            "columns": (
-                "keys",
-                "columns",
-            ),
+            "columns": ("keys", "columns", ),
         }
 
 
