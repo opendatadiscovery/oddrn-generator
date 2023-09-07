@@ -58,6 +58,7 @@ from oddrn_generator.path_models import (
     VerticaPathsModel,
     BlobPathsModel,
     BigQueryStoragePathsModel,
+    CKANPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -533,3 +534,9 @@ class BigQueryStorageGenerator(Generator):
     source = "bigquery_storage"
     paths_model = BigQueryStoragePathsModel
     server_model = GCPCloudModel
+
+
+class CKANGenerator(Generator):
+    source = "ckan"
+    paths_model = CKANPathsModel
+    server_model = HostnameModel
