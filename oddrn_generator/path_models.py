@@ -852,3 +852,20 @@ class BigQueryStoragePathsModel(BasePathsModel):
             "tables": ("datasets", "tables"),
             "columns": ("datasets", "tables", "columns"),
         }
+
+
+class CKANPathsModel(BasePathsModel):
+    organizations: Optional[str]
+    groups: Optional[str]
+    datasets: Optional[str]
+    resources: Optional[str]
+    fields: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "organizations": ("organizations",),
+            "groups": ("groups",),
+            "datasets": ("organizations", "datasets"),
+            "resources": ("organizations", "datasets", "resources"),
+            "fields": ("organizations", "datasets", "resources", "fields"),
+        }
