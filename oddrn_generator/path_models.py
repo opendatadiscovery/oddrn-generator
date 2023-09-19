@@ -349,6 +349,7 @@ class DbtPathsModel(BasePathsModel):
     tests: Optional[str]
     runs: Optional[str]
     models: Optional[str]
+    seeds: Optional[str]
 
     class Config:
         dependencies_map = {
@@ -361,6 +362,7 @@ class DbtPathsModel(BasePathsModel):
             "tests": ("databases", "tests"),
             "runs": ("databases", "tests", "runs"),
             "models": ("models",),
+            "seeds": ("seeds",),
         }
 
 
