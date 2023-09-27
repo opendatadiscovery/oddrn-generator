@@ -178,11 +178,21 @@ class HivePathsModel(BasePathsModel):
 
 
 class ElasticSearchPathsModel(BasePathsModel):
-    indexes: Optional[str]
+    templates: Optional[str]
+    streams: Optional[str]
+    indices: Optional[str]
     fields: Optional[str]
+    indices_fields: Optional[str] = Field(alias="fields")
+    templates_fields: Optional[str] = Field(alias="fields")
 
     class Config:
-        dependencies_map = {"indexes": ("indexes",), "fields": ("indexes", "fields")}
+        dependencies_map = {
+            "streams": ("streams",),
+            "templates": ("templates",),
+            "templates_fields": ("templates", "templates_fields"),
+            "indices": ("indices",),
+            "indices_fields": ("indices", "indices_fields"),
+        }
 
 
 class FeastPathsModel(BasePathsModel):
