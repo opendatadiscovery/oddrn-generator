@@ -886,3 +886,23 @@ class CKANPathsModel(BasePathsModel):
             "resources": ("organizations", "datasets", "resources"),
             "fields": ("organizations", "datasets", "resources", "fields"),
         }
+
+
+class AzureDataFactoryPathsModel(BasePathsModel):
+    factories: Optional[str]
+    datasets: Optional[str]
+    pipelines: Optional[str]
+    pipelines: Optional[str]
+    pipelines_runs: Optional[str]
+    activities: Optional[str]
+    activities_runs: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "factories": ("factories",),
+            "datasets": ("factories", "datasets"),
+            "pipelines": ("factories", "pipelines"),
+            "pipelines_runs": ("factories", "pipelines", "pipelines_runs"),
+            "activities": ("factories", "pipelines", "activities"),
+            "activities_runs": ("factories", "pipelines", "activities", "activities_runs"),
+        }
