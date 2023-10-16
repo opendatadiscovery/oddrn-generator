@@ -191,7 +191,7 @@ class ElasticSearchPathsModel(BasePathsModel):
             "indices_fields": ("indices", "indices_fields"),
             "streams": ("streams",),
             "templates": ("templates",),
-            "templates_fields": ("templates", "templates_fields")
+            "templates_fields": ("templates", "templates_fields"),
         }
 
 
