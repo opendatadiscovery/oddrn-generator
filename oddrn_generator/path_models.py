@@ -187,11 +187,11 @@ class ElasticSearchPathsModel(BasePathsModel):
 
     class Config:
         dependencies_map = {
-            "streams": ("streams",),
-            "templates": ("templates",),
-            "templates_fields": ("templates", "templates_fields"),
             "indices": ("indices",),
             "indices_fields": ("indices", "indices_fields"),
+            "streams": ("streams",),
+            "templates": ("templates",),
+            "templates_fields": ("templates", "templates_fields")
         }
 
 
