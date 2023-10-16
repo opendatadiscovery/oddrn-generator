@@ -59,7 +59,7 @@ from oddrn_generator.path_models import (
     BlobPathsModel,
     BigQueryStoragePathsModel,
     CKANPathsModel,
-    AzureDataFactoryPathsModel
+    AzureDataFactoryPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,

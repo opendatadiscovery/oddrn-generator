@@ -904,5 +904,10 @@ class AzureDataFactoryPathsModel(BasePathsModel):
             "pipelines": ("factories", "pipelines"),
             "pipelines_runs": ("factories", "pipelines", "pipelines_runs"),
             "activities": ("factories", "pipelines", "activities"),
-            "activities_runs": ("factories", "pipelines", "activities", "activities_runs"),
+            "activities_runs": (
+                "factories",
+                "pipelines",
+                "activities",
+                "activities_runs",
+            ),
         }
