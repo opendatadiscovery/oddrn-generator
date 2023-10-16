@@ -3,7 +3,10 @@ from oddrn_generator.generators import S3CustomGenerator
 
 def test_generator():
     generator = S3CustomGenerator(endpoint="http://localhost:9000", buckets="bucket1")
-    assert generator.get_data_source_oddrn() == "//s3-custom/endpoint/localhost/buckets/bucket1"
+    assert (
+        generator.get_data_source_oddrn()
+        == "//s3-custom/endpoint/localhost/buckets/bucket1"
+    )
 
     generator.set_oddrn_paths()
     assert (

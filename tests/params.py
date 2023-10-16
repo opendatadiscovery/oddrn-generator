@@ -265,10 +265,16 @@ parameters_host = [
         {
             "host_settings": "127.0.0.1:9200",
             "paths": {
-                "indexes": "some_index",
-                "fields": "some_field",
+                "indices": "some_index",
+                "indices_fields": "some_field",
+                "streams": "some_stream",
+                "templates": "some_template",
+                "templates_fields": "some_template_field",
             },
-            "aliases": {},
+            "aliases": {
+                "indices_fields": "fields",
+                "templates_fields": "fields",
+            },
         },
     ),
     (

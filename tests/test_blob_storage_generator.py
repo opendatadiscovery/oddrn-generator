@@ -7,7 +7,7 @@ def test_blob_storage_generator():
     generator = AzureBlobStorageGenerator(
         azure_cloud_settings={
             "account": "test_account_name",
-            "container": "test_container_name"
+            "container": "test_container_name",
         }
     )
     generator.set_oddrn_paths(keys="test.csv", columns="age")
@@ -32,6 +32,4 @@ def test_blob_storage_generator_with_empty_params():
     """
 
     with pytest.raises(ValueError):
-        generator = AzureBlobStorageGenerator(
-            azure_cloud_settings=None
-        )
+        generator = AzureBlobStorageGenerator(azure_cloud_settings=None)

@@ -59,6 +59,7 @@ from oddrn_generator.path_models import (
     BlobPathsModel,
     BigQueryStoragePathsModel,
     CKANPathsModel,
+    AzureDataFactoryPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -540,3 +541,9 @@ class CKANGenerator(Generator):
     source = "ckan"
     paths_model = CKANPathsModel
     server_model = HostnameModel
+
+
+class AzureDataFactoryGenerator(Generator):
+    source = "azure_data_factory"
+    paths_model = AzureDataFactoryPathsModel
+    server_model = AzureDomainCloudModel

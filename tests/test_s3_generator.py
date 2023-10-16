@@ -21,6 +21,7 @@ def test_s3_generator_from_s3_url():
         == "//s3/cloud/aws/buckets/accounts/keys/company\\\\developers\\\\middle.csv"
     )
 
+
 def test_s3_generator_with_empty_bucket():
     generator = S3Generator()
 
@@ -29,5 +30,3 @@ def test_s3_generator_with_empty_bucket():
 
     with pytest.raises(EmptyPathValueException):
         generator.get_data_source_oddrn()
-
-
