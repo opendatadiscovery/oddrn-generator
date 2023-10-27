@@ -59,6 +59,7 @@ from oddrn_generator.generators import (
     BigQueryStorageGenerator,
     CKANGenerator,
     AzureDataFactoryGenerator,
+    ApiGenerator,
 )
 
 __all__ = [
@@ -122,4 +123,5 @@ __all__ = [
     "BigQueryStorageGenerator",
     "CKANGenerator",
     "AzureDataFactoryGenerator",
+    "ApiGenerator",
 ]

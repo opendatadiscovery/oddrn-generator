@@ -60,6 +60,7 @@ from oddrn_generator.path_models import (
     BigQueryStoragePathsModel,
     CKANPathsModel,
     AzureDataFactoryPathsModel,
+    ApiPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
@@ -547,3 +548,9 @@ class AzureDataFactoryGenerator(Generator):
     source = "azure_data_factory"
     paths_model = AzureDataFactoryPathsModel
     server_model = AzureDomainCloudModel
+
+
+class ApiGenerator(Generator):
+    source = "api"
+    paths_model = ApiPathsModel
+    server_model = HostnameModel
