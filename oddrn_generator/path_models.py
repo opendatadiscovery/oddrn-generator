@@ -911,3 +911,14 @@ class AzureDataFactoryPathsModel(BasePathsModel):
                 "activities_runs",
             ),
         }
+
+
+class ApiPathsModel(BasePathsModel):
+    resources: Optional[str]
+    fields: Optional[str]
+
+    class Config:
+        dependencies_map = {
+            "resources": ("resources",),
+            "fields": ("resources", "fields"),
+        }
