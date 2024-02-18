@@ -130,6 +130,7 @@ class SnowflakePathsModel(BasePathsModel):
     tables_columns: Optional[str] = Field(alias="columns")
     views_columns: Optional[str] = Field(alias="columns")
     pipes: Optional[str]
+    relationships: Optional[str]
 
     class Config:
         dependencies_map = {
@@ -140,6 +141,7 @@ class SnowflakePathsModel(BasePathsModel):
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
             "pipes": ("pipes",),
+            "relationships": ("databases", "schemas", "tables", "relationships"),
         }
         data_source_path = "databases"
 
