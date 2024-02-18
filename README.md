@@ -94,28 +94,31 @@ oddrn_gen = PostgresqlGenerator(
 oddrn_gen.base_oddrn
 # //postgresql/host/my.host.com:5432
 oddrn_gen.available_paths
-# ('schemas', 'databases', 'tables', 'columns')
+# ('databases', 'schemas', 'tables', 'views', 'tables_columns', 'views_columns', 'relationships')
 
 oddrn_gen.get_data_source_oddrn()
-# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name
+# //postgresql/host/my.host.com:5432/databases/database_name
 
 oddrn_gen.get_oddrn_by_path("schemas")
-# //postgresql/host/my.host.com:5432/schemas/schema_name
+# //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name
 
 oddrn_gen.get_oddrn_by_path("databases")
-# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name
+# //postgresql/host/my.host.com:5432/databases/database_name
 
 oddrn_gen.get_oddrn_by_path("tables")
-# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name/tables/table_name
+# //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/table_name
 
 # you can set or change path:
-oddrn_gen.set_oddrn_paths(tables='another_table_name', columns='new_column_name')
-oddrn_gen.get_oddrn_by_path("columns")
-# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name/tables/another_table_name/columns/new_column_name
+oddrn_gen.set_oddrn_paths(tables="another_table_name", tables_columns="new_column_name")
+oddrn_gen.get_oddrn_by_path("tables_columns")
+# //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/another_table_name/columns/new_column_name
+
+oddrn_gen.set_oddrn_paths(relationships="references_table_2_with_constraint_fk")
+# //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/another_table_name/relationships/references_table_2_with_constraint_fk
 
 # you can get path wih new values:
-oddrn_gen.get_oddrn_by_path("columns", new_value="another_new_column_name")
-# //postgresql/host/my.host.com:5432/schemas/schema_name/databases/database_name/tables/another_table_name/columns/another_new_column_name
+oddrn_gen.get_oddrn_by_path("tables_columns", new_value="another_new_column_name")
+# //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/another_table_name/columns/another_new_column_name
 
 
 # glue
@@ -160,9 +163,9 @@ from oddrn_generator import PostgresqlGenerator
 oddrn_gen = PostgresqlGenerator(
     host_settings='my.host.com:5432',
     schemas='schema_name', databases='database_name',
-    columns='column_without_table'
+    tables_columns='column_without_table'
 )
-# WrongPathOrderException: 'columns' can not be without 'tables' attribute
+# WrongPathOrderException: 'tables_columns' can not be without 'tables' attribute
 ```
 
 * EmptyPathValueException - raises when trying to get a path that is not set up
@@ -201,5 +204,5 @@ poetry install
 poetry shell
 
 # Run tests
-python run pytest
+pytest tests/
 ```
