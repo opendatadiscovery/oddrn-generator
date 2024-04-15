@@ -74,7 +74,7 @@ class PostgresqlPathsModel(BasePathsModel):
             "relationships": ("databases", "schemas", "tables", "relationships"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: PostgresqlPathsModel._dependencies_map_factory()
     )
@@ -97,7 +97,7 @@ class MysqlPathsModel(BasePathsModel):
             "views_columns": ("databases", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: MysqlPathsModel._dependencies_map_factory()
     )
@@ -110,7 +110,6 @@ class KafkaPathsModel(BasePathsModel):
     def _dependencies_map_factory(cls):
         return {"topics": ("topics",)}
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: KafkaPathsModel._dependencies_map_factory()
     )
@@ -123,7 +122,6 @@ class KafkaConnectorPathsModel(BasePathsModel):
     def _dependencies_map_factory(cls):
         return {"connectors": ("connectors",)}
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: KafkaConnectorPathsModel._dependencies_map_factory()
     )
@@ -148,7 +146,6 @@ class GluePathsModel(BasePathsModel):
             "runs": ("jobs", "runs"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: GluePathsModel._dependencies_map_factory()
     )
@@ -177,7 +174,7 @@ class SnowflakePathsModel(BasePathsModel):
             "relationships": ("databases", "schemas", "tables", "relationships"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: SnowflakePathsModel._dependencies_map_factory()
     )
@@ -196,7 +193,6 @@ class AirflowPathsModel(BasePathsModel):
             "runs": ("dags", "tasks", "runs"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: AirflowPathsModel._dependencies_map_factory()
     )
@@ -221,7 +217,7 @@ class HivePathsModel(BasePathsModel):
             "owners": ("owners",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: HivePathsModel._dependencies_map_factory()
     )
@@ -245,7 +241,6 @@ class ElasticSearchPathsModel(BasePathsModel):
             "templates_fields": ("templates", "templates_fields"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: ElasticSearchPathsModel._dependencies_map_factory()
     )
@@ -264,7 +259,6 @@ class FeastPathsModel(BasePathsModel):
             "subfeatures": ("featureviews", "features", "subfeatures"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: FeastPathsModel._dependencies_map_factory()
     )
@@ -278,7 +272,6 @@ class DynamodbPathsModel(BasePathsModel):
     def _dependencies_map_factory(cls):
         return {"tables": ("tables",), "columns": ("tables", "columns")}
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: DynamodbPathsModel._dependencies_map_factory()
     )
@@ -303,7 +296,7 @@ class OdbcPathsModel(BasePathsModel):
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: OdbcPathsModel._dependencies_map_factory()
     )
@@ -328,7 +321,7 @@ class MssqlPathsModel(BasePathsModel):
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: MssqlPathsModel._dependencies_map_factory()
     )
@@ -354,7 +347,7 @@ class OraclePathsModel(BasePathsModel):
             "views_columns": ("schemas", "databases", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: OraclePathsModel._dependencies_map_factory()
     )
@@ -379,7 +372,7 @@ class RedshiftPathsModel(BasePathsModel):
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: RedshiftPathsModel._dependencies_map_factory()
     )
@@ -402,7 +395,7 @@ class ClickHousePathsModel(BasePathsModel):
             "views_columns": ("databases", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: ClickHousePathsModel._dependencies_map_factory()
     )
@@ -427,7 +420,6 @@ class AthenaPathsModel(BasePathsModel):
             "views_columns": ("catalogs", "databases", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: AthenaPathsModel._dependencies_map_factory()
     )
@@ -448,7 +440,6 @@ class QuicksightPathsModel(BasePathsModel):
             "data_sources": ("data_sources",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: QuicksightPathsModel._dependencies_map_factory()
     )
@@ -481,7 +472,6 @@ class DbtPathsModel(BasePathsModel):
             "seeds": ("seeds",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: DbtPathsModel._dependencies_map_factory()
     )
@@ -500,7 +490,6 @@ class PrefectPathsModel(BasePathsModel):
             "runs": ("flows", "tasks", "runs"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: PrefectPathsModel._dependencies_map_factory()
     )
@@ -527,8 +516,8 @@ class TableauPathsModel(BasePathsModel):
             "sheets": ("sites", "workbooks", "sheets"),
         }
 
-    allows_null: list = Field(default_factory=lambda: ["schemas"])
-    data_source_path: str = Field(default_factory=lambda: "sites")
+    allows_null: list = ["schemas"]
+    data_source_path: str = "sites"
     dependencies_map: dict = Field(
         default_factory=lambda: TableauPathsModel._dependencies_map_factory()
     )
@@ -547,7 +536,7 @@ class Neo4jPathsModel(BasePathsModel):
             "fields": ("databases", "nodes", "fields"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: Neo4jPathsModel._dependencies_map_factory()
     )
@@ -566,7 +555,7 @@ class S3PathsModel(BasePathsModel):
             "columns": ("buckets", "keys", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "buckets")
+    data_source_path: str = "buckets"
     dependencies_map: dict = Field(
         default_factory=lambda: S3PathsModel._dependencies_map_factory()
     )
@@ -585,7 +574,7 @@ class S3CustomPathsModel(BasePathsModel):
             "columns": ("buckets", "keys", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "buckets")
+    data_source_path: str = "buckets"
     dependencies_map: dict = Field(
         default_factory=lambda: S3CustomPathsModel._dependencies_map_factory()
     )
@@ -609,7 +598,7 @@ class CassandraPathsModel(BasePathsModel):
             "views_columns": ("keyspaces", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "keyspaces")
+    data_source_path: str = "keyspaces"
     dependencies_map: dict = Field(
         default_factory=lambda: CassandraPathsModel._dependencies_map_factory()
     )
@@ -630,7 +619,6 @@ class SagemakerPathsModel(BasePathsModel):
             "artifacts": ("experiments", "trials", "artifacts"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: SagemakerPathsModel._dependencies_map_factory()
     )
@@ -649,7 +637,6 @@ class KubeflowPathsModel(BasePathsModel):
             "runs": ("experiments", "runs"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: KubeflowPathsModel._dependencies_map_factory()
     )
@@ -663,7 +650,6 @@ class TarantoolPathsModel(BasePathsModel):
     def _dependencies_map_factory(cls):
         return {"spaces": ("spaces",), "columns": ("spaces", "columns")}
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: TarantoolPathsModel._dependencies_map_factory()
     )
@@ -682,7 +668,6 @@ class KinesisPathsModel(BasePathsModel):
             "data_records": ("streams", "shards", "data_records"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: KinesisPathsModel._dependencies_map_factory()
     )
@@ -701,7 +686,7 @@ class MongoPathsModel(BasePathsModel):
             "columns": ("databases", "collections", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: MongoPathsModel._dependencies_map_factory()
     )
@@ -726,7 +711,7 @@ class VerticaPathsModel(BasePathsModel):
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: VerticaPathsModel._dependencies_map_factory()
     )
@@ -747,7 +732,6 @@ class PrestoPathsModel(BasePathsModel):
             "columns": ("catalogs", "schemas", "tables", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: PrestoPathsModel._dependencies_map_factory()
     )
@@ -770,7 +754,6 @@ class SupersetPathsModel(BasePathsModel):
             "dashboards": ("dashboards",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: SupersetPathsModel._dependencies_map_factory()
     )
@@ -783,7 +766,6 @@ class CubeJsPathModel(BasePathsModel):
     def _dependencies_map_factory(cls):
         return {"cubes": ("cubes",)}
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: CubeJsPathModel._dependencies_map_factory()
     )
@@ -802,7 +784,6 @@ class MetabasePathModel(BasePathsModel):
             "cards": ("collections", "cards"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: MetabasePathModel._dependencies_map_factory()
     )
@@ -816,7 +797,6 @@ class DmsPathsModel(BasePathsModel):
     def _dependencies_map_factory(cls):
         return {"tasks": ("tasks",), "runs": ("tasks", "runs")}
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: DmsPathsModel._dependencies_map_factory()
     )
@@ -833,7 +813,6 @@ class PowerBiPathModel(BasePathsModel):
             "dashboards": ("dashboards",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: PowerBiPathModel._dependencies_map_factory()
     )
@@ -851,7 +830,6 @@ class RedashPathsModel(BasePathsModel):
             "jobs": ("jobs",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: RedashPathsModel._dependencies_map_factory()
     )
@@ -866,7 +844,6 @@ class AirbytePathsModel(BasePathsModel):
             "connections": ("connections",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: AirbytePathsModel._dependencies_map_factory()
     )
@@ -880,7 +857,6 @@ class FilesystemPathModel(BasePathsModel):
     def _dependencies_map_factory(cls):
         return {"path": ("path",), "fields": ("path", "fields")}
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: FilesystemPathModel._dependencies_map_factory()
     )
@@ -899,7 +875,6 @@ class GreatExpectationsPathsModel(BasePathsModel):
             "runs": ("suites", "types", "runs"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: GreatExpectationsPathsModel._dependencies_map_factory()
     )
@@ -918,7 +893,6 @@ class DatabricksLakehousePathModel(BasePathsModel):
             "columns": ("databases", "tables", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: DatabricksLakehousePathModel._dependencies_map_factory()
     )
@@ -939,7 +913,6 @@ class DatabricksUnityCatalogPathModel(BasePathsModel):
             "columns": ("catalogs", "schemas", "tables", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: DatabricksUnityCatalogPathModel._dependencies_map_factory()
     )
@@ -958,7 +931,6 @@ class DatabricksFeatureStorePathModel(BasePathsModel):
             "columns": ("databases", "tables", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: DatabricksFeatureStorePathModel._dependencies_map_factory()
     )
@@ -981,7 +953,7 @@ class SingleStorePathsModel(BasePathsModel):
             "views_columns": ("databases", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: SingleStorePathsModel._dependencies_map_factory()
     )
@@ -1007,7 +979,7 @@ class AzureSQLPathsModel(BasePathsModel):
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "databases")
+    data_source_path: str = "databases"
     dependencies_map: dict = Field(
         default_factory=lambda: AzureSQLPathsModel._dependencies_map_factory()
     )
@@ -1022,7 +994,6 @@ class FivetranPathsModel(BasePathsModel):
             "transformers": ("transformers",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: FivetranPathsModel._dependencies_map_factory()
     )
@@ -1037,7 +1008,6 @@ class LambdaPathsModel(BasePathsModel):
             "functions": ("functions",),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: LambdaPathsModel._dependencies_map_factory()
     )
@@ -1058,7 +1028,7 @@ class CouchbasePathsModel(BasePathsModel):
             "columns": ("buckets", "scopes", "collections", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "buckets")
+    data_source_path: str = "buckets"
     dependencies_map: dict = Field(
         default_factory=lambda: CouchbasePathsModel._dependencies_map_factory()
     )
@@ -1082,7 +1052,7 @@ class SQLitePathsModel(BasePathsModel):
             "views_columns": ("path", "views", "views_columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: "path")
+    data_source_path: str = "path"
     dependencies_map: dict = Field(
         default_factory=lambda: SQLitePathsModel._dependencies_map_factory()
     )
@@ -1101,7 +1071,6 @@ class BigTablePathsModel(BasePathsModel):
             "columns": ("instances", "tables", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: BigTablePathsModel._dependencies_map_factory()
     )
@@ -1122,7 +1091,6 @@ class DuckDBPathsModel(BasePathsModel):
             "columns": ("catalogs", "schemas", "tables", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: DuckDBPathsModel._dependencies_map_factory()
     )
@@ -1141,7 +1109,6 @@ class GCSPathsModel(BasePathsModel):
             "columns": ("buckets", "keys", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: GCSPathsModel._dependencies_map_factory()
     )
@@ -1161,7 +1128,6 @@ class BlobPathsModel(BasePathsModel):
             ),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: BlobPathsModel._dependencies_map_factory()
     )
@@ -1180,7 +1146,6 @@ class BigQueryStoragePathsModel(BasePathsModel):
             "columns": ("datasets", "tables", "columns"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: BigQueryStoragePathsModel._dependencies_map_factory()
     )
@@ -1203,7 +1168,6 @@ class CKANPathsModel(BasePathsModel):
             "fields": ("organizations", "datasets", "resources", "fields"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: CKANPathsModel._dependencies_map_factory()
     )
@@ -1233,7 +1197,6 @@ class AzureDataFactoryPathsModel(BasePathsModel):
             ),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: AzureDataFactoryPathsModel._dependencies_map_factory()
     )
@@ -1250,7 +1213,6 @@ class ApiPathsModel(BasePathsModel):
             "fields": ("resources", "fields"),
         }
 
-    data_source_path: str = Field(default_factory=lambda: None)
     dependencies_map: dict = Field(
         default_factory=lambda: ApiPathsModel._dependencies_map_factory()
     )
