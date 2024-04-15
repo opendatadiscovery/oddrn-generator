@@ -2,7 +2,7 @@ def create_paths_oddrn(generator, generator_settings, target):
     aliases = generator_settings["aliases"]
     paths = generator_settings["paths"]
     path_dict = {}
-    for dep in generator.paths_obj.__config__.dependencies_map[target]:
+    for dep in generator.paths_obj.dependencies_map[target]:
         path_dict[aliases.get(dep, dep)] = paths[dep]
     return path_dict
 

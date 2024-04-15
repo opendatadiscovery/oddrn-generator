@@ -79,8 +79,7 @@ from oddrn_generator.server_models import (
     ServerModelConfig,
     SQLiteModel,
 )
-
-from .utils import escape
+from oddrn_generator.utils import escape
 
 
 def parse_url(url: str) -> dict:
@@ -149,7 +148,7 @@ class Generator:
 
     @property
     def available_paths(self) -> tuple:
-        return tuple(self.paths_obj.__config__.dependencies_map.keys())
+        return tuple(self.paths_obj.dependencies_map.keys())
 
     def get_oddrn_by_path(self, path: str, new_value: str = None) -> str:
         dependency = self.paths_obj.get_dependency(path)
@@ -157,7 +156,7 @@ class Generator:
             self.paths_obj.set_path_value(path, new_value)
         else:
             self.paths_obj.check_if_path_is_set(path)
-        paths_dict = self.paths_obj.dict(
+        paths_dict = self.paths_obj.model_dump(
             include=set(dependency), exclude_none=True, by_alias=True
         )
         return (
@@ -167,7 +166,7 @@ class Generator:
     def set_oddrn_paths(self, **new_paths) -> None:
         old_paths = {
             k: v
-            for k, v in self.paths_obj.dict(exclude_none=True).items()
+            for k, v in self.paths_obj.model_dump(exclude_none=True).items()
             if k not in list(new_paths.keys())
         }
 

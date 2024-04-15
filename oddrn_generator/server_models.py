@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from urllib.parse import urlparse
 from typing import Optional
-from pydantic import BaseModel, validator
+
+from pydantic import field_validator, BaseModel
 
 
 class HostSettings(BaseModel):
@@ -14,9 +15,9 @@ class CloudSettings(BaseModel):
 
 
 class AzureCloudSettings(BaseModel):
-    domain: Optional[str]
-    account: Optional[str]
-    container: Optional[str]
+    domain: Optional[str] = None
+    account: Optional[str] = None
+    container: Optional[str] = None
 
 
 class GoogleCloudSettings(BaseModel):
@@ -26,7 +27,8 @@ class GoogleCloudSettings(BaseModel):
 class S3CustomSettings(BaseModel):
     endpoint: str
 
-    @validator("endpoint")
+    @field_validator("endpoint")
+    @classmethod
     def name_must_contain_space(cls, endpoint):
         try:
             parsed = urlparse(endpoint)
@@ -37,11 +39,11 @@ class S3CustomSettings(BaseModel):
 
 
 class ServerModelConfig(BaseModel):
-    host_settings: HostSettings = None
-    cloud_settings: CloudSettings = None
-    azure_cloud_settings: AzureCloudSettings = None
-    s3_custom_cloud_settings: S3CustomSettings = None
-    google_cloud_settings: GoogleCloudSettings = None
+    host_settings: Optional[HostSettings] = None
+    cloud_settings: Optional[CloudSettings] = None
+    azure_cloud_settings: Optional[AzureCloudSettings] = None
+    s3_custom_cloud_settings: Optional[S3CustomSettings] = None
+    google_cloud_settings: Optional[GoogleCloudSettings] = None
 
 
 class AbstractServerModel(ABC):
@@ -75,7 +77,7 @@ class AWSCloudModel(AbstractServerModel, BaseModel):
     region: str
 
     def __str__(self) -> str:
-        return f"cloud/aws/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+        return f"cloud/aws/{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
 
     @classmethod
     def create(cls, config: ServerModelConfig):
@@ -92,7 +94,7 @@ class AzureDomainCloudModel(AbstractServerModel, BaseModel):
 
     def __str__(self) -> str:
         return (
-            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
         )
 
     @classmethod
@@ -111,7 +113,7 @@ class BlobStorageCloudModel(AbstractServerModel, BaseModel):
 
     def __str__(self) -> str:
         return (
-            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
         )
 
     @classmethod
@@ -131,7 +133,7 @@ class S3CustomModel(AbstractServerModel, BaseModel):
     endpoint: str
 
     def __str__(self) -> str:
-        return f"{'/'.join('{}/{}'.format(*p) for p in self.dict().items())}"
+        return f"{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
 
     @classmethod
     def create(cls, config: ServerModelConfig):

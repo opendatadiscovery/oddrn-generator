@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Optional, Type
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 from oddrn_generator.generators import (
     AthenaGenerator,
