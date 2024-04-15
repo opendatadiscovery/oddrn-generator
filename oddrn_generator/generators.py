@@ -120,16 +120,20 @@ class Generator:
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
-            azure_cloud_settings=AzureCloudSettings(**azure_cloud_settings)
-            if azure_cloud_settings
-            else None,
+            azure_cloud_settings=(
+                AzureCloudSettings(**azure_cloud_settings)
+                if azure_cloud_settings
+                else None
+            ),
             host_settings=HostSettings(host=host_settings) if host_settings else None,
-            s3_custom_cloud_settings=S3CustomSettings(endpoint=endpoint)
-            if endpoint
-            else None,
-            google_cloud_settings=GoogleCloudSettings(**google_cloud_settings)
-            if google_cloud_settings
-            else None,
+            s3_custom_cloud_settings=(
+                S3CustomSettings(endpoint=endpoint) if endpoint else None
+            ),
+            google_cloud_settings=(
+                GoogleCloudSettings(**google_cloud_settings)
+                if google_cloud_settings
+                else None
+            ),
         )
 
         self.server_obj: AbstractServerModel = self.server_model.create(config)

@@ -9,7 +9,7 @@ def test_api_generator():
     generator = ApiGenerator(
         host_settings=test_host_name,
         resources=test_resource_name,
-        fields=test_field_name
+        fields=test_field_name,
     )
     assert generator.get_data_source_oddrn() == f"//api/host/{test_host_name}"
     assert (

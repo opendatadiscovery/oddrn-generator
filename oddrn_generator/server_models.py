@@ -93,9 +93,7 @@ class AzureDomainCloudModel(AbstractServerModel, BaseModel):
     domain: str
 
     def __str__(self) -> str:
-        return (
-            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
-        )
+        return f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
 
     @classmethod
     def create(cls, config: ServerModelConfig):
@@ -112,9 +110,7 @@ class BlobStorageCloudModel(AbstractServerModel, BaseModel):
     container: str
 
     def __str__(self) -> str:
-        return (
-            f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
-        )
+        return f"cloud/azure/{'/'.join('{}/{}'.format(*p) for p in self.model_dump().items())}"
 
     @classmethod
     def create(cls, config: ServerModelConfig):

@@ -27,7 +27,9 @@ class ExamplePathModel(BasePathsModel):
         }
 
     data_source_path: str = Field(default_factory=lambda: None)
-    dependencies_map: dict = Field(default_factory=lambda: ExamplePathModel._dependencies_map_factory())
+    dependencies_map: dict = Field(
+        default_factory=lambda: ExamplePathModel._dependencies_map_factory()
+    )
 
 
 class ExampleGenerator(Generator):
