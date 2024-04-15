@@ -91,33 +91,34 @@ oddrn_gen = PostgresqlGenerator(
     schemas='schema_name', databases='database_name', tables='table_name'
 )
 
-oddrn_gen.base_oddrn
+print(oddrn_gen.base_oddrn)
 # //postgresql/host/my.host.com:5432
-oddrn_gen.available_paths
+print(oddrn_gen.available_paths)
 # ('databases', 'schemas', 'tables', 'views', 'tables_columns', 'views_columns', 'relationships')
 
-oddrn_gen.get_data_source_oddrn()
+print(oddrn_gen.get_data_source_oddrn())
 # //postgresql/host/my.host.com:5432/databases/database_name
 
-oddrn_gen.get_oddrn_by_path("schemas")
+print(oddrn_gen.get_oddrn_by_path("schemas"))
 # //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name
 
-oddrn_gen.get_oddrn_by_path("databases")
+print(oddrn_gen.get_oddrn_by_path("databases"))
 # //postgresql/host/my.host.com:5432/databases/database_name
 
-oddrn_gen.get_oddrn_by_path("tables")
+print(oddrn_gen.get_oddrn_by_path("tables"))
 # //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/table_name
 
 # you can set or change path:
 oddrn_gen.set_oddrn_paths(tables="another_table_name", tables_columns="new_column_name")
-oddrn_gen.get_oddrn_by_path("tables_columns")
+print(oddrn_gen.get_oddrn_by_path("tables_columns"))
 # //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/another_table_name/columns/new_column_name
 
 oddrn_gen.set_oddrn_paths(relationships="references_table_2_with_constraint_fk")
+print(oddrn_gen.get_oddrn_by_path("relationships"))
 # //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/another_table_name/relationships/references_table_2_with_constraint_fk
 
 # you can get path wih new values:
-oddrn_gen.get_oddrn_by_path("tables_columns", new_value="another_new_column_name")
+print(oddrn_gen.get_oddrn_by_path("tables_columns", new_value="another_new_column_name"))
 # //postgresql/host/my.host.com:5432/databases/database_name/schemas/schema_name/tables/another_table_name/columns/another_new_column_name
 
 
@@ -130,25 +131,25 @@ oddrn_gen = GlueGenerator(
     jobs='job_name', runs='run_name', owners='owner_name'
 )
 
-oddrn_gen.available_paths
+print(oddrn_gen.available_paths)
 # ('databases', 'tables', 'columns', 'owners', 'jobs', 'runs')
 
-oddrn_gen.get_oddrn_by_path("databases")
+print(oddrn_gen.get_oddrn_by_path("databases"))
 # //glue/cloud/aws/account/acc_id/region/reg_id/databases/database_name
 
-oddrn_gen.get_oddrn_by_path("tables")
+print(oddrn_gen.get_oddrn_by_path("tables"))
 # //glue/cloud/aws/account/acc_id/region/reg_id/databases/database_name/tables/table_name'
 
-oddrn_gen.get_oddrn_by_path("columns")
+print(oddrn_gen.get_oddrn_by_path("columns"))
 # //glue/cloud/aws/account/acc_id/region/reg_id/databases/database_name/tables/table_name/columns/column_name
 
-oddrn_gen.get_oddrn_by_path("jobs")
+print(oddrn_gen.get_oddrn_by_path("jobs"))
 # //glue/cloud/aws/account/acc_id/region/reg_id/jobs/job_name
 
-oddrn_gen.get_oddrn_by_path("runs")
+print(oddrn_gen.get_oddrn_by_path("runs"))
 # //glue/cloud/aws/account/acc_id/region/reg_id/jobs/job_name/runs/run_name
 
-oddrn_gen.get_oddrn_by_path("owners")
+print(oddrn_gen.get_oddrn_by_path("owners"))
 # //glue/cloud/aws/account/acc_id/region/reg_id/owners/owner_name
 
 ```
