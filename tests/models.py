@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import Field
 
 from oddrn_generator.generators import Generator
-from oddrn_generator.path_models import BasePathsModel
+from oddrn_generator.path_models import BasePathsModel, DependenciesMap
 from oddrn_generator.server_models import HostnameModel
 
 
@@ -27,7 +27,7 @@ class ExamplePathModel(BasePathsModel):
         }
 
     data_source_path: str = Field(default_factory=lambda: None)
-    dependencies_map: dict = Field(
+    dependencies_map: DependenciesMap = Field(
         default_factory=lambda: ExamplePathModel._dependencies_map_factory()
     )
 
