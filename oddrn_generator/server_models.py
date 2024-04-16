@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from urllib.parse import urlparse
 from typing import Optional
+from urllib.parse import urlparse
 
-from pydantic import field_validator, BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class HostSettings(BaseModel):
