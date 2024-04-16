@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field, FilePath
+from pydantic import BaseModel, ConfigDict, Field, FilePath
 
 from oddrn_generator.exceptions import (
     EmptyPathValueException,
@@ -8,20 +8,20 @@ from oddrn_generator.exceptions import (
     WrongPathOrderException,
 )
 
+DependenciesMap = dict[str, tuple[str, ...]]
+
 
 class BasePathsModel(BaseModel):
-    class Config:
-        dependencies_map = {}
-        data_source_path = None
-        allows_null = []
-        extra = "forbid"
-        allow_population_by_field_name = True
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+    dependencies_map: DependenciesMap = {}
+    data_source_path: str = None
+    allows_null: list = []
 
     def __validate_path(self, field) -> None:
-        for deps in reversed(self.__config__.dependencies_map[field]):
+        for deps in reversed(self.dependencies_map.get(field)):
             deps_value = getattr(self, deps, None)
             # allow dependency null if it is in allow_null list
-            if deps_value is None and deps in self.__config__.allows_null:
+            if deps_value is None and deps in self.allows_null:
                 return
             if not deps_value:
                 raise WrongPathOrderException(
@@ -29,11 +29,19 @@ class BasePathsModel(BaseModel):
                 )
 
     def validate_all_paths(self) -> None:
-        for field in self.__fields_set__:
+        # hotfix to ignore BasePathsModel's attributes that don't belong to path dependency objects
+        model_fields_to_ignore_set = {
+            "dependencies_map",
+            "data_source_path",
+            "allows_null",
+        }
+
+        model_fields_set = self.model_fields_set - model_fields_to_ignore_set
+        for field in model_fields_set:
             self.__validate_path(field)
 
     def get_dependency(self, field) -> tuple:
-        dependency = self.__config__.dependencies_map.get(field)
+        dependency = self.dependencies_map.get(field)
         if not dependency:
             raise PathDoesntExistException(f"Path '{field}' doesn't exist in generator")
         return dependency
@@ -46,22 +54,19 @@ class BasePathsModel(BaseModel):
         setattr(self, path, value)
         self.__validate_path(path)
 
-    @property
-    def data_source_path(self):
-        return self.__config__.data_source_path
-
 
 class PostgresqlPathsModel(BasePathsModel):
     databases: str
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
-    relationships: Optional[str]
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
+    relationships: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -70,51 +75,71 @@ class PostgresqlPathsModel(BasePathsModel):
             "views_columns": ("databases", "schemas", "views", "views_columns"),
             "relationships": ("databases", "schemas", "tables", "relationships"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: PostgresqlPathsModel._dependencies_map_factory()
+    )
 
 
 class MysqlPathsModel(BasePathsModel):
     databases: str
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "tables": ("databases", "tables"),
             "views": ("databases", "views"),
             "tables_columns": ("databases", "tables", "tables_columns"),
             "views_columns": ("databases", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: MysqlPathsModel._dependencies_map_factory()
+    )
 
 
 class KafkaPathsModel(BasePathsModel):
-    topics: Optional[str]
+    topics: Optional[str] = None
 
-    class Config:
-        dependencies_map = {"topics": ("topics",)}
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {"topics": ("topics",)}
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: KafkaPathsModel._dependencies_map_factory()
+    )
 
 
 class KafkaConnectorPathsModel(BasePathsModel):
     connectors: str
 
-    class Config:
-        dependencies_map = {"connectors": ("connectors",)}
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {"connectors": ("connectors",)}
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: KafkaConnectorPathsModel._dependencies_map_factory()
+    )
 
 
 class GluePathsModel(BasePathsModel):
-    databases: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
-    owners: Optional[str]
-    jobs: Optional[str]
-    runs: Optional[str]
+    databases: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
+    owners: Optional[str] = None
+    jobs: Optional[str] = None
+    runs: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "tables": ("databases", "tables"),
             "columns": ("databases", "tables", "columns"),
@@ -123,19 +148,24 @@ class GluePathsModel(BasePathsModel):
             "runs": ("jobs", "runs"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: GluePathsModel._dependencies_map_factory()
+    )
+
 
 class SnowflakePathsModel(BasePathsModel):
     databases: str
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
-    pipes: Optional[str]
-    relationships: Optional[str]
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
+    pipes: Optional[str] = None
+    relationships: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -145,32 +175,42 @@ class SnowflakePathsModel(BasePathsModel):
             "pipes": ("pipes",),
             "relationships": ("databases", "schemas", "tables", "relationships"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: SnowflakePathsModel._dependencies_map_factory()
+    )
 
 
 class AirflowPathsModel(BasePathsModel):
-    dags: Optional[str]
-    tasks: Optional[str]
-    runs: Optional[str]
+    dags: Optional[str] = None
+    tasks: Optional[str] = None
+    runs: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "dags": ("dags",),
             "tasks": ("dags", "tasks"),
             "runs": ("dags", "tasks", "runs"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: AirflowPathsModel._dependencies_map_factory()
+    )
+
 
 class HivePathsModel(BasePathsModel):
-    databases: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
-    owners: Optional[str]
+    databases: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
+    owners: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "tables": ("databases", "tables"),
             "views": ("databases", "views"),
@@ -178,19 +218,24 @@ class HivePathsModel(BasePathsModel):
             "views_columns": ("databases", "views", "views_columns"),
             "owners": ("owners",),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: HivePathsModel._dependencies_map_factory()
+    )
 
 
 class ElasticSearchPathsModel(BasePathsModel):
-    templates: Optional[str]
-    streams: Optional[str]
-    indices: Optional[str]
-    fields: Optional[str]
-    indices_fields: Optional[str] = Field(alias="fields")
-    templates_fields: Optional[str] = Field(alias="fields")
+    templates: Optional[str] = None
+    streams: Optional[str] = None
+    indices: Optional[str] = None
+    fields: Optional[str] = None
+    indices_fields: Optional[str] = Field(None, alias="fields")
+    templates_fields: Optional[str] = Field(None, alias="fields")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "indices": ("indices",),
             "indices_fields": ("indices", "indices_fields"),
             "streams": ("streams",),
@@ -198,38 +243,53 @@ class ElasticSearchPathsModel(BasePathsModel):
             "templates_fields": ("templates", "templates_fields"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: ElasticSearchPathsModel._dependencies_map_factory()
+    )
+
 
 class FeastPathsModel(BasePathsModel):
-    featureviews: Optional[str]
-    features: Optional[str]
-    subfeatures: Optional[str]
+    featureviews: Optional[str] = None
+    features: Optional[str] = None
+    subfeatures: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "featureviews": ("featureviews",),
             "features": ("featureviews", "features"),
             "subfeatures": ("featureviews", "features", "subfeatures"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: FeastPathsModel._dependencies_map_factory()
+    )
+
 
 class DynamodbPathsModel(BasePathsModel):
-    tables: Optional[str]
-    columns: Optional[str]
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {"tables": ("tables",), "columns": ("tables", "columns")}
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {"tables": ("tables",), "columns": ("tables", "columns")}
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: DynamodbPathsModel._dependencies_map_factory()
+    )
 
 
 class OdbcPathsModel(BasePathsModel):
     databases: str
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -237,19 +297,24 @@ class OdbcPathsModel(BasePathsModel):
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: OdbcPathsModel._dependencies_map_factory()
+    )
 
 
 class MssqlPathsModel(BasePathsModel):
     databases: str
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -257,20 +322,25 @@ class MssqlPathsModel(BasePathsModel):
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: MssqlPathsModel._dependencies_map_factory()
+    )
 
 
 class OraclePathsModel(BasePathsModel):
     schemas: str
-    databases: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    columns: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    databases: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    columns: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "schemas": ("schemas",),
             "databases": ("schemas", "databases"),
             "tables": ("schemas", "databases", "tables"),
@@ -278,19 +348,24 @@ class OraclePathsModel(BasePathsModel):
             "tables_columns": ("schemas", "databases", "tables", "tables_columns"),
             "views_columns": ("schemas", "databases", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: OraclePathsModel._dependencies_map_factory()
+    )
 
 
 class RedshiftPathsModel(BasePathsModel):
     databases: str
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -298,37 +373,47 @@ class RedshiftPathsModel(BasePathsModel):
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: RedshiftPathsModel._dependencies_map_factory()
+    )
 
 
 class ClickHousePathsModel(BasePathsModel):
     databases: str
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "tables": ("databases", "tables"),
             "views": ("databases", "views"),
             "tables_columns": ("databases", "tables", "tables_columns"),
             "views_columns": ("databases", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: ClickHousePathsModel._dependencies_map_factory()
+    )
 
 
 class AthenaPathsModel(BasePathsModel):
-    catalogs: Optional[str]
-    databases: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    catalogs: Optional[str] = None
+    databases: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "catalogs": ("catalogs",),
             "databases": ("catalogs", "databases"),
             "tables": ("catalogs", "databases", "tables"),
@@ -337,36 +422,46 @@ class AthenaPathsModel(BasePathsModel):
             "views_columns": ("catalogs", "databases", "views", "views_columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: AthenaPathsModel._dependencies_map_factory()
+    )
+
 
 class QuicksightPathsModel(BasePathsModel):
-    datasets: Optional[str]
-    analyses: Optional[str]
-    dashboards: Optional[str]
-    data_sources: Optional[str]
+    datasets: Optional[str] = None
+    analyses: Optional[str] = None
+    dashboards: Optional[str] = None
+    data_sources: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "datasets": ("datasets",),
             "analyses": ("analyses",),
             "dashboards": ("dashboards",),
             "data_sources": ("data_sources",),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: QuicksightPathsModel._dependencies_map_factory()
+    )
+
 
 class DbtPathsModel(BasePathsModel):
-    databases: Optional[str]
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
-    tests: Optional[str]
-    runs: Optional[str]
-    models: Optional[str]
-    seeds: Optional[str]
+    databases: Optional[str] = None
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
+    tests: Optional[str] = None
+    runs: Optional[str] = None
+    models: Optional[str] = None
+    seeds: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -379,31 +474,41 @@ class DbtPathsModel(BasePathsModel):
             "seeds": ("seeds",),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: DbtPathsModel._dependencies_map_factory()
+    )
+
 
 class PrefectPathsModel(BasePathsModel):
     flows: str
-    tasks: Optional[str]
-    runs: Optional[str]
+    tasks: Optional[str] = None
+    runs: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "flows": ("flows",),
             "tasks": ("flows", "tasks"),
             "runs": ("flows", "tasks", "runs"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: PrefectPathsModel._dependencies_map_factory()
+    )
+
 
 class TableauPathsModel(BasePathsModel):
     sites: str
-    databases: Optional[str]
-    schemas: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
-    workbooks: Optional[str]
-    sheets: Optional[str]
+    databases: Optional[str] = None
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
+    workbooks: Optional[str] = None
+    sheets: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "sites": ("sites",),
             "databases": ("sites", "databases"),
             "schemas": ("sites", "databases", "schemas"),
@@ -412,144 +517,194 @@ class TableauPathsModel(BasePathsModel):
             "workbooks": ("sites", "workbooks"),
             "sheets": ("sites", "workbooks", "sheets"),
         }
-        data_source_path = "sites"
-        allows_null = ["schemas"]
+
+    allows_null: list = ["schemas"]
+    data_source_path: str = "sites"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: TableauPathsModel._dependencies_map_factory()
+    )
 
 
 class Neo4jPathsModel(BasePathsModel):
     databases: str
-    nodes: Optional[str]
-    fields: Optional[str]
+    nodes: Optional[str] = None
+    fields: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "nodes": ("databases", "nodes"),
             "fields": ("databases", "nodes", "fields"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: Neo4jPathsModel._dependencies_map_factory()
+    )
 
 
 class S3PathsModel(BasePathsModel):
-    buckets: Optional[str]
-    keys: Optional[str]
-    columns: Optional[str]
+    buckets: Optional[str] = None
+    keys: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "buckets": ("buckets",),
             "keys": ("buckets", "keys"),
             "columns": ("buckets", "keys", "columns"),
         }
-        data_source_path = "buckets"
+
+    data_source_path: str = "buckets"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: S3PathsModel._dependencies_map_factory()
+    )
 
 
 class S3CustomPathsModel(BasePathsModel):
-    buckets: Optional[str]
-    keys: Optional[str]
-    columns: Optional[str]
+    buckets: Optional[str] = None
+    keys: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "buckets": ("buckets",),
             "keys": ("buckets", "keys"),
             "columns": ("buckets", "keys", "columns"),
         }
-        data_source_path = "buckets"
+
+    data_source_path: str = "buckets"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: S3CustomPathsModel._dependencies_map_factory()
+    )
 
 
 class CassandraPathsModel(BasePathsModel):
     keyspaces: str
-    tables: Optional[str]
-    views: Optional[str]
-    columns: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    columns: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "keyspaces": ("keyspaces",),
             "tables": ("keyspaces", "tables"),
             "views": ("keyspaces", "views"),
             "tables_columns": ("keyspaces", "tables", "tables_columns"),
             "views_columns": ("keyspaces", "views", "views_columns"),
         }
-        data_source_path = "keyspaces"
+
+    data_source_path: str = "keyspaces"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: CassandraPathsModel._dependencies_map_factory()
+    )
 
 
 class SagemakerPathsModel(BasePathsModel):
-    experiments: Optional[str]
-    trials: Optional[str]
-    jobs: Optional[str]
-    artifacts: Optional[str]
+    experiments: Optional[str] = None
+    trials: Optional[str] = None
+    jobs: Optional[str] = None
+    artifacts: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "experiments": ("experiments",),
             "trials": ("experiments", "trials"),
             "jobs": ("experiments", "trials", "jobs"),
             "artifacts": ("experiments", "trials", "artifacts"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: SagemakerPathsModel._dependencies_map_factory()
+    )
+
 
 class KubeflowPathsModel(BasePathsModel):
-    pipelines: Optional[str]
-    experiments: Optional[str]
-    runs: Optional[str]
+    pipelines: Optional[str] = None
+    experiments: Optional[str] = None
+    runs: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "pipelines": ("pipelines",),
             "experiments": ("experiments",),
             "runs": ("experiments", "runs"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: KubeflowPathsModel._dependencies_map_factory()
+    )
+
 
 class TarantoolPathsModel(BasePathsModel):
-    spaces: Optional[str]
-    columns: Optional[str]
+    spaces: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {"spaces": ("spaces",), "columns": ("spaces", "columns")}
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {"spaces": ("spaces",), "columns": ("spaces", "columns")}
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: TarantoolPathsModel._dependencies_map_factory()
+    )
 
 
 class KinesisPathsModel(BasePathsModel):
-    streams: Optional[str]
-    shards: Optional[str]
-    data_records: Optional[str]
+    streams: Optional[str] = None
+    shards: Optional[str] = None
+    data_records: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "streams": ("streams",),
             "shards": ("streams", "shards"),
             "data_records": ("streams", "shards", "data_records"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: KinesisPathsModel._dependencies_map_factory()
+    )
+
 
 class MongoPathsModel(BasePathsModel):
     databases: str
-    collections: Optional[str]
-    columns: Optional[str]
+    collections: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "collections": ("databases", "collections"),
             "columns": ("databases", "collections", "columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: MongoPathsModel._dependencies_map_factory()
+    )
 
 
 class VerticaPathsModel(BasePathsModel):
     databases: str
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -557,34 +712,43 @@ class VerticaPathsModel(BasePathsModel):
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: VerticaPathsModel._dependencies_map_factory()
+    )
 
 
 class PrestoPathsModel(BasePathsModel):
-    catalogs: Optional[str]
-    schemas: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
+    catalogs: Optional[str] = None
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "catalogs": ("catalogs",),
             "schemas": ("catalogs", "schemas"),
             "tables": ("catalogs", "schemas", "tables"),
             "columns": ("catalogs", "schemas", "tables", "columns"),
         }
-        # data_source_path = "databases"
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: PrestoPathsModel._dependencies_map_factory()
+    )
 
 
 class SupersetPathsModel(BasePathsModel):
-    databases: Optional[str]
-    datasets: Optional[str]
-    columns: Optional[str]
-    dashboards: Optional[str]
-    charts: Optional[str]
+    databases: Optional[str] = None
+    datasets: Optional[str] = None
+    columns: Optional[str] = None
+    dashboards: Optional[str] = None
+    charts: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "datasets": ("databases", "datasets"),
             "columns": ("databases", "datasets", "columns"),
@@ -592,158 +756,223 @@ class SupersetPathsModel(BasePathsModel):
             "dashboards": ("dashboards",),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: SupersetPathsModel._dependencies_map_factory()
+    )
+
 
 class CubeJsPathModel(BasePathsModel):
     cubes: str = ""
 
-    class Config:
-        dependencies_map = {"cubes": ("cubes",)}
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {"cubes": ("cubes",)}
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: CubeJsPathModel._dependencies_map_factory()
+    )
 
 
 class MetabasePathModel(BasePathsModel):
     collections: str = ""
-    dashboards: Optional[str]
-    cards: Optional[str]
+    dashboards: Optional[str] = None
+    cards: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "collections": ("collections",),
             "dashboards": ("collections", "dashboards"),
             "cards": ("collections", "cards"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: MetabasePathModel._dependencies_map_factory()
+    )
+
 
 class DmsPathsModel(BasePathsModel):
-    tasks: Optional[str]
-    runs: Optional[str]
+    tasks: Optional[str] = None
+    runs: Optional[str] = None
 
-    class Config:
-        dependencies_map = {"tasks": ("tasks",), "runs": ("tasks", "runs")}
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {"tasks": ("tasks",), "runs": ("tasks", "runs")}
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: DmsPathsModel._dependencies_map_factory()
+    )
 
 
 class PowerBiPathModel(BasePathsModel):
-    datasets: Optional[str]
-    dashboards: Optional[str]
+    datasets: Optional[str] = None
+    dashboards: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "datasets": ("datasets",),
             "dashboards": ("dashboards",),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: PowerBiPathModel._dependencies_map_factory()
+    )
+
 
 class RedashPathsModel(BasePathsModel):
-    queries: Optional[str]
-    dashboards: Optional[str]
+    queries: Optional[str] = None
+    dashboards: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "queries": ("queries",),
             "dashboards": ("dashboards",),
             "jobs": ("jobs",),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: RedashPathsModel._dependencies_map_factory()
+    )
+
 
 class AirbytePathsModel(BasePathsModel):
-    connections: Optional[str]
+    connections: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "connections": ("connections",),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: AirbytePathsModel._dependencies_map_factory()
+    )
+
 
 class FilesystemPathModel(BasePathsModel):
-    path: Optional[str]
-    fields: Optional[str]
+    path: Optional[str] = None
+    fields: Optional[str] = None
 
-    class Config:
-        dependencies_map = {"path": ("path",), "fields": ("path", "fields")}
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {"path": ("path",), "fields": ("path", "fields")}
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: FilesystemPathModel._dependencies_map_factory()
+    )
 
 
 class GreatExpectationsPathsModel(BasePathsModel):
-    suites: Optional[str]
-    types: Optional[str]
-    runs: Optional[str]
+    suites: Optional[str] = None
+    types: Optional[str] = None
+    runs: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "suites": ("suites",),
             "types": ("suites", "types"),
             "runs": ("suites", "types", "runs"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: GreatExpectationsPathsModel._dependencies_map_factory()
+    )
+
 
 class DatabricksLakehousePathModel(BasePathsModel):
-    databases: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
+    databases: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "tables": ("databases", "tables"),
             "columns": ("databases", "tables", "columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: DatabricksLakehousePathModel._dependencies_map_factory()
+    )
+
 
 class DatabricksUnityCatalogPathModel(BasePathsModel):
-    catalogs: Optional[str]
-    schemas: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
+    catalogs: Optional[str] = None
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "catalogs": ("catalogs",),
             "schemas": ("catalogs", "schemas"),
             "tables": ("catalogs", "schemas", "tables"),
             "columns": ("catalogs", "schemas", "tables", "columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: DatabricksUnityCatalogPathModel._dependencies_map_factory()
+    )
+
 
 class DatabricksFeatureStorePathModel(BasePathsModel):
-    databases: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
+    databases: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "tables": ("databases", "tables"),
             "columns": ("databases", "tables", "columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: DatabricksFeatureStorePathModel._dependencies_map_factory()
+    )
+
 
 class SingleStorePathsModel(BasePathsModel):
     databases: str
-    tables: Optional[str]
-    views: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "tables": ("databases", "tables"),
             "views": ("databases", "views"),
             "tables_columns": ("databases", "tables", "tables_columns"),
             "views_columns": ("databases", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: SingleStorePathsModel._dependencies_map_factory()
+    )
 
 
 class AzureSQLPathsModel(BasePathsModel):
     databases: str
-    schemas: Optional[str]
-    tables: Optional[str]
-    views: Optional[str]
-    columns: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    columns: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "databases": ("databases",),
             "schemas": ("databases", "schemas"),
             "tables": ("databases", "schemas", "tables"),
@@ -751,109 +980,149 @@ class AzureSQLPathsModel(BasePathsModel):
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
         }
-        data_source_path = "databases"
+
+    data_source_path: str = "databases"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: AzureSQLPathsModel._dependencies_map_factory()
+    )
 
 
 class FivetranPathsModel(BasePathsModel):
-    transformers: Optional[str]
+    transformers: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "transformers": ("transformers",),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: FivetranPathsModel._dependencies_map_factory()
+    )
+
 
 class LambdaPathsModel(BasePathsModel):
-    functions: Optional[str]
+    functions: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "functions": ("functions",),
         }
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: LambdaPathsModel._dependencies_map_factory()
+    )
 
 
 class CouchbasePathsModel(BasePathsModel):
     buckets: str
-    scopes: Optional[str]
-    collections: Optional[str]
-    columns: Optional[str]
+    scopes: Optional[str] = None
+    collections: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "buckets": ("buckets",),
             "scopes": ("buckets", "scopes"),
             "collections": ("buckets", "scopes", "collections"),
             "columns": ("buckets", "scopes", "collections", "columns"),
         }
-        data_source_path = "buckets"
+
+    data_source_path: str = "buckets"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: CouchbasePathsModel._dependencies_map_factory()
+    )
 
 
 class SQLitePathsModel(BasePathsModel):
-    path: Optional[FilePath]
-    tables: Optional[str]
-    views: Optional[str]
-    columns: Optional[str]
-    tables_columns: Optional[str] = Field(alias="columns")
-    views_columns: Optional[str] = Field(alias="columns")
+    path: Optional[FilePath] = None
+    tables: Optional[str] = None
+    views: Optional[str] = None
+    columns: Optional[str] = None
+    tables_columns: Optional[str] = Field(None, alias="columns")
+    views_columns: Optional[str] = Field(None, alias="columns")
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "path": ("path",),
             "tables": ("path", "tables"),
             "views": ("path", "views"),
             "tables_columns": ("path", "tables", "tables_columns"),
             "views_columns": ("path", "views", "views_columns"),
         }
-        data_source_path = "path"
+
+    data_source_path: str = "path"
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: SQLitePathsModel._dependencies_map_factory()
+    )
 
 
 class BigTablePathsModel(BasePathsModel):
-    instances: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
+    instances: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "instances": ("instances",),
             "tables": ("instances", "tables"),
             "columns": ("instances", "tables", "columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: BigTablePathsModel._dependencies_map_factory()
+    )
+
 
 class DuckDBPathsModel(BasePathsModel):
-    catalogs: Optional[str]
-    schemas: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
+    catalogs: Optional[str] = None
+    schemas: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "catalogs": ("catalogs",),
             "schemas": ("catalogs", "schemas"),
             "tables": ("catalogs", "schemas", "tables"),
             "columns": ("catalogs", "schemas", "tables", "columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: DuckDBPathsModel._dependencies_map_factory()
+    )
+
 
 class GCSPathsModel(BasePathsModel):
-    buckets: Optional[str]
-    keys: Optional[str]
-    columns: Optional[str]
+    buckets: Optional[str] = None
+    keys: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "buckets": ("buckets",),
             "keys": ("buckets", "keys"),
             "columns": ("buckets", "keys", "columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: GCSPathsModel._dependencies_map_factory()
+    )
+
 
 class BlobPathsModel(BasePathsModel):
-    keys: Optional[str]
-    columns: Optional[str]
+    keys: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "keys": ("keys",),
             "columns": (
                 "keys",
@@ -861,29 +1130,39 @@ class BlobPathsModel(BasePathsModel):
             ),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: BlobPathsModel._dependencies_map_factory()
+    )
+
 
 class BigQueryStoragePathsModel(BasePathsModel):
-    datasets: Optional[str]
-    tables: Optional[str]
-    columns: Optional[str]
+    datasets: Optional[str] = None
+    tables: Optional[str] = None
+    columns: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "datasets": ("datasets",),
             "tables": ("datasets", "tables"),
             "columns": ("datasets", "tables", "columns"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: BigQueryStoragePathsModel._dependencies_map_factory()
+    )
+
 
 class CKANPathsModel(BasePathsModel):
-    organizations: Optional[str]
-    groups: Optional[str]
-    datasets: Optional[str]
-    resources: Optional[str]
-    fields: Optional[str]
+    organizations: Optional[str] = None
+    groups: Optional[str] = None
+    datasets: Optional[str] = None
+    resources: Optional[str] = None
+    fields: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "organizations": ("organizations",),
             "groups": ("groups",),
             "datasets": ("organizations", "datasets"),
@@ -891,18 +1170,22 @@ class CKANPathsModel(BasePathsModel):
             "fields": ("organizations", "datasets", "resources", "fields"),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: CKANPathsModel._dependencies_map_factory()
+    )
+
 
 class AzureDataFactoryPathsModel(BasePathsModel):
-    factories: Optional[str]
-    datasets: Optional[str]
-    pipelines: Optional[str]
-    pipelines: Optional[str]
-    pipelines_runs: Optional[str]
-    activities: Optional[str]
-    activities_runs: Optional[str]
+    factories: Optional[str] = None
+    datasets: Optional[str] = None
+    pipelines: Optional[str] = None
+    pipelines_runs: Optional[str] = None
+    activities: Optional[str] = None
+    activities_runs: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "factories": ("factories",),
             "datasets": ("factories", "datasets"),
             "pipelines": ("factories", "pipelines"),
@@ -916,13 +1199,22 @@ class AzureDataFactoryPathsModel(BasePathsModel):
             ),
         }
 
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: AzureDataFactoryPathsModel._dependencies_map_factory()
+    )
+
 
 class ApiPathsModel(BasePathsModel):
-    resources: Optional[str]
-    fields: Optional[str]
+    resources: Optional[str] = None
+    fields: Optional[str] = None
 
-    class Config:
-        dependencies_map = {
+    @classmethod
+    def _dependencies_map_factory(cls):
+        return {
             "resources": ("resources",),
             "fields": ("resources", "fields"),
         }
+
+    dependencies_map: DependenciesMap = Field(
+        default_factory=lambda: ApiPathsModel._dependencies_map_factory()
+    )

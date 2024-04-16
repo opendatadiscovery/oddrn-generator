@@ -4,11 +4,16 @@ from urllib.parse import urlparse
 from oddrn_generator.path_models import (
     AirbytePathsModel,
     AirflowPathsModel,
+    ApiPathsModel,
     AthenaPathsModel,
+    AzureDataFactoryPathsModel,
     AzureSQLPathsModel,
     BasePathsModel,
+    BigQueryStoragePathsModel,
     BigTablePathsModel,
+    BlobPathsModel,
     CassandraPathsModel,
+    CKANPathsModel,
     ClickHousePathsModel,
     CouchbasePathsModel,
     CubeJsPathModel,
@@ -56,18 +61,13 @@ from oddrn_generator.path_models import (
     TableauPathsModel,
     TarantoolPathsModel,
     VerticaPathsModel,
-    BlobPathsModel,
-    BigQueryStoragePathsModel,
-    CKANPathsModel,
-    AzureDataFactoryPathsModel,
-    ApiPathsModel,
 )
 from oddrn_generator.server_models import (
     AbstractServerModel,
     AWSCloudModel,
-    BlobStorageCloudModel,
-    AzureDomainCloudModel,
     AzureCloudSettings,
+    AzureDomainCloudModel,
+    BlobStorageCloudModel,
     CloudSettings,
     GCPCloudModel,
     GoogleCloudSettings,
@@ -79,8 +79,7 @@ from oddrn_generator.server_models import (
     ServerModelConfig,
     SQLiteModel,
 )
-
-from .utils import escape
+from oddrn_generator.utils import escape
 
 
 def parse_url(url: str) -> dict:
@@ -121,16 +120,20 @@ class Generator:
     ):
         config = ServerModelConfig(
             cloud_settings=CloudSettings(**cloud_settings) if cloud_settings else None,
-            azure_cloud_settings=AzureCloudSettings(**azure_cloud_settings)
-            if azure_cloud_settings
-            else None,
+            azure_cloud_settings=(
+                AzureCloudSettings(**azure_cloud_settings)
+                if azure_cloud_settings
+                else None
+            ),
             host_settings=HostSettings(host=host_settings) if host_settings else None,
-            s3_custom_cloud_settings=S3CustomSettings(endpoint=endpoint)
-            if endpoint
-            else None,
-            google_cloud_settings=GoogleCloudSettings(**google_cloud_settings)
-            if google_cloud_settings
-            else None,
+            s3_custom_cloud_settings=(
+                S3CustomSettings(endpoint=endpoint) if endpoint else None
+            ),
+            google_cloud_settings=(
+                GoogleCloudSettings(**google_cloud_settings)
+                if google_cloud_settings
+                else None
+            ),
         )
 
         self.server_obj: AbstractServerModel = self.server_model.create(config)
@@ -149,7 +152,7 @@ class Generator:
 
     @property
     def available_paths(self) -> tuple:
-        return tuple(self.paths_obj.__config__.dependencies_map.keys())
+        return tuple(self.paths_obj.dependencies_map.keys())
 
     def get_oddrn_by_path(self, path: str, new_value: str = None) -> str:
         dependency = self.paths_obj.get_dependency(path)
@@ -157,7 +160,7 @@ class Generator:
             self.paths_obj.set_path_value(path, new_value)
         else:
             self.paths_obj.check_if_path_is_set(path)
-        paths_dict = self.paths_obj.dict(
+        paths_dict = self.paths_obj.model_dump(
             include=set(dependency), exclude_none=True, by_alias=True
         )
         return (
@@ -167,7 +170,7 @@ class Generator:
     def set_oddrn_paths(self, **new_paths) -> None:
         old_paths = {
             k: v
-            for k, v in self.paths_obj.dict(exclude_none=True).items()
+            for k, v in self.paths_obj.model_dump(exclude_none=True).items()
             if k not in list(new_paths.keys())
         }
 
