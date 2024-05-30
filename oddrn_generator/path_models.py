@@ -172,7 +172,7 @@ class SnowflakePathsModel(BasePathsModel):
             "views": ("databases", "schemas", "views"),
             "tables_columns": ("databases", "schemas", "tables", "tables_columns"),
             "views_columns": ("databases", "schemas", "views", "views_columns"),
-            "pipes": ("pipes",),
+            "pipes": ("databases", "schemas", "pipes"),
             "relationships": ("databases", "schemas", "tables", "relationships"),
         }
 
