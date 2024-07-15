@@ -258,6 +258,7 @@ parameters_host = [
                 "databases": "some_database",
                 "nodes": "some_node",
                 "fields": "some_field",
+                "relationships": "some_relationship",
             },
             "aliases": {},
         },

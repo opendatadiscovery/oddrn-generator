@@ -529,6 +529,7 @@ class Neo4jPathsModel(BasePathsModel):
     databases: str
     nodes: Optional[str] = None
     fields: Optional[str] = None
+    relationships: Optional[str] = None
 
     @classmethod
     def _dependencies_map_factory(cls):
@@ -536,6 +537,7 @@ class Neo4jPathsModel(BasePathsModel):
             "databases": ("databases",),
             "nodes": ("databases", "nodes"),
             "fields": ("databases", "nodes", "fields"),
+            "relationships": ("databases", "nodes", "relationships"),
         }
 
     data_source_path: str = "databases"
